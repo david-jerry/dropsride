@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block description %} Control, manage and pay for your team's work rides from a single account with Drops Business. {% endblock %}
+{% block keywords %} drops business, business trips, {{ block.super }} {% endblock %}
+{% block og_title %} {{ block.super }} Drops Business {% endblock %}
+{% block title %} {{ block.super }} Drops Business {% endblock %}
+{% block og_sitename %} {{ block.super }} {% endblock %}
+{% block og_description %} Control, manage and pay for your team's work rides from a single account with Drops Business. {% endblock %}
+{% block og_favicon %} {{ block.super }} {% endblock %}
+{% block author %} {{ block.super }} {% endblock %}
+
+{% block nav %}{{ block.super }}{% endblock nav %}
+
+{% block content %}
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <div class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-warning h-94" style="background-image:url({% static 'vendors/images/business/business-bg.svg' %}); background-position:bottom; background-size:cover">
+    <div class="space-y-4 md:p-14 md:w-2/5">
+      <h1 class="text-2xl md:text-4xl font-semibold">Maximize Your Ride as a Team</h1>
+      <p class="text-base">
+        Control, manage and pay for your team's work rides from a single account with Drops Business. Cut your travel costs and avoid the hassle of expense reports, taking your business to the next level.
+      </p>
+      <div class="flex items-center space-x-3">
+        <button hx-get="{% url 'account_signup' %}" hx-push-url="{% url 'account_signup' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="py-3 px-4 bg-white rounded-xl hover:scale-105 hover:shadow-xl duration-300">
+          Get your business moving
+        </button>
+      </div>
+    </div>
+
+    <img src="{% static 'vendors/images/business/female-driver.jpg' %}" alt="driver" class="block h-full aspect-1 rounded-xl">
+  </div>
+</section>
+
+<section class="px-4 md:px-44 xl:px-64 py-14 w-screen space-y-14">
+  <div class="space-y-6 md:space-y-0 md:space-x-6 md:flex md:items-center md:justify-between w-full">
+    <img src="{% static 'vendors/images/business/image1.jpg' %}" alt="fast ride" class="block rounded-xl">
+    <div class="space-y-4 md:text-right">
+      <h3 class="text-2xl md:text-4xl font-medium">Don't just get your business moving. <br class="hidden md:flex"> With drops ride, get it moving fast</h3>
+      <p>Affordable, Convenient and Reliable rides for your business/team</p>
+    </div>
+  </div>
+
+  <div class="space-y-6 md:space-y-0 md:space-x-6 md:flex md:items-center md:justify-between w-full">
+    <img src="{% static 'vendors/images/business/image2.jpg' %}" alt="convenient ride" class="block rounded-xl md:order-2 w-full md:w-2/5 object-cover h-64 object-bottom md:object-center">
+    <div class="space-y-4 md:order-1 md:w-3/5">
+      <h3 class="text-2xl md:text-4xl font-medium">Save Time and Money</h3>
+      <p>A single Solution that gives you everything you need to manage your business travel for your employees, save your time and money</p>
+    </div>
+  </div>
+</section>
+
+<section class="w-screen py-14 px-4 md:px-44 xl:px-64 space-y-6 bg-gray-100">
+  <h3 class="text-2xl md:text-4xl font-semibold text-center">How to use Drops Business</h3>
+  <p class="text-center">Simply tell us what needs to be done.</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 md:gap-8 gap-4">
+    <div class="space-y-4">
+      <img src="{% static 'vendors/images/business/how-to-use1.jpg' %}" alt="event planning" loading="lazy" class="mx-auto hover:scale-105 hover:shadow-xl duration-300 hover:grayscale-0 grayscale rounded-xl aspect-1">
+      <strong class="block font-bold uppercase text-center">event planning</strong>
+    </div>
+    <div class="space-y-4">
+      <img src="{% static 'vendors/images/business/how-to-use2.jpg' %}" alt="airport travels" loading="lazy" class="mx-auto hover:scale-105 hover:shadow-xl duration-300 hover:grayscale-0 grayscale rounded-xl aspect-1">
+      <strong class="block font-bold uppercase text-center">airport travels</strong>
+    </div>
+    <div class="space-y-4">
+      <img src="{% static 'vendors/images/business/how-to-use3.jpg' %}" alt="hire a personal driver" loading="lazy" class="mx-auto hover:scale-105 hover:shadow-xl duration-300 hover:grayscale-0 grayscale rounded-xl aspect-1">
+      <strong class="block font-bold uppercase text-center">hire a personal driver</strong>
+    </div>
+  </div>
+</section>
+
+<section class="w-screen py-14 px-4 md:px-44 xl:px-64 grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="space-y-4 items-center flex flex-col justify-center order-2 md:order-1">
+    <h4 class="text-2xl md:text-4xl">Take the direct route</h4>
+    <p>Simplify your business trips in 3 steps</p>
+    <div class="flex items-center space-x-4">
+      <button class="rounded-xl bg-warning hover:scale-105 hover:shadow-xl duration-300 py-3 px-4">Start your journey</button>
+      <button hx-get="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="rounded-xl bg-gray-300 hover:scale-105 hover:shadow-xl duration-300 py-3 px-4">Get in touch</button>
+    </div>
+  </div>
+  <div class="space-y-4 order-1 md:order-2 flex flex-col justify-center">
+    <div class="md:w-3/5 space-y-6 bg-gray-100 rounded-xl shadow-md mx-auto p-6">
+      <div class="space-y-1">
+        <strong class="block text-xl md:text-2xl">01</strong>
+        <p class="block">Enter your business details and select your preferred payment method</p>
+      </div>
+      <div class="space-y-1">
+        <strong class="block text-xl md:text-2xl">02</strong>
+        <p class="block">Add team members and optionally set spend and usage limits. You can organise employees into groups with specific limits.</p>
+      </div>
+      <div class="space-y-1">
+        <strong class="block text-xl md:text-2xl">03</strong>
+        <p class="block">You’re ready to book fast, affordable business travel for your team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+{% block google_map %}
+{% endblock google_map %}

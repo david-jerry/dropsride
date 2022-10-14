@@ -1,0 +1,62 @@
+# General
+# ------------------------------------------------------------------------------
+
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+DJANGO_SETTINGS_MODULE=config.settings.local
+
+TINYMCE_KEY=shum1rw6f0vyum7x5yoq6onkn8nzjh0qlolq5q3v7zkcfo52
+
+GOOGLE_API_KEY=AIzaSyD0AkjRGpPXYa6DjYcxUIJK5srY_6UkBiI
+GOOGLE_CAPTCHA_SITE_KEY=6LfnDzoiAAAAAEnzkF10U74LFUKkv9df2tBAl1y0
+GOOGLE_CAPTCHA_SECRET_KEY=6LfnDzoiAAAAAFBegAgYuwqZf3Uga7fh9_JNoiKH
+
+GOOGLE_CLIENT_ID=708218104170-kg3b37ee3r42j65ahpul6a21uuf58jik.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+GOOGLE_CALLBACK_URL="http://localhost:8000/api/auth/callback/google"
+
+FACEBOOK_CLIENT_ID=180573810958072
+FACEBOOK_CLIENT_SECRET=210be2adc480949b86ccb5b311b87956
+FACEBOOK_CALLBACK_URL="http://localhost:8000/api/auth/callback/facebook"
+
+
+IPYTHONDIR=/app/.ipython
+DJANGO_SETTINGS_MODULE=config.settings.local
+
+CURRENCY_EXCHANGE='d2ee03b153msh7f9f91df901fa08p163f4ajsn694bb6dda556'
+CURRENCY_EXCHANGE_URL="https://currency-converter5.p.rapidapi.com/currency/convert"
+
+PAYSTACK_LIVE_SK='sk_live_9d54ae81a82b120ddba370e32b8794d1decec592'
+PAYSTACK_LIVE_PK='pk_live_b587f2d36ff211f79c172f4e12057820822fd911'
+
+PAYSTACK_TEST_SK='sk_test_cfdb7cb34fbba70f76e4b2c1f3a339c413426a7f'
+PAYSTACK_TEST_PK='pk_test_6ed5bd94be70f07c16050046dbfcee9aeae5b268'
+
+PAYSTACK_CALLBACK_TEST='http://localhost:8000/paystack/payment/callback-url/'
+PAYSTACK_CALLBACK_LIVE='https://darkcodr.codes/paystack/payment/callback-url/'
+
+VAPID_PK='BAPRXb6EFiEgd8OgwPClvF9CJMK_35Cb3CY3T0SUY8vl7JKsMftigjnTfZG-GISmy359qMv3rn5KotpIQYw1G1Y'
+VAPID_SK='ubtweHGQNtaH4rzXSAJnf0_kDjj-CuutMPWhurf1eSE'
+
+PUSH_PK=BAPRXb6EFiEgd8OgwPClvF9CJMK_35Cb3CY3T0SUY8vl7JKsMftigjnTfZG-GISmy359qMv3rn5KotpIQYw1G1Y
+PUSH_SK=ubtweHGQNtaH4rzXSAJnf0_kDjj-CuutMPWhurf1eSE
+
+
+
+# Facebook
+name='Facebook OAuth'
+client_id=180573810958072
+secret_key=210be2adc480949b86ccb5b311b87956
+redirect=https://dropsride.firebaseapp.com/__/auth/handler
+
+# Google
+name='Google OAuth'
+client_id=973026250294-duho8gn1vu43u0djnd0d7sj1s8jesq2r.apps.googleusercontent.com
+secret_key=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
+
+
+
+APP_SK=BMPbnHJSc1LGmZAOvRkPME2HSlbvPoD7VAeP2JiesyzyszmfULcS0zrCWY0yPCDUVbHSoDXehU1RA7PlHusFglM
+
+DJANGO_AWS_ACCESS_KEY_ID=AKIA2S4OEKLWTJC5CCON
+DJANGO_AWS_SECRET_ACCESS_KEY=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

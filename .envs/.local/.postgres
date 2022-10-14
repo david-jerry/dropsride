@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=dropsride
+POSTGRES_USER=IhBSmeuEANhldOSRwnsbOjGXUPAXyCyF
+POSTGRES_PASSWORD=arkvnaoNlPO4bp46Pszk0k4O2Z7H8JKYe8pAojP5KGbPfR9QfUSjicqFPUIhxjKk

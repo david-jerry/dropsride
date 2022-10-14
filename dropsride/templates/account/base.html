@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
+{% block description %} Our support is availble 24/7 {% endblock %}
+{% block keywords %} drops business, business trips, {{ block.super }} {% endblock %}
+{% block og_title %} {{ block.super }} Contact Us {% endblock %}
+{% block og_sitename %} {{ block.super }} {% endblock %}
+{% block og_description %} Our support is availble 24/7 {% endblock %}
+{% block og_favicon %} {{ block.super }} {% endblock %}
+{% block author %} {{ block.super }} {% endblock %}
+
+{% block nav %}{% endblock nav %}
+
+{% block content %}
+<section style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom right; background-size:fit; background-repeat:no-repeat" class="w-screen min-h-screen py-16 px-4 md:px-44 xl:px-64 flex flex-col justify-center">
+  <div class="w-full md:w-3/5 mx-auto py-8">
+    {% block inner %}{% endblock %}
+  </div>
+</section>
+{% endblock %}
+
+{% block footer %}{% endblock footer %}
+{% block google_map %}{% endblock google_map %}
+

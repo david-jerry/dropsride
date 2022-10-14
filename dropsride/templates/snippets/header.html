@@ -1,0 +1,47 @@
+{% load static i18n %}
+{% url 'home' as home %}
+{% url 'about' as about %}
+{% url 'business' as business %}
+{% url 'features' as features %}
+{% url 'cities' as cities %}
+{% url 'support' as support %}
+{% url 'account_login' as account %}
+{% url 'account_signup' as account %}
+{% url 'admins:dashboard' as dashboard %}
+{% url 'users:detail' user.username as profile %}
+
+
+
+
+<header hx-boost="true" x-data="{selected: {% if request.path == about or request.path == business or request.path == features %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 top-0 left-0 shadow-xl' : showNav, 'z-50 relative' : !showNav}" class="w-screen bg-white py-5 px-4 md:px-44 xl:px-64 flex items-center justify-between">
+  <img @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-dark.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
+
+  <nav class="space-x-4 items-center hidden md:flex">
+    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected=option1" href="{% url 'home' %}" :class="{'text-warning':selected === 'option1'}" class="hover:text-warning hover:font-bold duration-300 px-6">Home</a>
+    <button class="relative group px-6 h-14" :class="{'text-warning':selected === 'option2'}">Company
+      <div class="shadow-xl text-white group-hover:flex group-hover:flex-col group-hover:p-4 rounded-b-xl space-y-3 bg-black absolute z-50 top-14 w-44 flex-none -left-6 hidden">
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" href="{% url 'about' %}" class="hover:text-warning hover:font-bold duration-300 px-6">About</a>
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" href="{% url 'business' %}" class="hover:text-warning hover:font-bold duration-300 px-6">Business</a>
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" href="{% url 'features' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Features</a>
+      </div>
+    </button>
+    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option3'" href="{% url 'cities' %}" :class="{'text-warning':selected === 'option3'}" class="hover:text-warning hover:font-bold duration-300 px-6">Cities</a>
+    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option5'" href="{% url 'about' %}" :class="{'text-warning':selected === 'option5'}" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</a>
+    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option4'" href="{% url 'support' %}" :class="{'text-warning':selected === 'option4'}" class="hover:text-warning hover:font-bold duration-300 px-6">Support</a>
+  </nav>
+
+  <div class="flex items-center space-x-4 text-xs md:text-base">
+    {% if not request.user.is_authenticated %}
+    <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" href="{% url 'account_login' %}" class="bg-warning rounded-md py-2 px-5 text-black  font-medium hover:shadow-md duration-300 hover:scale-105">Login</a>
+    <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" href="{% url 'account_signup' %}" class="bg-black rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105">Signup</a>
+    {% else %}
+    {% if request.user.is_staff %}
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'admins:dashboard' %}" hx-target="body" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'admins:dashboard' %}" class="bg-warning rounded-md py-2 px-5 text-black  font-medium hover:shadow-md duration-300 hover:scale-105">Dashboard</button>
+    {% endif %}
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'users:detail' user.username %}" hx-target="body" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'users:detail' user.username %}" class="bg-black rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105">Profile</button>
+    <a href="{% url 'account_logout' %}" class="bg-danger rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105">Logout</a>
+    {% endif %}
+  </div>
+</header>
+
+<!-- @click.window="window.scrollTo({top: 0, behavior: 'smooth'})"  -->

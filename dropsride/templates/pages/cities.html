@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block description %} Available Cities we operate in. {% endblock %}
+{% block keywords %} drops business, business trips, drops cities, dropsride cities, dropsride locations {{ block.super }} {% endblock %}
+{% block og_title %} {{ block.super }} Drops Cities {% endblock %}
+{% block title %} {{ block.super }} Drops Cities {% endblock %}
+{% block og_sitename %} {{ block.super }} {% endblock %}
+{% block og_description %} Available Cities we operate in. {% endblock %}
+{% block og_favicon %} {{ block.super }} {% endblock %}
+{% block author %} {{ block.super }} {% endblock %}
+
+{% block nav %}{{ block.super }}{% endblock nav %}
+
+{% block content %}
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 text-white">
+  <div class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-warning h-96 md:h-[512px]" style="background-image:url({% static 'vendors/images/cities/cities-bg.png' %}); background-position:bottom; background-size:cover">
+    <div class="space-y-4 md:p-14 md:w-2/5">
+      <h1 class="text-2xl md:text-4xl font-semibold">We are operational in over {{states}} states</h1>
+      <p class="text-base">
+        As our bid to continue serving you better we have expanded our services to an overall of {{states}} states in Nigeria
+      </p>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+{% block google_map %}
+{% endblock google_map %}

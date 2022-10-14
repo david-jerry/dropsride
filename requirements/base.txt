@@ -1,0 +1,118 @@
+pytz==2022.2.1  # https://github.com/stub42/pytz
+python-slugify==6.1.2  # https://github.com/un33k/python-slugify
+Pillow==9.2.0  # https://github.com/python-pillow/Pillow
+argon2-cffi==21.3.0  # https://github.com/hynek/argon2_cffi
+whitenoise==6.2.0  # https://github.com/evansd/whitenoise
+redis==4.3.4  # https://github.com/redis/redis-py
+hiredis==2.0.0  # https://github.com/redis/hiredis-py
+uvicorn[standard]==0.18.3  # https://github.com/encode/uvicorn
+
+# Django
+# ------------------------------------------------------------------------------
+django==3.2.15  # pyup: < 4.0  # https://www.djangoproject.com/
+django-environ==0.9.0  # https://github.com/joke2k/django-environ
+django-model-utils==4.2.0  # https://github.com/jazzband/django-model-utils
+django-allauth==0.51.0  # https://github.com/pennersr/django-allauth
+django-crispy-forms==1.14.0  # https://github.com/django-crispy-forms/django-crispy-forms
+crispy-bootstrap5==0.6  # https://github.com/django-crispy-forms/crispy-bootstrap5
+django-redis==5.2.0  # https://github.com/jazzband/django-redis
+# Django REST Framework
+djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
+django-cors-headers==3.13.0 # https://github.com/adamchainz/django-cors-headers
+# DRF-spectacular for api documentation
+drf-spectacular==0.24.2  # https://github.com/tfranzel/drf-spectacular
+
+django-htmlmin==0.11.0 # https://django-tailwind.readthedocs.io/en/latest/installation.html
+
+# webpack file generator
+python-webpack-boilerplate==0.0.10
+
+# Time to read a content
+readtime==2.0.0 # https://pypi.org/project/readtime/
+django-taggit==3.0.0
+
+
+# custom shell for python/django
+django-shell-plus==1.1.7
+
+# Admin Security with honeypot
+django-admin-honeypot==1.1.0 # https://pypi.org/project/django-admin-honeypot/
+django-jet2==1.0.12
+django-tinymce==3.4.0
+# FeedParser==5.2.1
+feedparser==6.0.8
+google-api-python-client==1.4.1
+
+# image field with custom croping and
+django-stdimage==5.3.0 # http://johannes.maron.family/django-stdimage/
+
+# list of countries and few iso data
+django-countries-plus==2.0.0
+
+# Language packages for django
+django-parler==2.3
+django-rosetta==0.9.8
+
+# custom logger
+loguru==0.5.3
+
+# geocoder
+geocoder==1.38.1
+geopy==2.2.0
+ratelim==0.1.6
+
+# Location picker with maximindb
+django-ipware==4.0.2
+geoip2==4.5.0
+django-user-agents==0.4.0
+ua-parser==0.10.0
+user-agents==2.2.0
+
+# show map in django admin
+django-leaflet==0.28.2
+setuptools==59.1.1
+
+# schedule files to run under the hood with django-crontab
+django-crontab==0.7.1
+schedule==1.1.0
+gevent==21.12.0
+
+# integrate htmx with django requests
+django-htmx==1.9.0
+django-filter==22.1
+django-tables2==2.4.1
+
+# push notification settings
+py-vapid==1.8.2
+django-push-notifications==2.0.0
+pywebpush==1.9.4
+django-webpush==0.3.4
+
+# user notifications
+django-notifications-hq==1.7.0
+
+# color picker field
+django-colorfield==0.7.2
+
+# audio converters with pydub and mutagen
+pydub==0.25.1
+mutagen==1.45.1
+
+django-widget-tweaks==1.4.12
+django-emoji-picker==0.0.6
+
+django-upload-validator==1.1.6 # https://pypi.org/project/django-upload-validator/
+
+django-import-export==2.8.0
+
+# count number of views or hits
+django-hitcount==1.3.5  # https://dev.to/thepylot/how-to-track-number-of-hits-views-for-chosen-objects-in-django-django-packages-series-2-3bcb
+
+# add audio file
+django-audiofield==0.10.1  # https://pypi.org/project/django-audiofield/
+
+crispy-tailwind==0.5.0
+django-google-translate==1.1
+paystackapi==2.1.0  # https://github.com/andela-sjames/paystack-python
+# web3==5.31.0
+httpx==0.23.0

@@ -1,0 +1,64 @@
+{% url 'home' as home %}
+{% url 'about' as about %}
+{% url 'business' as business %}
+{% url 'features' as features %}
+{% url 'cities' as cities %}
+{% url 'support' as support %}
+{% url 'account_login' as login %}
+{% url 'account_signup' as signup %}
+{% url 'admins:dashboard' as dashboard %}
+{% url 'users:detail' user.username as profile %}
+
+<nav hx-boost="true" x-data="{open: false, selected: {% if request.path == about or request.path == business or request.path == features or request.path == cities %}'option2'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}}" x-on:click.outside="open = false" class="h-16 fixed z-50 left-0 bottom-0 w-screen flex items-center overflow-hidden bg-black text-white md:hidden justify-between px-4 py-4">
+  <a href="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{'text-warning':selected === 'option1' }" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Home</span>
+  </a>
+
+  <a x-on:click="open = !open" class="cursor-pointer group rounded-full duration-300 relative block" :class="{'text-warning':selected === 'option2' }">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Company</span>
+  </a>
+
+  <a href="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Dashboard</span>
+  </a>
+
+  <a href="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Blog</span>
+  </a>
+
+  <a href="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="body" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option4' }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M16.712 4.33a9.027 9.027 0 011.652 1.306c.51.51.944 1.064 1.306 1.652M16.712 4.33l-3.448 4.138m3.448-4.138a9.014 9.014 0 00-9.424 0M19.67 7.288l-4.138 3.448m4.138-3.448a9.014 9.014 0 010 9.424m-4.138-5.976a3.736 3.736 0 00-.88-1.388 3.737 3.737 0 00-1.388-.88m2.268 2.268a3.765 3.765 0 010 2.528m-2.268-4.796a3.765 3.765 0 00-2.528 0m4.796 4.796c-.181.506-.475.982-.88 1.388a3.736 3.736 0 01-1.388.88m2.268-2.268l4.138 3.448m0 0a9.027 9.027 0 01-1.306 1.652c-.51.51-1.064.944-1.652 1.306m0 0l-3.448-4.138m3.448 4.138a9.014 9.014 0 01-9.424 0m5.976-4.138a3.765 3.765 0 01-2.528 0m0 0a3.736 3.736 0 01-1.388-.88 3.737 3.737 0 01-.88-1.388m2.268 2.268L7.288 19.67m0 0a9.024 9.024 0 01-1.652-1.306 9.027 9.027 0 01-1.306-1.652m0 0l4.138-3.448M4.33 16.712a9.014 9.014 0 010-9.424m4.138 5.976a3.765 3.765 0 010-2.528m0 0c.181-.506.475-.982.88-1.388a3.736 3.736 0 011.388-.88m-2.268 2.268L4.33 7.288m6.406 1.18L7.288 4.33m0 0a9.024 9.024 0 00-1.652 1.306A9.025 9.025 0 004.33 7.288" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Support</span>
+  </a>
+
+  <div :class="{'bottom-16':open, '-bottom-44':!open}" x-transition.opacity class="w-screen fixed z-30 bg-warning text-black left-0 overflow-x-auto -bottom-44 scrollbar-hide p-4 rounded-t-xl space-x-5 flex-none flex items-center justify-between">
+    <a href="{% url 'about' %}" hx-push-url="{% url 'about' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
+      <span class="text-sm text-center flex duration-300 group-hover:text-white">About</span>
+    </a>
+    <a href="{% url 'business' %}" hx-push-url="{% url 'business' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
+      <span class="text-sm text-center flex duration-300 group-hover:text-white">Business</span>
+    </a>
+    <a href="{% url 'features' %}" hx-push-url="{% url 'features' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
+      <span class="text-sm text-center flex duration-300 group-hover:text-white">Features</span>
+    </a>
+    <a href="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
+      <span class="text-sm text-center flex duration-300 group-hover:text-white">Cities</span>
+    </a>
+  </div>
+
+</nav>
+
