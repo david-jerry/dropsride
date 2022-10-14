@@ -1,0 +1,14 @@
+{
+  "version": "0.0.10",
+  "name": "Dropsride",
+  "description": "Ride hailing app",
+  "icons": {
+    "60": "firefox_app_60x60.png",
+    "128": "firefox_app_128x128.png",
+    "512": "firefox_app_512x512.png"
+  },
+  "developer": {
+    "name": "Jeremiah David",
+    "url": "Darkcodr Codes"
+  }
+}
