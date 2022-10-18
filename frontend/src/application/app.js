@@ -148,6 +148,57 @@ const browser = detect();
         }
       });
   }
+
+  function saveDriverSubscribeObj(subscription) {
+    // save subscription to the server
+    const subscriptionJson = subscription.toJSON();
+    const endpointParts = subscriptionJson.endpoint.split("/");
+    const registrationId = endpointParts[endpointParts.length - 1];
+
+    const predata = {
+      status_type: "subscribe",
+      subscription: subscriptionJson,
+      browser: browser.name.toLowerCase(),
+      p256dh: subscriptionJson.keys.p256dh,
+      auth: subscriptionJson.keys.auth,
+      user_agent: navigator.getUserAgent,
+      registration_id: registrationId,
+      group: "drivers",
+    };
+
+    const data = JSON.stringify(predata);
+
+    axios
+      .post(CREATE_WP_DEVICE, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(function (response) {
+        if (process.env.NODE_ENV === "development") {
+          console.log(response);
+          iziToast.success({
+            title: "[PUSH NOTIFICATION SERVER]",
+            balloon: true,
+            position: "topRight",
+            animateInside: true,
+            message: `Notification Subscription ${response.statusText}`,
+          });
+        }
+      })
+      .catch(function (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          iziToast.error({
+            title: "[PUSH NOTIFICATION SERVER]",
+            balloon: true,
+            position: "topRight",
+            animateInside: true,
+            message: `Notification Subscription ${error.message}`,
+          });
+        }
+      });
+  }
   //----------------------------------------------------------
 
   // this function is to send subscription notification to the server
@@ -209,11 +260,158 @@ const browser = detect();
       }
     );
   }
+
+  function subscribeDriver(registration) {
+    registration.pushManager.getSubscription().then(function (subscription) {
+      if (subscription) {
+        console.log("subscription exists");
+        saveDriverSubscribeObj(subscription);
+        setupTriggerButton(subscription);
+        return;
+      }
+    });
+
+    const options = {
+      userVisibleOnly: true, // required by chrome
+      applicationServerKey: urlBase64ToUint8Array(APPLICATION_SERVER_KEY),
+    };
+
+    registration.pushManager.subscribe(options).then(
+      // requesting to subscribe from the server
+      function (subscription) {
+        if (process.env.NODE_ENV === "development") {
+          console.log(`subscription: `, subscription);
+          console.log(subscription.endpoint);
+        }
+
+        // subscription is now saved to the server
+        saveSubscribeObj(subscription);
+
+        // if subscription is successfully saved to the server
+        // then enable the test notification push button to be visible
+        setupTriggerButton(subscription);
+
+        iziToast.success({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `Subscription Sent Successfully`,
+        });
+      },
+
+      // if there is an error figure the error and throw an appropraite error message to
+      // the user so he knows exactly what is wrong and can move forward or adjust for a
+      // device.
+      function (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+        }
+
+        iziToast.error({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `${error}`,
+        });
+      }
+    );
+  }
+
+  function subscribeCompany(registration) {
+    registration.pushManager.getSubscription().then(function (subscription) {
+      if (subscription) {
+        console.log("subscription exists");
+        saveDriverSubscribeObj(subscription);
+        setupTriggerButton(subscription);
+        return;
+      }
+    });
+
+    const options = {
+      userVisibleOnly: true, // required by chrome
+      applicationServerKey: urlBase64ToUint8Array(APPLICATION_SERVER_KEY),
+    };
+
+    registration.pushManager.subscribe(options).then(
+      // requesting to subscribe from the server
+      function (subscription) {
+        if (process.env.NODE_ENV === "development") {
+          console.log(`subscription: `, subscription);
+          console.log(subscription.endpoint);
+        }
+
+        // subscription is now saved to the server
+        saveSubscribeObj(subscription);
+
+        // if subscription is successfully saved to the server
+        // then enable the test notification push button to be visible
+        setupTriggerButton(subscription);
+
+        iziToast.success({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `Subscription Sent Successfully`,
+        });
+      },
+
+      // if there is an error figure the error and throw an appropraite error message to
+      // the user so he knows exactly what is wrong and can move forward or adjust for a
+      // device.
+      function (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+        }
+
+        iziToast.error({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `${error}`,
+        });
+      }
+    );
+  }
   //----------------------------------------------------------
 
   // The function to trigger the push notification from the browser
   //----------------------------------------------------------
+  // subscribe(reg);
+  function setupSubscribeButton(reg) {
+    if (document.getElementById('subscribeNotificationButton')) {
+      const subscribeNotificationButton = document.getElementById('subscribeNotificationButton');
+      subscribeNotificationButton.classList.toggle('hidden', false);
+      subscribeNotificationButton.addEventListener('click', () => {
+        return subscribe(reg);
+      });
+    }
+  }
 
+  function setupDriverSubscribeButton(reg) {
+    if (document.getElementById('subscribeDriver')) {
+      const subscribeDriverButton = document.getElementById('subscribeDriver');
+      subscribeDriverButton.addEventListener('click', () => {
+        return subscribeDriver(reg);
+      });
+    }
+  }
+
+  function setupCompanySubscribeButton(reg) {
+    if (document.getElementById('subscribeCompany')) {
+      const subscribeCompanyButton = document.getElementById('subscribeCompany');
+      subscribeCompanyButton.addEventListener('click', () => {
+        return subscribeCompany(reg);
+      });
+    }
+  }
+
+  //----------------------------------------------------------
+  // This function is for a user to test the push notification
+  //----------------------------------------------------------
   function setupTriggerButton(subscription) {
     if (document.getElementById(
       "triggerNotificationButton"
@@ -265,6 +463,39 @@ const browser = detect();
     }
     return;
   }
+  //----------------------------------------------------------
+  // End push notification button
+  //----------------------------------------------------------
+
+ if (document.getElementById('shareUrl')) {
+  const shareButton = document.getElementById('shareUrl');
+  const url = shareButton.dataset.url;
+  const title = document.title;
+  shareButton.addEventListener('click', () => {
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: `Check out ${url.toUpperCase()}.`,
+        url: url,
+      })
+        .then(() => iziToast.success({
+          title: "[SHARE PAGE]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `Successfully share ${url}`,
+        }))
+        .catch((error) => iziToast.error({
+          title: "[SHARE PAGE ERROR]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: error,
+        }));
+      }
+  });
+ }
+
   //----------------------------------------------------------
 
   // enable service worker, then when service worker is enabled request
@@ -340,7 +571,9 @@ const browser = detect();
 
     reg.pushManager.getSubscription().then((sub) => {
       if (!sub) {
-        subscribe(reg);
+        setupSubscribeButton(reg);
+        setupDriverSubscribeButton(reg);
+        setupCompanySubscribeButton(reg);
       } else {
         setupTriggerButton(sub);
         iziToast.info({
