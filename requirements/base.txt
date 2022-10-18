@@ -84,7 +84,7 @@ django-tables2==2.4.1
 
 # push notification settings
 py-vapid==1.8.2
-django-push-notifications==2.0.0
+django-push-notifications==3.0.0
 pywebpush==1.9.4
 django-webpush==0.3.4
 
@@ -114,5 +114,10 @@ django-audiofield==0.10.1  # https://pypi.org/project/django-audiofield/
 crispy-tailwind==0.5.0
 django-google-translate==1.1
 paystackapi==2.1.0  # https://github.com/andela-sjames/paystack-python
+
 # web3==5.31.0
 httpx==0.23.0
+
+messente-api==1.4.1  # https://dashboard.messente.com/api-settings
+humanfriendly==10.0
+urllib3[secure]==1.26.12

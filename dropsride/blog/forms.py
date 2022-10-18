@@ -3,10 +3,19 @@ from django.forms import ModelForm
 
 from .models import News
 
+
 class NewsForm(ModelForm):
     class Meta:
         model = News
-        fields = ["image", "title", "summary", "keywords", "draft", "content", "audio", "tags"]
+        fields = [
+            "image",
+            "title",
+            "summary",
+            "keywords",
+            "draft",
+            "content",
+            "tags",
+        ]
 
     def clean_image(self):
         data = self.cleaned_data["image"]
@@ -25,7 +34,9 @@ class NewsForm(ModelForm):
         if data == "":
             raise forms.ValidationError("Summary is required for SEO.")
         elif len(data) < 50:
-            raise forms.ValidationError("News Summary must be at least 50 characters long.")
+            raise forms.ValidationError(
+                "News Summary must be at least 50 characters long."
+            )
         return data
 
     def clean_keywords(self):
@@ -33,7 +44,9 @@ class NewsForm(ModelForm):
         if data == "":
             raise forms.ValidationError("Keywords is required for SEO.")
         elif " , " not in data:
-            raise forms.ValidationError("This field must contain a comma. This is a list of keywords to be used for SEO.")
+            raise forms.ValidationError(
+                "This field must contain a comma. This is a list of keywords to be used for SEO."
+            )
         return data
 
     # def save(self, request):
@@ -50,5 +63,3 @@ class NewsForm(ModelForm):
     #     news.author = request.user
     #     news.save()
     #     return news
-
-

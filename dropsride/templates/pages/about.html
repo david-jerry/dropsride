@@ -13,8 +13,9 @@
 {% block nav %}{{ block.super }}{% endblock nav %}
 
 {% block content %}
-<section class="w-screen bg-warning px-4 md:px-44 xl:px-64 min-h-[40vh] flex flex-col justify-center" style="background-image:url({% static 'vendors/images/about/about-hero.svg' %}); background-position:bottom; background-repeat:no-repeat; background-size:cover">
+<section class="space-y-6 w-screen bg-warning px-4 md:px-44 xl:px-64 min-h-[40vh] flex flex-col justify-center" style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom; background-repeat:no-repeat; background-size:contain">
   <h1 class="text-6xl font-semibold text-center">About Us</h1>
+  <p class="text-center text-base md:text-xl md:w-3/5 mx-auto">Dropsride is an advanced logistic company providing affordable, convenient E-Ride hailing and sharing services for all</p>
 </section>
 
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14 space-y-8">
@@ -41,31 +42,33 @@
 </section>
 
 <section class="bg-black px-4 md:px-44 xl:px-64 py-14 space-y-14 text-white">
-  <h3 class="text-2xl md:text-4xl font-semibold text-center">
+  <!-- <h3 class="text-2xl md:text-4xl font-semibold text-center">
     Why Dropsride?
-  </h3>
-  <p class="text-center text-base md:w-3/5 mx-auto">The ride-hailing and micro-mobility industries are projected to experience a double-digit growth over the coming decades.</p>
+  </h3> -->
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-14">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-14">
     <div class="space-y-4 text-center">
       <img src="{% static 'vendors/images/about/growth.svg' %}" alt="growth and expansion icon" class="h-14 mx-auto">
-      <h4 class="text-3xl font-semibold">Nigeria's Fastest Growing Company</h4>
+      <h4 class="text-3xl font-semibold">Revolutionary Logistic Service</h4>
       <p>
-        Become a part of our global expansion
+        We are not only building a service for convenience, we are taking ride hailing a step further.
       </p>
     </div>
     <div class="space-y-4 text-center">
-      <img src="{% static 'vendors/images/about/shop.svg' %}" alt="quick setup" class="h-14 mx-auto">
-      <h4 class="text-3xl font-semibold">Quick Set-up and Market Launch</h4>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block mx-auto w-14 h-14">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+      </svg>
+
+      <h4 class="text-3xl font-semibold">Quick & Easy Set-up</h4>
       <p>
-        Receive support from leading experts, helping you swiftly launch operations
+        Get operational in minutes with our support team available always to help guide you every step of the way.
       </p>
     </div>
     <div class="space-y-4 text-center">
       <img src="{% static 'vendors/images/about/accessibility.svg' %}" alt="accessibility icon" class="h-14 mx-auto">
-      <h4 class="text-3xl font-semibold">Accessibility for Every One and Every Business Type</h4>
+      <h4 class="text-3xl font-semibold">Accessibility for All</h4>
       <p>
-        Our mission to improve urban transportation and logistics has only just begun!
+        We leave no man behind, be you visually impaired there is a support for all. We have you in mind.
       </p>
     </div>
   </div>
@@ -88,6 +91,17 @@
   <p class="block">
     Or <button class="py-2 px-4 font-black hover:font-semibold duration-300">Signup to Drive</button>
   </p>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 bg-gray-100 md:flex items-center md:justify-between">
+  <div class="space-y-4 md:w-2/5">
+    <h4 class="text-2xl md:text-4xl font-bold">Become a Revolutionary</h4>
+    <button class="py-3 px-4 bg-black text-white rounded-xl hover:shadow-xl hover:scale-105 duration-300">Seek a Career Role</button>
+  </div>
+
+  <div class="md:w-2/5 aspect-1">
+    <lottie-player autoplay loop mode="normal" src="{% static 'vendors/images/lottie/career.json' %}" style="width:100%"></lottie-player>
+  </div>
 </section>
 {% endblock content %}
 

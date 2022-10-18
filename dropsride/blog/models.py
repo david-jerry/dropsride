@@ -63,16 +63,12 @@ class News(TimeStampedModel):
 
     published_date = DateField(null=True, blank=True)
 
-    audio = FileField(upload_to="reads/audio", blank=True, null=True)
-
     author = ForeignKey(Admins, on_delete=DO_NOTHING, blank=True, null=True, default=None, related_name="news_author")
     publisher = 'Dropsride Publishers'
 
     slug = SlugField(_("Slug"), blank=True, max_length=500)
 
     draft = BooleanField(_("Draft/Published"), default=True)
-
-    likes = ManyToManyField(User, related_name="news_likes", default=None, blank=True)
 
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
 
@@ -128,6 +124,6 @@ class News(TimeStampedModel):
         """
         Returns the url to access a particular instance of blog post.
         """
-        return reverse("blog:detail", kwargs={"slug": self.slug})
+        return reverse("news:detail", kwargs={"slug": self.slug})
 
 

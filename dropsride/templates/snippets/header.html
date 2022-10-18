@@ -5,42 +5,81 @@
 {% url 'features' as features %}
 {% url 'cities' as cities %}
 {% url 'support' as support %}
-{% url 'account_login' as account %}
-{% url 'account_signup' as account %}
-{% url 'admins:dashboard' as dashboard %}
+{% url 'account_login' as login %}
+{% url 'account_signup' as passenger_signup %}
+{% url 'driver_signup' as driver_signup %}
+{% url 'comapny_signup' as company_signup %}
+{% url 'staff:dashboard' as dashboard %}
 {% url 'users:detail' user.username as profile %}
 
 
 
 
-<header hx-boost="true" x-data="{selected: {% if request.path == about or request.path == business or request.path == features %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 top-0 left-0 shadow-xl' : showNav, 'z-50 relative' : !showNav}" class="w-screen bg-white py-5 px-4 md:px-44 xl:px-64 flex items-center justify-between">
-  <img @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-dark.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
+<header x-data="{selected: {% if request.path == about or request.path == business or request.path == features %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}, open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 top-0 left-0 shadow-xl' : showNav, 'z-50 relative' : !showNav}" class="w-screen bg-white py-5 px-4 md:px-44 xl:px-64 flex items-center justify-between">
+  <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-dark.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
 
   <nav class="space-x-4 items-center hidden md:flex">
-    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected=option1" href="{% url 'home' %}" :class="{'text-warning':selected === 'option1'}" class="hover:text-warning hover:font-bold duration-300 px-6">Home</a>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-get="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" :class="{'text-warning':selected === 'option1'}" class="hover:text-warning hover:font-bold duration-300 px-6">Home</button>
     <button class="relative group px-6 h-14" :class="{'text-warning':selected === 'option2'}">Company
       <div class="shadow-xl text-white group-hover:flex group-hover:flex-col group-hover:p-4 rounded-b-xl space-y-3 bg-black absolute z-50 top-14 w-44 flex-none -left-6 hidden">
-        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" href="{% url 'about' %}" class="hover:text-warning hover:font-bold duration-300 px-6">About</a>
-        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" href="{% url 'business' %}" class="hover:text-warning hover:font-bold duration-300 px-6">Business</a>
-        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" href="{% url 'features' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Features</a>
+        <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="#main" hx-swap="outerHTML" hx-push-url="{% url 'about' %}" hx-get="{% url 'about' %}" class="hover:text-warning hover:font-bold duration-300 px-6">About</a>
+        <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="#main" hx-swap="outerHTML" hx-push-url="{% url 'business' %}" hx-get="{% url 'business' %}" class="hover:text-warning hover:font-bold duration-300 px-6">Business</a>
+        <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="#main" hx-swap="outerHTML" hx-push-url="{% url 'careers:list' %}" hx-get="{% url 'careers:list' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Careers</a>
+        <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="#main" hx-swap="outerHTML" hx-push-url="{% url 'features' %}" hx-get="{% url 'features' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Features</a>
       </div>
     </button>
-    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option3'" href="{% url 'cities' %}" :class="{'text-warning':selected === 'option3'}" class="hover:text-warning hover:font-bold duration-300 px-6">Cities</a>
-    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option5'" href="{% url 'about' %}" :class="{'text-warning':selected === 'option5'}" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</a>
-    <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option4'" href="{% url 'support' %}" :class="{'text-warning':selected === 'option4'}" class="hover:text-warning hover:font-bold duration-300 px-6">Support</a>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option3'" hx-get="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="#main" hx-swap="outerHTML" :class="{'text-warning':selected === 'option3'}" class="hover:text-warning hover:font-bold duration-300 px-6">Cities</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option5'" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML" :class="{'text-warning':selected === 'option5'}" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option4'" hx-get="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="#main" hx-swap="outerHTML" :class="{'text-warning':selected === 'option4'}" class="hover:text-warning hover:font-bold duration-300 px-6">Support</button>
   </nav>
 
-  <div class="flex items-center space-x-4 text-xs md:text-base">
+  <div hx-boost="true" class="flex items-center space-x-4 text-xs md:text-base">
     {% if not request.user.is_authenticated %}
-    <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" href="{% url 'account_login' %}" class="bg-warning rounded-md py-2 px-5 text-black  font-medium hover:shadow-md duration-300 hover:scale-105">Login</a>
-    <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" href="{% url 'account_signup' %}" class="bg-black rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105">Signup</a>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="#main" hx-swap="outerHTML" hx-get="{% url 'account_login' %}" hx-push-url="{% url 'account_login' %}" class="bg-warning hidden md:flex rounded-md py-2 px-5 text-black  font-medium hover:shadow-md duration-300 hover:scale-105 items-center space-x-3">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+      </svg>
+      <span class="hidden md:block">Login</span>
+    </button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="#main" hx-swap="outerHTML" hx-get="{% url 'account_signup' %}" hx-push-url="{% url 'account_signup' %}" class="bg-black hidden md:flex rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 items-center space-x-3">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+        <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
+      </svg>
+      <span class="hidden md:block">Be A Driver</span>
+    </button>
     {% else %}
     {% if request.user.is_staff %}
-    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'admins:dashboard' %}" hx-target="body" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'admins:dashboard' %}" class="bg-warning rounded-md py-2 px-5 text-black  font-medium hover:shadow-md duration-300 hover:scale-105">Dashboard</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'staff:dashboard' %}" hx-target="#main" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'staff:dashboard' %}" class="hidden bg-warning rounded-md py-2 px-5 text-black  font-medium hover:shadow-md duration-300 hover:scale-105 md:flex items-center space-x-3">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z" />
+      </svg>
+
+      <span class="hidden md:block">Dashboard</span>
+    </button>
     {% endif %}
-    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'users:detail' user.username %}" hx-target="body" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'users:detail' user.username %}" class="bg-black rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105">Profile</button>
-    <a href="{% url 'account_logout' %}" class="bg-danger rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105">Logout</a>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'users:detail' user.username %}" hx-target="#main" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'users:detail' user.username %}" class="bg-black rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 hidden md:flex items-center space-x-3">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+      </svg>
+
+      <span class="hidden md:block">Profile</span>
+    </button>
+
+    <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" href="{% url 'account_logout' %}" class="bg-danger rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 hidden md:flex md:space-x-3">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+      </svg>
+
+      <span class="hidden md:block">Logout</span>
+    </a>
     {% endif %}
+    <button title="support" @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected=null" hx-get="{% url 'support' %}" hx-target="#main" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'support' %}" class="bg-warning border-2 border-black md:hidden rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 items-center space-x-3">
+      <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+        <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+        <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+      </svg> -->
+      <img class="h-6" title="customer support" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAADJ0lEQVRoge3ZTahVVRQH8J+pQZKPPpwUhYFBb2IQReFADDERfBMTQaOaiIiDIB0VFpWJg3BYTRrZJJ4DnagE0SAh+tCKigr7ALFnqZnm08iP53sNtoe377nn3Hvuefve98D7hwWHe/57rf/aH2evvS999HFzY1ZCXw9iKZZhEHdFdgGjGMG3OIID+Cth/FqYg/U4iokObQwfYVXPVd/AU/ithcBO7HMs7qX4VzCeSHxml7G1F+J3JRaet93Srs0GbOiy+Mze6Ib4Bfi7Rwlcx1DqBN7qkfjMTuL2VOJvxfkeJzCBHakSeHIaxE/gl3bCbqmYwMqKvNSY345QNYElFXnHhAWYCodSOfpB++HeJ6yVQbyLMxXatLLDuDNVAq3EXMdrmkdzjlDcvYg9QrlwDKfwH67hHE7ga+zHp5Hfd1KJJxReReI/weMJ4yyPfH+V0G+D6It4XyjmUuPeKM6plI7jBOaldJzD7CjOWErHdRbhd0KPwgP4qYaPUWFtPDQV8TtqJpDSzuH+OuJXzwDxme2tk8DHkYODuDv3fmf0fnvBb0VWxNs+6bK03YUige124sei501COR3jYvT8KAZybV4QDicvteEVisthoAKnCadN9sB9Be8fETayoh67ZnLxVeUp4WTWMT6MGh8qSWJ3SbDXa/LKxP9TJ4GiMnoED+d4G4Uy4Qp+xLMl/qrwyhIYrpMAvKz5BuK9us4qoEj8WcWjXxkrhEuozOHxqWksRbwTZ1+eYVMUnyF/rBxM4TSHRZH/36s0qHqggasaDxjPd9C2Kp6Jno92wb+1JnvoT8yt0GYIX+Jf4WJ3bQnviRuczH8Zb0qYKxxAsiBb2vCHNC/I8UjcbGHavKpR/Gc6mx0dYVsU6LTWO+QRxV+VVvYHFnZJO8Jl00gUcE8L7mgbsXn7Qii9u441ucCbS3jtRmBMuIHbj3W6OG2KMJwTsrGAU7YG1vRIY0vM09jD43hb833mamFqXMI3Zoj4DPfge409fBJvCmXzHdMnrToGhA2ubJ7/KvwBOKMxC89p/DrFtm36pHWG2/A0PhCuI0fxs7BZ9dFHH13A/5rze8gHwTyRAAAAAElFTkSuQmCC">
+    </button>
   </div>
 </header>
 

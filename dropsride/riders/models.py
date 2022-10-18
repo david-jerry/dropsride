@@ -4,6 +4,7 @@ from django.db.models import (
     DO_NOTHING,
     BooleanField,
     CharField,
+    FloatField,
     DateField,
     DecimalField,
     URLField,
@@ -87,12 +88,15 @@ class RiderSavedAddress(TimeStampedModel):
 
     address_type = CharField(max_length=500, choices=ADDRESS_TYPE, default=HOME, unique=True)
 
-    address = CharField(max_length=500)
-    city = CharField(max_length=500)
-    state = CharField(max_length=500)
-    country = CharField(max_length=500)
-    latitude = CharField(max_length=500)
-    longitude = CharField(max_length=500)
+    address = CharField(max_length=500, blank=True, null=True)
+    city = CharField(max_length=500, blank=True, null=True)
+    post_code = CharField(max_length=500, blank=True, null=True)
+    state = CharField(max_length=500, blank=True, null=True)
+    country = CharField(max_length=500, blank=True, null=True)
+    latitude = CharField(max_length=500, blank=True, null=True)
+    longitude = CharField(max_length=500, blank=True, null=True)
+
+    captcha_score = FloatField(default=0.00)
 
     active = BooleanField(default=False)
 

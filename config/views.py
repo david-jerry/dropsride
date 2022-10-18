@@ -117,13 +117,12 @@ def send_notification(request):
 
 
         payload = {
-            'head': "Testing",
+            'head': "Welcome Onboard",
             'body': body,
             'icon': static('vendors/images/favicon/favicon.png'),
             # add url if there is a link to visit from the push notification
-            'url': request._current_scheme_host,
+            # 'url': f"{request._current_scheme_host}",
         }
-        # LOGGER.info(f"Payload: {payload}")
 
         if group is None or group == "" and request.user.is_authenticated:
             send_user_notification(user=request.user, payload=payload, ttl=1000)

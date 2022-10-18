@@ -31,5 +31,5 @@ def create_post_slug(instance, *args, **kwargs):
 def create_published_date(instance, created, *args, **kwargs):
     if instance.published_date is None and instance.draft is False:
         instance.published_date = datetime.now()
-        instance.save()
+        # instance.save()
         LOGGER.info(f"[NEWS PUBLISHED DATE] Created Published Date for {instance.title.title()}")

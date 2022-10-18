@@ -107,7 +107,7 @@ export default function ContactForm() {
                                 message: response.data.message
                             });
                             sleep(3500); //wait 1 sec and then htmx redirect get
-                            htmx.ajax('GET', redirect, {target:'body', swap:'outerHTML'});
+                            htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
                             // sleep(3500); //wait 1 sec and then htmx redirect get
                             // location.reload();
                         }
@@ -137,7 +137,7 @@ export default function ContactForm() {
                 });
                 sleep(2500); //wait 2.5 sec and then htmx redirect get
                 this.processing = false;
-                htmx.ajax('GET', redirect, {target:'body', swap:'outerHTML'});
+                htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
             }
 
         },

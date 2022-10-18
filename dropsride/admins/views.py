@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.sessions.models import Session
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import (
@@ -29,9 +30,11 @@ from dropsride.sitesettings.models import (
 User = get_user_model()
 
 # Create your views here.
-@login_required
+# @login_required
 def admin_dashboard(request):
-    context = {}
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('account_login')
+    context = {'title':'Admin Dashboard'}
     return render(request, "admins/dashboard.html", context)
 
 

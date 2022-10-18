@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 
 from dropsride.admins.views import (
     admin_dashboard,
@@ -19,9 +20,9 @@ from dropsride.admins.views import (
     add_new_admin
 )
 
-app_name = "admins"
+app_name = "staff"
 urlpatterns = [
-    path("", view=staff_member_required(admin_dashboard), name="dashboard"),
+    path("", view=admin_dashboard, name="dashboard"),
 
 
     path("users/", view=staff_member_required(all_users), name="all_users"),

@@ -4,8 +4,20 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_language_info_list for LANGUAGES as languages %}
+{% url 'home' as home %}
+{% url 'about' as about %}
+{% url 'business' as business %}
+{% url 'features' as features %}
+{% url 'cities' as cities %}
+{% url 'support' as support %}
+{% url 'account_login' as login %}
+{% url 'account_signup' as signup %}
+{% url 'staff:dashboard' as dashboard %}
+{% url 'careers:list' as careers %}
+{% url 'news:list' as news %}
+{% url 'users:detail' user.username as profile %}
 
-<html lang="{{ LANGUAGE_CODE }}" x-data="StickyNav">
+<html lang="{{ LANGUAGE_CODE }}" x-data="StickyNav" charset="utf-8">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -80,10 +92,14 @@
 
   </head>
 
-  <body hx-ext="debug, event-header" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' x-init="initState" @scroll.window="scrollNav">
+  <body hx-ext="debug, event-header" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' x-init="initState" @scroll.window="scrollNav" x-data="{}">
+    {% if not request.htmx %}
     {% block nav %}
     {% include "snippets/header.html" %}
     {% endblock nav %}
+    {% endif %}
+
+
 
 
     <main id="main" class="w-screen min-h-[calc(100vh_-_222px)] z-0">
@@ -95,18 +111,15 @@
 
     {% block modal %}{% endblock modal %}
 
-    <button :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-16 w-16 justify-center hidden items-center bg-black text-white hover:text-warning animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
+    {% if not request.htmx %}
+    <button title="smooth scroll to top" :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-black text-white hover:text-warning animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
       </svg>
     </button>
+    {% endif %}
 
-
-    <div class="flex flex-col space-y-3 text-xs font-raleway">
-      <button class="w-full hidden py-2 px-3 bg-warning text-black font-bold rounded-md" role="button" id="installButton">{% trans "Install Readville" %}</button>
-      <button class="hidden w-full py-2 px-3 bg-black text-white font-bold rounded-md" role="button" id="triggerNotificationButton">{% trans "Confirm Push Works" %}</button>
-    </div>
-
+    {% if not request.htmx %}
     {% block footer %}
     {% include "snippets/footer.html" %}
     {% endblock footer %}
@@ -154,6 +167,6 @@
     {% block javascript %}
     {% javascript_pack 'app' %}
     {% endblock javascript %}
-
+    {% endif %}
   </body>
 </html>

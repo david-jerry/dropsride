@@ -14,20 +14,20 @@
 
 {% block content %}
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14">
-  <div class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-gray-100 min-h-96 md:min-h-[512px]">
+  <div style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom; background-repeat:no-repeat; background-size:cover" class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-gray-200 min-h-96 md:min-h-[512px]">
     <div class="space-y-4 md:p-14 md:w-2/5">
       <h1 class="text-2xl md:text-4xl font-semibold">We are all about Convenience</h1>
       <p class="text-base">
         Our support line is always available to assist you where ever necessary
       </p>
     </div>
-    <img src="{% static 'vendors/images/support/convenient-rider.jpg' %}" alt="convenient rider" class="rounded-xl border-black border-4 h-full">
+    <img src="{% static 'vendors/images/support/convenient-rider.jpg' %}" alt="convenient rider" class="rounded-xl border-black border-4 h-full grayscale">
   </div>
 </section>
 
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-24">
-    <div class="border-warning border-8 overflow-hidden group duration-300 rounded-xl h-96 md:h-auto">
+    <div class="border-black border-8 overflow-hidden group duration-300 rounded-xl h-96 md:h-auto">
       <!-- <img src="{% static 'vendors/images/support/support.jpg' %}" alt="support person" class="object-cover group-hover:scale-125 scale-110 w-full duration-300"> -->
       <div class="w-full h-full" id="map"></div>
     </div>
@@ -110,7 +110,7 @@
         <span id="id_message_error" class="bg-red-200 text-red-600 hidden"></span> -->
       </div>
 
-      <button x-transition.duration.300ms class="block mt-4 w-full md:w-1/3 rounded-xl bg-warning py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submit">
+      <button x-transition.duration.300ms class="block mt-4 w-full md:w-1/3 rounded-xl bg-warning hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submit">
         <svg x-show="processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

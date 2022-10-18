@@ -12,7 +12,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from webpush.views import save_info
 
-from dropsride.users.views import account_login, account_singup as account_signup
+from dropsride.users.views import sms_verification_link, verify_phone_number, account_login, account_singup as account_signup, driver_singup as driver_signup, company_singup as company_signup
 from .views import offline_view, send_notification, service_worker, service_worker_map, support
 from config.sitemaps import StaticViewSitemap
 
@@ -47,14 +47,18 @@ urlpatterns = [
 
     # User management
     path("users/", include("dropsride.users.urls", namespace="users")),
-    path("dashboard/", include("dropsride.admins.urls", namespace="admins")),
+    path("admins/UcR9JPT074regleE15Xsb0gSZol4lDff/", include("dropsride.admins.urls", namespace="staff")),
     path("accounts/login/", account_login, name="account_login"),
-    path("accounts/signup/", account_signup, name="account_signup"),
+    path("accounts/rider/signup/", account_signup, name="account_signup"),
+    path("accounts/driver/signup/", driver_signup, name="driver_signup"),
+    path("accounts/company/signup/", company_signup, name="company_signup"),
+    path('accounts/verify-phone/<code>/<user>/', sms_verification_link, name="sms_verify"),
     path("accounts/", include("allauth.urls")),
 
     # Your stuff: custom urls includes go here
     path("coupons/", include("dropsride.promocodes.urls", namespace="coupons")),
     path("news/", include("dropsride.blog.urls", namespace="news")),
+    path("careers/", include("dropsride.careers.urls", namespace="careers")),
 
     # push notification links
     path("send-notification/", send_notification, name="send_notification"),

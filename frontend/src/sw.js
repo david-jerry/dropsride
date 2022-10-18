@@ -170,15 +170,26 @@ self.addEventListener('push', function (event) {
   try {
     // Push is a JSON
     const responseJson = event.data.json();
-    notificationTitle = responseJson.title;
-    notificationOptions = {
-      body: responseJson.body,
-      icon: LOGO_URL,
-      url: responseJson.url ? responseJson.url : self.location.origin
-    };
+    notificationTitle = responseJson.head.toUpperCase();
+    if (responseJson.url !== undefined) {
+      notificationOptions = {
+        body: responseJson.body,
+        icon: LOGO_URL,
+        data: {url:responseJson.url ? responseJson.url : window.location.origin},
+        actions: [{action: "open_url", title: "Open Link"}],
+        vibrate: [200, 100, 200, 100, 200, 100, 200],
+      };
+    } else {
+      notificationOptions = {
+        body: responseJson.body,
+        icon: LOGO_URL,
+        vibrate: [200, 100, 200, 100, 200, 100, 200],
+      };
+    }
   } catch (err) {
     // Push is a simple text (usually debugging)
     notificationOptions = {
+      icon: LOGO_URL,
       body: event.data.text(),
     };
   }
@@ -193,9 +204,11 @@ self.addEventListener('push', function (event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  event.waitUntil(
-    event.preventDefault(),
-    event.notification.close(),
-    self.clients.openWindow(event.notification.data.url)
-  );
+    if (event.notification.data !== null) {
+      event.waitUntil(
+        event.preventDefault(),
+        event.notification.close(),
+        self.clients.openWindow(event.notification.data.url)
+      );
+    }
 });

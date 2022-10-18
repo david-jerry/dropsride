@@ -182,6 +182,8 @@ LOCAL_APPS = [
     "dropsride.blog",
     "dropsride.promocodes",
     "dropsride.documents",
+    "dropsride.companies",
+    "dropsride.careers",
     "dropsride.drivers",
     "dropsride.riders",
     "dropsride.admins",
@@ -604,6 +606,8 @@ TAGGIT_CASE_INSENSITIVE = True
 
 
 # API REQUESTS
+MESSENTE_API_USERNAME = env('MESSENTE_USERNAME')
+MESSENTE_API_PASSWORD = env('MESSENTE_PASSWORD')
 API = env('CURRENCY_EXCHANGE')
 URL = env('CURRENCY_EXCHANGE_URL')
 FB_ID = env('FACEBOOK_CLIENT_ID')

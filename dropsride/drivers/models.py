@@ -11,10 +11,11 @@ from django.db.models import (
     URLField,
     TextField,
     ForeignKey,
+    FloatField,
     ManyToManyField,
     OneToOneField,
     GenericIPAddressField,
-    Sum
+    Sum,
 )
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -27,6 +28,7 @@ from model_utils.models import TimeStampedModel
 from countries_plus.models import Country
 
 from dropsride.users.models import User
+
 
 class Drivers(TimeStampedModel):
     """Drivers app where they will be rated and flagged based on the ratings they earn
@@ -41,7 +43,9 @@ class Drivers(TimeStampedModel):
     Returns:
         _type_: _description_
     """
-    user = OneToOneField(User,
+
+    user = OneToOneField(
+        User,
         on_delete=CASCADE,
         related_name="driver",
         verbose_name=_("Driver"),
@@ -49,8 +53,17 @@ class Drivers(TimeStampedModel):
     )
     is_blocked = BooleanField(default=False)
 
-    objects = DriversManager()
+    address = CharField(max_length=500, blank=True, null=True)
+    city = CharField(max_length=500, blank=True, null=True)
+    post_code = CharField(max_length=500, blank=True, null=True)
+    state = CharField(max_length=500, blank=True, null=True)
+    country = CharField(max_length=500, blank=True, null=True)
+    latitude = CharField(max_length=500, blank=True, null=True)
+    longitude = CharField(max_length=500, blank=True, null=True)
+    
+    captcha_score = FloatField(default=0.00)
 
+    objects = DriversManager()
 
     def get_drivers_documents(self):
         if self.document_set.approved_documents():
@@ -63,23 +76,25 @@ class Drivers(TimeStampedModel):
             return True
         return False
 
-
     def __str__(self):
         return self.user.username
-
 
     def get_absolute_url(self):
         return reverse("drivers:detail", kwargs={"id": self.id})
 
     def get_next(self):
-        next = self.__class__.objects.filter(is_blocked=False, approved=True, created__gt=self.created).order_by("user__id")
+        next = self.__class__.objects.filter(
+            is_blocked=False, approved=True, created__gt=self.created
+        ).order_by("user__id")
         try:
             return next[0]
         except IndexError:
             return None
 
     def get_prev(self):
-        prev = self.__class__.objects.filter(is_blocked=False, approved=True, created__lt=self.created).order_by("user__id")
+        prev = self.__class__.objects.filter(
+            is_blocked=False, approved=True, created__lt=self.created
+        ).order_by("user__id")
         try:
             return prev[0]
         except IndexError:
@@ -90,7 +105,6 @@ class Drivers(TimeStampedModel):
         verbose_name = "Driver"
         verbose_name_plural = "Drivers"
         ordering = ["-created"]
-
 
 
 class Subscription(TimeStampedModel):
@@ -104,10 +118,12 @@ class Subscription(TimeStampedModel):
         (MONTH, MONTH),
         (QUARTERYEAR, QUARTERYEAR),
         (HALFYEAR, HALFYEAR),
-        (YEAR, YEAR)
+        (YEAR, YEAR),
     )
 
-    driver = OneToOneField(Drivers, on_delete=CASCADE, related_name="subscription_driver")
+    driver = OneToOneField(
+        Drivers, on_delete=CASCADE, related_name="subscription_driver"
+    )
     plan = CharField(max_length=20, choices=PLANS, default=DAY)
     code = CharField(max_length=255)
     vehicle_type = ForeignKey(
@@ -115,7 +131,6 @@ class Subscription(TimeStampedModel):
     )
 
     active = BooleanField(default=False)
-
 
     @property
     def deactivated(self):
@@ -144,8 +159,3 @@ class Subscription(TimeStampedModel):
         verbose_name = "Driver Subscription"
         verbose_name_plural = "Drivers Subscriptions"
         ordering = ["-created", "active"]
-
-
-
-
-

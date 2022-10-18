@@ -31,8 +31,8 @@ def context_settings(request):
 
     return {
         "ACCOUNT_ALLOW_REGISTRATION": settings.ACCOUNT_ALLOW_REGISTRATION,
-        'drivers': Drivers.objects.verified().count(),
-        'riders': Riders.objects.counts(),
+        'drivers': User.objects.filter(is_driver = True).count(),
+        'riders': User.objects.filter(is_driver = False).count(),
         'states': Localization.objects.all().count(),
         # 'all_states': Localization.objects.all(),
         'year': dt.year,

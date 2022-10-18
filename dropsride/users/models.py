@@ -1,4 +1,5 @@
 from datetime import date
+from enum import unique
 
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
@@ -10,6 +11,7 @@ from django.db.models import (
     DateField,
     DecimalField,
     URLField,
+    FloatField,
     TextField,
     IntegerField,
     PositiveSmallIntegerField,
@@ -32,7 +34,6 @@ from countries_plus.models import Country
 from tinymce.models import HTMLField
 
 
-
 class User(AbstractUser):
     """
     Default custom user model for dropsride.
@@ -51,18 +52,29 @@ class User(AbstractUser):
 
 
     #: First and last name do not cover name patterns around the globe
+    company_name = CharField(_("Middle Name"), blank=True, max_length=255)
     middle_name = CharField(_("Middle Name"), blank=True, max_length=255)
     last_ip = GenericIPAddressField(blank=True, null=True)
     phone_number = CharField(max_length=15, blank=True, null=True)
     ref_link = CharField(_("Referral Link"), max_length=500, blank=True)
     gender = CharField(_("Gender"), blank=True, max_length=3, choices=GENDER, default=NONE)
     date_of_birth = DateField(_("Date of birth"), blank=True, null=True)
-    city = CharField(max_length=255, blank=True, null=True)
+
+    address = CharField(max_length=500, blank=True, null=True)
+    city = CharField(max_length=500, blank=True, null=True)
+    post_code = CharField(max_length=500, blank=True, null=True)
+    state = CharField(max_length=500, blank=True, null=True)
+    # country = CharField(max_length=500)
+    latitude = CharField(max_length=500, blank=True, null=True)
+    longitude = CharField(max_length=500, blank=True, null=True)
     country = ForeignKey(Country, on_delete=DO_NOTHING, verbose_name=_("Country"), blank=True, null=True)
+
     image = StdImageField(_("Display Photo"), upload_to="user/passport", blank=True, delete_orphans=True, variations={'thumbnail': {"width": 100, "height": 100, "crop": True}})
 
     is_driver = BooleanField(default=False)
+    is_company = BooleanField(default=False)
 
+    captcha_score = FloatField(default=0.00)
     gave_consent = BooleanField(_("Share my registration data with readville's content providers for marketing purposes. This confirms you are up to the legal age approved in your country."), default=False)
 
     def __str__(self):
@@ -82,6 +94,22 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"username": self.username})
+
+class VerifiedPhone(TimeStampedModel):
+    user = OneToOneField(User, on_delete=CASCADE, related_name="verified_phone")
+    code = CharField(max_length=4, blank=True, null=True, unique=True)
+    verified_code = CharField(max_length=4, blank=True, null=True)
+
+    verfied = BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        managed = True
+        verbose_name = "Verified Phone Number"
+        verbose_name_plural = "Verified Phone Numbers"
+        ordering = ["-created"]
 
 
 class UserSocialAccounts(TimeStampedModel):
@@ -115,7 +143,7 @@ class UserNextOfKin(TimeStampedModel):
         TimeStampedModel (_type_): _description_
     """
 
-    user = ForeignKey(User, related_name='next_of_kin', on_delete=CASCADE)
+    user = OneToOneField(User, related_name='next_of_kin', on_delete=CASCADE)
     name = CharField(max_length=500, help_text="ensure the name 'corresponds/is exactly' the same with their registered BVN")
     address = CharField(max_length=500)
     city = CharField(max_length=500)
@@ -149,13 +177,13 @@ class SavedCards(TimeStampedModel):
     card_exp_month = PositiveSmallIntegerField()
     card_exp_year = PositiveSmallIntegerField()
 
-    expired = BooleanField(default=False)
+    active = BooleanField(default=False)
+
+    # expired = BooleanField(default=False)
 
     @property
-    def exp(self):
-        if timezone.now().month > self.card_exp_month and timezone.now().year >= self.card_exp_year:
-            self.expired = True
-            self.save()
+    def expired(self):
+        if int(timezone.now().month) > self.card_exp_month and int(timezone.now().year) >= self.card_exp_year:
             return True
         return False
 

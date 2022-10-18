@@ -5,59 +5,165 @@
 {% url 'cities' as cities %}
 {% url 'support' as support %}
 {% url 'account_login' as login %}
-{% url 'account_signup' as signup %}
-{% url 'admins:dashboard' as dashboard %}
+{% url 'account_signup' as passenger_signup %}
+{% url 'driver_signup' as driver_signup %}
+{% url 'comapny_signup' as company_signup %}
+{% url 'staff:dashboard' as dashboard %}
+{% url 'careers:list' as careers %}
+{% url 'news:list' as news %}
 {% url 'users:detail' user.username as profile %}
 
-<nav hx-boost="true" x-data="{open: false, selected: {% if request.path == about or request.path == business or request.path == features or request.path == cities %}'option2'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}}" x-on:click.outside="open = false" class="h-16 fixed z-50 left-0 bottom-0 w-screen flex items-center overflow-hidden bg-black text-white md:hidden justify-between px-4 py-4">
-  <a href="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" :class="{'text-warning':selected === 'option1' }" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+<nav x-data="{selected: {% if request.path == about or request.path == business or request.path == features%}'option2'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == cities %}'option3'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}, open: false, is_dashboard: false, is_profile: false}" @click.outside="open = false, is_dashboard = false, is_profile = false" class="h-16 fixed z-50 left-0 bottom-0 w-screen flex items-center overflow-hidden bg-black text-white md:hidden justify-between px-4 py-4">
+  <button @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option1', is_profile = false, is_dashboard = false, open = false" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option1'}" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"  class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
     </svg>
     <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Home</span>
-  </a>
+  </button>
 
-  <a x-on:click="open = !open" class="cursor-pointer group rounded-full duration-300 relative block" :class="{'text-warning':selected === 'option2' }">
+  <div x-transition.duration.600ms @click="open = ! open, is_profile = false, is_dashboard = false" class="cursor-pointer group rounded-full duration-300 relative block" :class="{'text-warning':selected === 'option2', 'hidden':is_profile || is_dashboard, 'block':!is_profile || !is_dashboard }">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
     </svg>
     <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Company</span>
-  </a>
+  </div>
 
-  <a href="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300">
+  {% if request.user.is_staff %}
+  <button x-transition.duration.600ms @click="is_dashboard = ! is_dashboard; is_profile = false, open = false" type="button" :class="{'text-warning':selected === 'option5' }" class="group rounded-full duration-300">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
     </svg>
     <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Dashboard</span>
-  </a>
+  </button>
 
-  <a href="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300">
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option5', is_profile = false, is_dashboard = false, open = false" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option3', 'block':is_dashboard, 'hidden':!is_dashboard }" class="group rounded-full duration-300">
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+    </svg> -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor" class="h-6 mx-auto group-hover:text-warning duration-300">
+      <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+      <path d="M230.1 .8c-4-1.1-8.2-1.1-12.2 0l-152 40c-8.6 2.3-15.3 9.1-17.3 17.8s1 17.8 7.8 23.6L80 102.5v8.4c0 10.7 5.3 20.8 15.1 25.2c24.1 10.8 68.6 24 128.9 24s104.8-13.2 128.9-24c9.8-4.4 15.1-14.5 15.1-25.2v-8.4l23.6-20.2c6.8-5.8 9.8-14.9 7.8-23.6s-8.7-15.6-17.3-17.8l-152-40zM161.7 72.8c4-7.9 13.6-11.1 21.5-7.2L224 86.1l40.8-20.4c7.9-4 17.5-.7 21.5 7.2s.7 17.5-7.2 21.5l-48 24c-4.5 2.3-9.8 2.3-14.3 0l-48-24c-7.9-4-11.1-13.6-7.2-21.5zm-63.6 96C96.7 176.3 96 184.1 96 192c0 70.7 57.3 128 128 128s128-57.3 128-128c0-7.9-.7-15.7-2.1-23.2C310.8 183.8 268.4 192 224 192s-86.8-8.2-125.9-23.2zm89.5 206.3L208 416l-12.2 48.9L128.1 352.1C56.8 355.4 0 414.3 0 486.4C0 500.5 11.5 512 25.6 512H192v0h64v0H422.4c14.1 0 25.6-11.5 25.6-25.6c0-72.1-56.8-131-128.1-134.3L252.2 464.9 240 416l20.4-40.8c5.3-10.6-2.4-23.2-14.3-23.2H201.9c-11.9 0-19.6 12.5-14.3 23.2zM320 432c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H336c-8.8 0-16-7.2-16-16z"/>
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Drivers</span>
+  </button>
+
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option5', is_profile = false, is_dashboard = false, open = false" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option3', 'block':is_dashboard, 'hidden':!is_dashboard }" class="group rounded-full duration-300">
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+    </svg> -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="currentColor" class="h-6 mx-auto group-hover:text-warning duration-300">
+      <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+      <path d="M184 88c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zM64 245.7C54 256.9 48 271.8 48 288s6 31.1 16 42.3V245.7zm144.4-49.3C178.7 222.7 160 261.2 160 304c0 34.3 12 65.8 32 90.5V416c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V389.2C26.2 371.2 0 332.7 0 288c0-61.9 50.1-112 112-112h32c24 0 46.2 7.5 64.4 20.3zM448 416V394.5c20-24.7 32-56.2 32-90.5c0-42.8-18.7-81.3-48.4-107.7C449.8 183.5 472 176 496 176h32c61.9 0 112 50.1 112 112c0 44.7-26.2 83.2-64 101.2V416c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32zM568 88c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm8 157.7v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM320 160c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zM240 304c0 16.2 6 31 16 42.3V261.7c-10 11.3-16 26.1-16 42.3zm144-42.3v84.7c10-11.3 16-26.1 16-42.3s-6-31.1-16-42.3zM448 304c0 44.7-26.2 83.2-64 101.2V448c0 17.7-14.3 32-32 32H288c-17.7 0-32-14.3-32-32V405.2c-37.8-18-64-56.5-64-101.2c0-61.9 50.1-112 112-112h32c61.9 0 112 50.1 112 112z"/>
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Riders</span>
+  </button>
+
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option5', is_profile = false, is_dashboard = false, open = false" hx-get="{% if user.is_staff %}{% url 'staff:dashboard' %}{% else %}{% url 'account_login' %}{% endif %}" hx-push-url="{% if user.is_staff %}{% url 'staff:dashboard' %}{% else %}{% url 'account_login' %}{% endif %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option3', 'block':is_dashboard, 'hidden':!is_dashboard }" class="group rounded-full duration-300">
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+    </svg> -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto group-hover:text-warning duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Dashboard</span>
+  </button>
+  {% elif not request.user.is_authenticated and not request.user.is_staff %}
+  <button x-transition.duration.600ms @click="is_dashboard = ! is_dashboard, open = false" type="button" :class="{'text-warning':selected === 'option5' }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="currentColor" class="h-6 mx-auto group-hover:text-warning duration-300">
+      <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+      <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0S96 57.3 96 128s57.3 128 128 128zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c1.8 0 3.5-.2 5.3-.5c-76.3-55.1-99.8-141-103.1-200.2c-16.1-4.8-33.1-7.3-50.7-7.3H178.3zm308.8-78.3l-120 48C358 277.4 352 286.2 352 296c0 63.3 25.9 168.8 134.8 214.2c5.9 2.5 12.6 2.5 18.5 0C614.1 464.8 640 359.3 640 296c0-9.8-6-18.6-15.1-22.3l-120-48c-5.7-2.3-12.1-2.3-17.8 0zM591.4 312c-3.9 50.7-27.2 116.7-95.4 149.7V273.8L591.4 312z"/>
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Account</span>
+  </button>
+
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option5', is_profile = false, is_dashboard = false, open=false" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option3', 'block':is_dashboard, 'hidden':!is_dashboard }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto group-hover:text-warning duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Profile</span>
+  </button>
+
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option5', is_profile = false, is_dashboard = false, open=false" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option3', 'block':is_dashboard, 'hidden':!is_dashboard }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto group-hover:text-warning duration-300">
+      <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 01-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 016.126 3.537zM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 010 .75l-1.732 3.001c-.229.396-.76.498-1.067.16A5.231 5.231 0 016.75 12c0-1.362.519-2.603 1.37-3.536zM10.878 17.13c-.447-.097-.623-.608-.394-1.003l1.733-3.003a.75.75 0 01.65-.375h3.465c.457 0 .81.408.672.843a5.252 5.252 0 01-6.126 3.538z" />
+      <path fill-rule="evenodd" d="M21 12.75a.75.75 0 000-1.5h-.783a8.22 8.22 0 00-.237-1.357l.734-.267a.75.75 0 10-.513-1.41l-.735.268a8.24 8.24 0 00-.689-1.191l.6-.504a.75.75 0 10-.964-1.149l-.6.504a8.3 8.3 0 00-1.054-.885l.391-.678a.75.75 0 10-1.299-.75l-.39.677a8.188 8.188 0 00-1.295-.471l.136-.77a.75.75 0 00-1.477-.26l-.136.77a8.364 8.364 0 00-1.377 0l-.136-.77a.75.75 0 10-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 00-1.3.75l.392.678a8.29 8.29 0 00-1.054.885l-.6-.504a.75.75 0 00-.965 1.149l.6.503a8.243 8.243 0 00-.689 1.192L3.8 8.217a.75.75 0 10-.513 1.41l.735.267a8.222 8.222 0 00-.238 1.355h-.783a.75.75 0 000 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 10.513 1.41l.735-.268c.197.417.428.816.69 1.192l-.6.504a.75.75 0 10.963 1.149l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 101.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.771a.75.75 0 101.477.26l.137-.772a8.376 8.376 0 001.376 0l.136.773a.75.75 0 101.477-.26l-.136-.772a8.19 8.19 0 001.294-.47l.391.677a.75.75 0 101.3-.75l-.393-.679a8.282 8.282 0 001.054-.885l.601.504a.75.75 0 10.964-1.15l-.6-.503a8.24 8.24 0 00.69-1.191l.735.268a.75.75 0 10.512-1.41l-.734-.268c.115-.438.195-.892.237-1.356h.784zm-2.657-3.06a6.744 6.744 0 00-1.19-2.053 6.784 6.784 0 00-1.82-1.51A6.704 6.704 0 0012 5.25a6.801 6.801 0 00-1.225.111 6.7 6.7 0 00-2.15.792 6.784 6.784 0 00-2.952 3.489.758.758 0 01-.036.099A6.74 6.74 0 005.251 12a6.739 6.739 0 003.355 5.835l.01.006.01.005a6.706 6.706 0 002.203.802c.007 0 .014.002.021.004a6.792 6.792 0 002.301 0l.022-.004a6.707 6.707 0 002.228-.816 6.781 6.781 0 001.762-1.483l.009-.01.009-.012a6.744 6.744 0 001.18-2.064c.253-.708.39-1.47.39-2.264a6.74 6.74 0 00-.408-2.308z" clip-rule="evenodd" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Settings</span>
+  </button>
+  {% endif %}
+
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option3', is_profile = false, is_dashboard = false, open = false" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option3', 'hidden': is_profile || is_dashboard, 'block':!is_profile || !is_dashboard }" class="group rounded-full duration-300">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
     </svg>
     <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Blog</span>
-  </a>
+  </button>
 
-  <a href="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="body" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option4' }" class="group rounded-full duration-300">
+  {% if not request.user.is_staff %}
+  {% if request.user.is_authenticated %}
+  <a x-transition.duration.600ms href="{% url 'account_logout' %}" @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option1'" class="group rounded-full duration-300 block bg-red-300 hover:bg-red-700">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M16.712 4.33a9.027 9.027 0 011.652 1.306c.51.51.944 1.064 1.306 1.652M16.712 4.33l-3.448 4.138m3.448-4.138a9.014 9.014 0 00-9.424 0M19.67 7.288l-4.138 3.448m4.138-3.448a9.014 9.014 0 010 9.424m-4.138-5.976a3.736 3.736 0 00-.88-1.388 3.737 3.737 0 00-1.388-.88m2.268 2.268a3.765 3.765 0 010 2.528m-2.268-4.796a3.765 3.765 0 00-2.528 0m4.796 4.796c-.181.506-.475.982-.88 1.388a3.736 3.736 0 01-1.388.88m2.268-2.268l4.138 3.448m0 0a9.027 9.027 0 01-1.306 1.652c-.51.51-1.064.944-1.652 1.306m0 0l-3.448-4.138m3.448 4.138a9.014 9.014 0 01-9.424 0m5.976-4.138a3.765 3.765 0 01-2.528 0m0 0a3.736 3.736 0 01-1.388-.88 3.737 3.737 0 01-.88-1.388m2.268 2.268L7.288 19.67m0 0a9.024 9.024 0 01-1.652-1.306 9.027 9.027 0 01-1.306-1.652m0 0l4.138-3.448M4.33 16.712a9.014 9.014 0 010-9.424m4.138 5.976a3.765 3.765 0 010-2.528m0 0c.181-.506.475-.982.88-1.388a3.736 3.736 0 011.388-.88m-2.268 2.268L4.33 7.288m6.406 1.18L7.288 4.33m0 0a9.024 9.024 0 00-1.652 1.306A9.025 9.025 0 004.33 7.288" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
     </svg>
-    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Support</span>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-white">Logout</span>
   </a>
+  {% else %}
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}), is_profile = false, is_dashboard = false, open = false" hx-get="{% url 'account_login' %}" hx-push-url="{% url 'account_login' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'option6' }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:text-warning group-hover:mx-auto duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Login</span>
+  </button>
+  {% endif %}
+  {% else %}
+  <button @click="is_profile = ! is_profile; is_dashboard = false, open = false" type="button" :class="{'text-warning':selected === 'option6' }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" fill="currentColor" class="h-6 mx-auto group-hover:text-warning duration-300">
+      <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+      <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0S96 57.3 96 128s57.3 128 128 128zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c1.8 0 3.5-.2 5.3-.5c-76.3-55.1-99.8-141-103.1-200.2c-16.1-4.8-33.1-7.3-50.7-7.3H178.3zm308.8-78.3l-120 48C358 277.4 352 286.2 352 296c0 63.3 25.9 168.8 134.8 214.2c5.9 2.5 12.6 2.5 18.5 0C614.1 464.8 640 359.3 640 296c0-9.8-6-18.6-15.1-22.3l-120-48c-5.7-2.3-12.1-2.3-17.8 0zM591.4 312c-3.9 50.7-27.2 116.7-95.4 149.7V273.8L591.4 312z"/>
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Account</span>
+  </button>
 
-  <div :class="{'bottom-16':open, '-bottom-44':!open}" x-transition.opacity class="w-screen fixed z-30 bg-warning text-black left-0 overflow-x-auto -bottom-44 scrollbar-hide p-4 rounded-t-xl space-x-5 flex-none flex items-center justify-between">
-    <a href="{% url 'about' %}" hx-push-url="{% url 'about' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
-      <span class="text-sm text-center flex duration-300 group-hover:text-white">About</span>
-    </a>
-    <a href="{% url 'business' %}" hx-push-url="{% url 'business' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
-      <span class="text-sm text-center flex duration-300 group-hover:text-white">Business</span>
-    </a>
-    <a href="{% url 'features' %}" hx-push-url="{% url 'features' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
-      <span class="text-sm text-center flex duration-300 group-hover:text-white">Features</span>
-    </a>
-    <a href="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="group rounded-full duration-300 flex-none">
-      <span class="text-sm text-center flex duration-300 group-hover:text-white">Cities</span>
-    </a>
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option6', is_profile = false, is_dashboard = false, open = false" hx-get="{% url 'users:detail' user.username %}" hx-push-url="{% url 'users:detail' user.username %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'profile', 'block':is_profile, 'hidden':!is_profile }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto group-hover:text-warning duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Profile</span>
+  </button>
+
+  <button x-transition.duration.600ms @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option6', is_profile = false, is_dashboard = false, open = false" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML show:window:top" :class="{'text-warning':selected === 'settings', 'block':is_profile, 'hidden':!is_profile }" class="group rounded-full duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto group-hover:text-warning duration-300">
+      <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 01-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 016.126 3.537zM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 010 .75l-1.732 3.001c-.229.396-.76.498-1.067.16A5.231 5.231 0 016.75 12c0-1.362.519-2.603 1.37-3.536zM10.878 17.13c-.447-.097-.623-.608-.394-1.003l1.733-3.003a.75.75 0 01.65-.375h3.465c.457 0 .81.408.672.843a5.252 5.252 0 01-6.126 3.538z" />
+      <path fill-rule="evenodd" d="M21 12.75a.75.75 0 000-1.5h-.783a8.22 8.22 0 00-.237-1.357l.734-.267a.75.75 0 10-.513-1.41l-.735.268a8.24 8.24 0 00-.689-1.191l.6-.504a.75.75 0 10-.964-1.149l-.6.504a8.3 8.3 0 00-1.054-.885l.391-.678a.75.75 0 10-1.299-.75l-.39.677a8.188 8.188 0 00-1.295-.471l.136-.77a.75.75 0 00-1.477-.26l-.136.77a8.364 8.364 0 00-1.377 0l-.136-.77a.75.75 0 10-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 00-1.3.75l.392.678a8.29 8.29 0 00-1.054.885l-.6-.504a.75.75 0 00-.965 1.149l.6.503a8.243 8.243 0 00-.689 1.192L3.8 8.217a.75.75 0 10-.513 1.41l.735.267a8.222 8.222 0 00-.238 1.355h-.783a.75.75 0 000 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 10.513 1.41l.735-.268c.197.417.428.816.69 1.192l-.6.504a.75.75 0 10.963 1.149l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 101.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.771a.75.75 0 101.477.26l.137-.772a8.376 8.376 0 001.376 0l.136.773a.75.75 0 101.477-.26l-.136-.772a8.19 8.19 0 001.294-.47l.391.677a.75.75 0 101.3-.75l-.393-.679a8.282 8.282 0 001.054-.885l.601.504a.75.75 0 10.964-1.15l-.6-.503a8.24 8.24 0 00.69-1.191l.735.268a.75.75 0 10.512-1.41l-.734-.268c.115-.438.195-.892.237-1.356h.784zm-2.657-3.06a6.744 6.744 0 00-1.19-2.053 6.784 6.784 0 00-1.82-1.51A6.704 6.704 0 0012 5.25a6.801 6.801 0 00-1.225.111 6.7 6.7 0 00-2.15.792 6.784 6.784 0 00-2.952 3.489.758.758 0 01-.036.099A6.74 6.74 0 005.251 12a6.739 6.739 0 003.355 5.835l.01.006.01.005a6.706 6.706 0 002.203.802c.007 0 .014.002.021.004a6.792 6.792 0 002.301 0l.022-.004a6.707 6.707 0 002.228-.816 6.781 6.781 0 001.762-1.483l.009-.01.009-.012a6.744 6.744 0 001.18-2.064c.253-.708.39-1.47.39-2.264a6.74 6.74 0 00-.408-2.308z" clip-rule="evenodd" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-warning">Settings</span>
+  </button>
+
+  <a x-transition.duration.600ms href="{% url 'account_logout' %}" @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected='option6', is_profile = false, is_dashboard = false, open = false" :class="{'text-danger':selected === 'logout', 'block':is_profile, 'hidden':!is_profile }" class="group rounded-full duration-300 block">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto group-hover:text-danger duration-300">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+    </svg>
+    <span class="text-xs text-center group-hover:flex hidden duration-300 group-hover:text-danger">Logout</span>
+  </a>
+  {% endif %}
+
+  <div :class="{'bottom-[4.2rem]':open, '-bottom-full':!open}" x-transition.duration.600ms class="w-screen -bottom-full fixed z-30 bg-warning text-black left-0 overflow-hidden border-2 border-black rounded-t-xl grid grid-cols-3 gap-0.5 shadow-inner shadow-black p-1">
+    <div @click="window.scrollTo({top: 0, behavior: 'smooth'}), is_profile = false, is_dashboard = false, open = ! open, selected='option2'" hx-get="{% url 'about' %}" hx-push-url="{% url 'about' %}" hx-target="#main" hx-swap="outerHTML show:window:top" class="group hover:text-hover text-white bg-black duration-300 flex-none flex flex-col items-center justify-center cursor-pointer aspect-1 p-1 rounded-tl-xl">
+      <span class="text-sm text-center duration-300 group-hover:text-white block">About</span>
+    </div>
+    <div @click="window.scrollTo({top: 0, behavior: 'smooth'}), is_profile = false, is_dashboard = false, open = ! open, selected='option2'" hx-get="{% url 'business' %}" hx-push-url="{% url 'business' %}" hx-target="#main" hx-swap="outerHTML show:window:top" class="group hover:text-hover text-white bg-black duration-300 flex-none flex flex-col items-center justify-center cursor-pointer aspect-1 p-1">
+      <span class="text-sm text-center duration-300 group-hover:text-white block">Business</span>
+    </div>
+    <div @click="window.scrollTo({top: 0, behavior: 'smooth'}), is_profile = false, is_dashboard = false, open = ! open, selected='option2'" hx-get="{% url 'features' %}" hx-push-url="{% url 'features' %}" hx-target="#main" hx-swap="outerHTML show:window:top" class="group hover:text-hover text-white bg-black duration-300 flex-none flex flex-col items-center justify-center cursor-pointer aspect-1 p-1 rounded-tr-xl">
+      <span class="text-sm text-center duration-300 group-hover:text-white block">Features</span>
+    </div>
+    <div @click="window.scrollTo({top: 0, behavior: 'smooth'}), is_profile = false, is_dashboard = false, open = ! open, selected='option2'" hx-get="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="#main" hx-swap="outerHTML show:window:top" class="group hover:text-hover text-white bg-black duration-300 flex-none flex flex-col items-center justify-center cursor-pointer aspect-1 p-1">
+      <span class="text-sm text-center duration-300 group-hover:text-white block">Cities</span>
+    </div>
+    <div @click="window.scrollTo({top: 0, behavior: 'smooth'}), is_profile = false, is_dashboard = false, open = ! open, selected='option2'" hx-get="{% url 'careers:list' %}" hx-push-url="{% url 'careers:list' %}" hx-target="#main" hx-swap="outerHTML show:window:top" class="group hover:text-hover text-white bg-black duration-300 flex-none flex flex-col items-center justify-center cursor-pointer aspect-1 p-1">
+      <span class="text-sm text-center duration-300 group-hover:text-white block">Careers</span>
+    </div>
+    <div class="bg-black aspect-1"></div>
   </div>
 
 </nav>

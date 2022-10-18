@@ -3,7 +3,7 @@
 <footer hx-boost="true" style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom right; background-size:fit; background-repeat:no-repeat" class="w-screen px-4 md:px-44 xl:px-64 py-8 bg-black text-white mb-16 md:mb-0">
   <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-24">
     <div class="space-y-4">
-      <img src="{% static 'vendors/images/logo-yellow.png' %}" class="h-8 md:h-14" alt="alternate logo">
+      <img hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" src="{% static 'vendors/images/logo-yellow.png' %}" class="h-8 md:h-14" alt="alternate logo">
       <div class="flex items-center space-x-4">
         <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
           <img src="{% static 'vendors/images/icons/instagram.svg' %}" alt="instagram" class="h-6">
@@ -39,36 +39,43 @@
     </div>
 
     <div class="space-y-4">
-      <h4 class="font-semibold text-xl">Quick Links</h4>
-      <hr>
-      <div class="space-y-6">
-        <a href="{% url 'home' %}" class="hover:pl-4 duration-300 font-semibold block">Home</a>
-        <a href="{% url 'about' %}" class="hover:pl-4 duration-300 font-semibold block">About</a>
-        <a href="{% url 'cities' %}" class="hover:pl-4 duration-300 font-semibold block">Cities</a>
-        <a href="{% url 'features' %}" class="hover:pl-4 duration-300 font-semibold block">Features</a>
+      <h4 class="font-semibold text-base md:text-xl text-warning">Quick Links</h4>
+      <hr class="text-warning">
+      <div class="space-y-6 text-xs md:text-sm">
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Home</a>
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'about' %}" hx-push-url="{% url 'about' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">About</a>
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Cities</a>
+        <a  @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Blog</a>
       </div>
     </div>
-    <div class="space-y-4">
-      <h4 class="font-semibold text-xl">Company Links</h4>
-      <hr>
+    <div class="space-y-4 text-xs md:text-sm">
+      <h4 class="font-semibold text-base md:text-xl text-warning">Company Links</h4>
+      <hr class="text-warning">
       <div class="space-y-6">
-        <a href="{% url 'business' %}" class="hover:pl-4 duration-300 font-semibold block">Business</a>
-        <a href="{% url 'home' %}" class="hover:pl-4 duration-300 font-semibold block">Blog</a>
-        <a href="{% url 'home' %}" class="hover:pl-4 duration-300 font-semibold block">Privacy Policy</a>
-        <a href="{% url 'home' %}" class="hover:pl-4 duration-300 font-semibold block">Terms and Condition</a>
+        <a  @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'business' %}" hx-push-url="{% url 'business' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Business</a>
+        <a  @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'careers:list' %}" hx-push-url="{% url 'careers:list' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Features</a>
+        <a  @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Privacy Policy</a>
+        <a  @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Terms and Condition</a>
       </div>
     </div>
-    <div class="space-y-4">
-      <h4 class="font-semibold text-xl">Developers</h4>
-      <hr>
+    <div class="space-y-4 text-xs md:text-sm">
+      <h4 class="font-semibold text-base md:text-xl text-warning">Developers</h4>
+      <hr class="text-warning">
       <div class="space-y-6">
-        <a href="{% url 'home' %}" class="hover:pl-4 duration-300 font-semibold block">Rest API</a>
-        <a href="{% url 'account_signup' %}" class="hover:pl-4 duration-300 font-semibold block">Signup As Driver</a>
-        <a href="{% url 'support' %}" class="hover:pl-4 duration-300 font-semibold block">Support</a>
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Rest API</a>
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Support</a>
         {% if request.user.is_staff %}
-        <a href="{% url 'admins:dashboard' %}" class="hover:pl-4 duration-300 font-semibold block">Dashboard</a>
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'staff:dashboard' %}" hx-push-url="{% url 'staff:dashboard' %}" hx-target="#main" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Dashboard</a>
         {% endif %}
+
+        <button hx-preserver="true" class="hidden w-full py-2 px-3 bg-warning text-black font-bold rounded-md" role="button" id="installButton">{% trans "Install" %}</button>
+        <button hx-preserver="true" class="hidden w-full py-3 px-3 bg-black text-white font-bold rounded-md" role="button" id="triggerNotificationButton">{% trans "Test Push" %}</button>
       </div>
     </div>
+  </div>
+  <div class="w-full overflow-hidden pt-8 pb-3 flex items-start md:space-x-5 justify-between md:justify-start text-xs md:text-sm">
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'account_signup' %}" hx-push-url="{% url 'account_signup' %}" hx-target="#main" hx-swap="outerHTML" class="hover:text-warning hoveR:font-black duration-300 font-semibold block ">Be A Passenger</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'driver_signup' %}" hx-push-url="{% url 'driver_signup' %}" hx-target="#main" hx-swap="outerHTML" class="hover:text-warning hoveR:font-black duration-300 font-semibold block ">Be A Driver</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'company_signup' %}" hx-push-url="{% url 'company_signup' %}" hx-target="#main" hx-swap="outerHTML" class="hover:text-warning hoveR:font-black duration-300 font-semibold block ">Create Business Account</button>
   </div>
 </footer>

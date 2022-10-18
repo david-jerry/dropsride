@@ -1,4 +1,6 @@
+from datetime import timedelta
 from allauth.socialaccount.signals import pre_social_login, social_account_added
+from dropsride.companies.models import Company
 
 import geocoder
 
@@ -9,21 +11,61 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives
+from django.urls import reverse
+from django.templatetags.static import static
+from django.utils.safestring import mark_safe
 
 from dropsride.admins.models import Admins
 from dropsride.drivers.models import Drivers
 from dropsride.riders.models import Riders
-from dropsride.users.models import UserSocialAccounts
+from dropsride.users.models import UserNextOfKin, UserSocialAccounts, VerifiedPhone
 from dropsride.utils.logger import LOGGER
+from dropsride.utils.unique_generators import random_code_generator
 
 from paystackapi.customer import Customer
 
-from django.urls import reverse
-from django.templatetags.static import static
 from webpush import send_user_notification, send_group_notification
-
+from messente_api import OmnimessageApi, SMS, Omnimessage, Configuration, ApiClient
+from messente_api.rest import ApiException
 
 User = get_user_model()
+
+
+@receiver(post_save, sender=VerifiedPhone)
+def create_random_code(instance, created, **kwargs):
+    if not instance.code and not instance.user.is_superuser and instance.created:
+        instance.code = random_code_generator(instance)
+        configuration = Configuration()
+        configuration.username = settings.MESSENTE_API_USERNAME
+        configuration.password = settings.MESSENTE_API_PASSWORD
+        domain = "https://www.dropsride.com" if settings.PRODUCTION else "localhost:8000"
+        link = reverse("sms_verify", kwargs={"code":instance.code, "user":instance.user})
+
+        api_instance = OmnimessageApi(ApiClient(configuration))
+
+        sms = SMS(sender="Drops Technology Limited", text=f"please find attached your verification code: {instance.code}\n\nYou can also verify by clicking the link below\n\n{domain}{link}")
+
+        omnimessage = Omnimessage(messages=tuple([sms]), to=instance.user.phone_number)
+
+        try:
+            response = api_instance.send_omnimessage(omnimessage)
+            payload = {
+                'head': "VERIFICATION CODE SENT",
+                'body': f"please find attached your verification code: {instance.code}\n\nYou can also verify by clicking the link below\n\n{domain}{link}",
+                'icon': static('vendors/images/favicon/favicon.png'),
+                # add url if there is a link to visit from the push notification
+                'url': f"{domain}{link}",
+            }
+            send_user_notification(user=instance.user, payload=payload, ttl=1000)
+
+            LOGGER.info(
+                "[PHONE VERIFICATION SUCCESS] Successfully sent Omnimessage with id: %s that consists of the following messages:"
+                % response.omnimessage_id
+            )
+            for message in response.messages:
+                LOGGER.info(message)
+        except ApiException as exception:
+            LOGGER.error("[PHONE VERIFICATION ERROR] Exception when sending an omnimessage: %s\n" % exception)
 
 
 @receiver(post_save, sender=User)
@@ -34,22 +76,31 @@ def create_user_relationship_signal(instance, created, **kwargs):
         instance.ref_link = res.customer_code
         LOGGER.info(f"[NEW USER] Created New Referral/Customer Link for {instance.username}")
 
-    if instance.is_driver and instance.is_active and not instance.is_superuser:
+    if instance.is_driver and not instance.is_superuser:
         Drivers.objects.create(user=instance)
-        LOGGER.info(f"[NEW USER] Created New Driver Account Relationships for {instance.username}")
+        LOGGER.info(f"[NEW DRIVER] Created New Driver Account Relationships for {instance.username}")
 
-    if instance.is_staff and instance.is_active and not instance.is_superuser:
+    if instance.is_company and not instance.is_superuser:
+        Company.objects.create(user=instance)
+        LOGGER.info(f"[NEW BUSINESS ACCOUNT] Created New Company Account Relationships for {instance.username}")
+
+    if instance.is_staff and not instance.is_superuser:
         Admins.objects.create(user=instance)
-        LOGGER.info(f"[NEW USER] Created New Administrator Account Relationships for {instance.username}")
-
+        LOGGER.info(f"[NEW STAFF] Created New Administrator Account Relationships for {instance.username}")
 
     if created:
         if instance.is_superuser:
             instance.is_driver = True
+            instance.is_company = True
+            instance.gave_consent = True
         UserSocialAccounts.objects.create(user=instance)
+        VerifiedPhone.objects.create(user=instance)
+        UserNextOfKin.objects.create(user=instance)
         LOGGER.info(f"[NEW USER] Created New Social Account Relationships for {instance.username}")
+
+    if not instance.is_driver and not instance.is_superuser:
         Riders.objects.create(user=instance)
-        LOGGER.info(f"[NEW USER] Created New Rider Account Relationships for {instance.username}")
+        LOGGER.info(f"[NEW RIDER] Created New Rider Account Relationships for {instance.username}")
 
 
 @receiver(user_logged_in)
@@ -81,7 +132,7 @@ def user_logged_in_callback(sender, request, user, **kwargs):
         <br>
         """
         msg = EmailMultiAlternatives("New IP Login", message, "security@dropsride.com", [request.user.email])
-        msg.attach_alternative(html_message, "text/html")
+        msg.attach_alternative(mark_safe(html_message), "text/html")
         msg.content_subtype = "html"
         msg.send()
         LOGGER.info(f"New Ip {user.last_ip} Updated for {user.username.title()} account")

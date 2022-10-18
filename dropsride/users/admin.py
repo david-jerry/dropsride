@@ -7,13 +7,33 @@ from django.contrib.admin import ModelAdmin
 
 from dropsride.users.forms import UserAdminChangeForm, UserAdminCreationForm
 
+from .models import (
+    VerifiedPhone,
+    UserSocialAccounts,
+    UserNextOfKin,
+    SavedCards,
+    BankAccount,
+)
+
+
 User = get_user_model()
+
+
+
+admin.site.register(VerifiedPhone)
+admin.site.register(UserSocialAccounts)
+admin.site.register(UserNextOfKin)
+admin.site.register(SavedCards)
+admin.site.register(BankAccount)
 
 # Register your models here.
 class SessionAdmin(ModelAdmin):
     def _session_data(self, obj):
         return obj.get_decoded()
-    list_display = ['session_key', '_session_data', 'expire_date']
+
+    list_display = ["session_key", "_session_data", "expire_date"]
+
+
 admin.site.register(Session, SessionAdmin)
 
 
@@ -24,7 +44,20 @@ class UserAdmin(auth_admin.UserAdmin):
     add_form = UserAdminCreationForm
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "middle_name", "last_name", "email", "last_ip", "phone_number", "date_of_birth")}),
+        (
+            _("Personal info"),
+            {
+                "fields": (
+                    "first_name",
+                    "middle_name",
+                    "last_name",
+                    "email",
+                    "last_ip",
+                    "phone_number",
+                    "date_of_birth",
+                )
+            },
+        ),
         (_("Location info"), {"fields": ("city", "country")}),
         (
             _("Permissions"),
@@ -41,5 +74,15 @@ class UserAdmin(auth_admin.UserAdmin):
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
-    list_display = ["username", "first_name", "middle_name", "last_name",  "email", "phone_number", "is_driver", "is_staff", "is_superuser"]
+    list_display = [
+        "username",
+        "first_name",
+        "middle_name",
+        "last_name",
+        "email",
+        "phone_number",
+        "is_driver",
+        "is_staff",
+        "is_superuser",
+    ]
     search_fields = ["username"]

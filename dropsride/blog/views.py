@@ -3,7 +3,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, RedirectView, UpdateView, ListView
+from django.views import View
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic import DetailView, DeleteView, RedirectView, UpdateView, ListView, FormView
+from django.http import JsonResponse
+
+from config.mixins import StaffRequiredMixin
 
 from .models import News
 from .forms import NewsForm
@@ -22,17 +27,82 @@ class NewsListView(ListView):
     allow_empty = True
     queryset = News.objects.published()
 
-news_list_view = NewsListView.as_view()
+list_view = NewsListView.as_view()
 
-class TagPostsDetailView(DetailView, LoginRequiredMixin):
-    template_name = 'blog/tag.html'
-    model = Tag
+class NewsDetailView(DetailView):
+    template_name = 'blog/detail.html'
+    model = News
     slug_field = "slug"
     slug_url_kwarg = "slug"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['news'] = News.objects.filter(tags__name__in=self.object.name)
-        return context
 
-tagged_post = TagPostsDetailView.as_view()
+detail_view = NewsDetailView.as_view()
+
+
+class NewsCreateView(FormView, StaffRequiredMixin):
+    model = News
+    template_name = "blog/create.html"
+    form_class = NewsForm
+
+    def post(self, request, *args, **kwargs):
+
+        if "__field_name__" in request.POST:
+            return self.validate_field(request)
+
+        form = NewsForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.author = request.user
+            form.save()
+            return JsonResponse(status=201, data={"message":"You have successfully created a new Career Opening", "title":"New Career Opening"})
+        else:
+            return JsonResponse(status=400, data={"message":"Invalid form details", "title":"Form Validation Error"})
+
+
+    def validate_field(self, request):
+        field_name = request.POST.get("__field_name__")
+        form = NewsForm(request.POST, request.FILES)
+        form.is_valid()
+        return JsonResponse(status=203, data={
+            "errors": form.errors.get(field_name, []),
+        })
+
+create_view = NewsCreateView.as_view()
+
+class NewsUpdateView(UpdateView, StaffRequiredMixin):
+    model = News
+    template_name = "blog/update.html"
+    form_class = NewsForm
+
+    def post(self, request, *args, **kwargs):
+
+        if "__field_name__" in request.POST:
+            return self.validate_field(request)
+
+        form = NewsForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse(status=201, data={"message":"You have successfully created a new Career Opening", "title":"New Career Opening"})
+        else:
+            return JsonResponse(status=400, data={"message":"Invalid form details", "title":"Form Validation Error"})
+
+
+    def validate_field(self, request):
+        field_name = request.POST.get("__field_name__")
+        form = NewsForm(request.POST, request.FILES)
+        form.is_valid()
+        return JsonResponse(status=203, data={
+            "errors": form.errors.get(field_name, []),
+        })
+
+update_view = NewsUpdateView.as_view()
+
+
+class BlogDeleteView(DeleteView, StaffRequiredMixin):
+    model = News
+    template_name = 'blog/delete.html'
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    success_url = 'news:list'
+
+delete_view = BlogDeleteView.as_view()
