@@ -1,7 +1,7 @@
 {
-  "app.css": "/static/css/app.css",
-  "app.js": "/static/js/app.js",
-  "app2.js": "/static/js/app2.js",
+  "app.css": "/static/css/app.1585f143977bc7648123.css",
+  "app.js": "/static/js/app.f19c1737.js",
+  "app2.js": "/static/js/app2.0412df8f.js",
   "assets/android-chrome-144x144.png": "/static/assets/android-chrome-144x144.png",
   "assets/android-chrome-192x192.png": "/static/assets/android-chrome-192x192.png",
   "assets/android-chrome-256x256.png": "/static/assets/android-chrome-256x256.png",
@@ -41,34 +41,41 @@
   "assets/mstile-70x70.png": "/static/assets/mstile-70x70.png",
   "assets/yandex-browser-50x50.png": "/static/assets/yandex-browser-50x50.png",
   "assets/yandex-browser-manifest.json": "/static/assets/yandex-browser-manifest.json",
-  "css/vendors-node_modules_lottiefiles_lottie-player_dist_lottie-player_esm_js-node_modules_alpinej-ab0a7b.css": "/static/css/vendors-node_modules_lottiefiles_lottie-player_dist_lottie-player_esm_js-node_modules_alpinej-ab0a7b.css",
+  "css/266.085301f083b891b3412a.css": "/static/css/266.085301f083b891b3412a.css",
+  "css/266.085301f083b891b3412a.css.map": "/static/css/266.085301f083b891b3412a.css.map",
+  "css/app.1585f143977bc7648123.css.map": "/static/css/app.1585f143977bc7648123.css.map",
   "entrypoints": {
     "app": {
       "assets": {
         "js": [
-          "/static/js/runtime.js",
-          "/static/js/vendors-node_modules_lottiefiles_lottie-player_dist_lottie-player_esm_js-node_modules_alpinej-ab0a7b.js",
-          "/static/js/app.js"
+          "/static/js/runtime.b7968b3e.js",
+          "/static/js/266.23ba56de.js",
+          "/static/js/app.f19c1737.js"
         ],
         "css": [
-          "/static/css/vendors-node_modules_lottiefiles_lottie-player_dist_lottie-player_esm_js-node_modules_alpinej-ab0a7b.css",
-          "/static/css/app.css"
+          "/static/css/266.085301f083b891b3412a.css",
+          "/static/css/app.1585f143977bc7648123.css"
         ]
       }
     },
     "app2": {
       "assets": {
         "js": [
-          "/static/js/runtime.js",
-          "/static/js/app2.js"
+          "/static/js/runtime.b7968b3e.js",
+          "/static/js/app2.0412df8f.js"
         ]
       }
     }
   },
   "index.html": "/static/index.html",
-  "js/vendors-node_modules_lottiefiles_lottie-player_dist_lottie-player_esm_js-node_modules_alpinej-ab0a7b.js": "/static/js/vendors-node_modules_lottiefiles_lottie-player_dist_lottie-player_esm_js-node_modules_alpinej-ab0a7b.js",
-  "runtime.js": "/static/js/runtime.js",
+  "js/266.23ba56de.js": "/static/js/266.23ba56de.js",
+  "js/266.23ba56de.js.LICENSE.txt": "/static/js/266.23ba56de.js.LICENSE.txt",
+  "js/266.23ba56de.js.map": "/static/js/266.23ba56de.js.map",
+  "js/app.f19c1737.js.map": "/static/js/app.f19c1737.js.map",
+  "js/runtime.b7968b3e.js.map": "/static/js/runtime.b7968b3e.js.map",
+  "runtime.js": "/static/js/runtime.b7968b3e.js",
   "sw.js": "/static/sw.js",
+  "sw.js.map": "/static/sw.js.map",
   "vendors/.gitkeep": "/static/vendors/.gitkeep",
   "vendors/images/.gitkeep": "/static/vendors/images/.gitkeep",
   "vendors/images/about/about-hero.svg": "/static/vendors/images/about/about-hero.svg",
