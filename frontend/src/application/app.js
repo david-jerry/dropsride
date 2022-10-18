@@ -475,7 +475,7 @@ const browser = detect();
     if (navigator.share) {
       navigator.share({
         title: title,
-        text: `Check out ${url.toUpperCase()}.`,
+        text: `Check out ${title.toUpperCase()}.`,
         url: url,
       })
         .then(() => iziToast.success({
