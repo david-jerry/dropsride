@@ -1,6 +1,6 @@
 {
-  "app.css": "/static/css/app.1585f143977bc7648123.css",
-  "app.js": "/static/js/app.f19c1737.js",
+  "app.css": "/static/css/app.55ca39adaf4d079d4f18.css",
+  "app.js": "/static/js/app.60ea7b50.js",
   "app2.js": "/static/js/app2.0412df8f.js",
   "assets/android-chrome-144x144.png": "/static/assets/android-chrome-144x144.png",
   "assets/android-chrome-192x192.png": "/static/assets/android-chrome-192x192.png",
@@ -43,18 +43,18 @@
   "assets/yandex-browser-manifest.json": "/static/assets/yandex-browser-manifest.json",
   "css/266.085301f083b891b3412a.css": "/static/css/266.085301f083b891b3412a.css",
   "css/266.085301f083b891b3412a.css.map": "/static/css/266.085301f083b891b3412a.css.map",
-  "css/app.1585f143977bc7648123.css.map": "/static/css/app.1585f143977bc7648123.css.map",
+  "css/app.55ca39adaf4d079d4f18.css.map": "/static/css/app.55ca39adaf4d079d4f18.css.map",
   "entrypoints": {
     "app": {
       "assets": {
         "js": [
           "/static/js/runtime.b7968b3e.js",
           "/static/js/266.23ba56de.js",
-          "/static/js/app.f19c1737.js"
+          "/static/js/app.60ea7b50.js"
         ],
         "css": [
           "/static/css/266.085301f083b891b3412a.css",
-          "/static/css/app.1585f143977bc7648123.css"
+          "/static/css/app.55ca39adaf4d079d4f18.css"
         ]
       }
     },
@@ -71,13 +71,11 @@
   "js/266.23ba56de.js": "/static/js/266.23ba56de.js",
   "js/266.23ba56de.js.LICENSE.txt": "/static/js/266.23ba56de.js.LICENSE.txt",
   "js/266.23ba56de.js.map": "/static/js/266.23ba56de.js.map",
-  "js/app.f19c1737.js.map": "/static/js/app.f19c1737.js.map",
+  "js/app.60ea7b50.js.map": "/static/js/app.60ea7b50.js.map",
   "js/runtime.b7968b3e.js.map": "/static/js/runtime.b7968b3e.js.map",
   "runtime.js": "/static/js/runtime.b7968b3e.js",
   "sw.js": "/static/sw.js",
   "sw.js.map": "/static/sw.js.map",
-  "vendors/.gitkeep": "/static/vendors/.gitkeep",
-  "vendors/images/.gitkeep": "/static/vendors/images/.gitkeep",
   "vendors/images/about/about-hero.svg": "/static/vendors/images/about/about-hero.svg",
   "vendors/images/about/accessibility.svg": "/static/vendors/images/about/accessibility.svg",
   "vendors/images/about/growth.svg": "/static/vendors/images/about/growth.svg",

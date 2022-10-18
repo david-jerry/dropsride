@@ -1199,7 +1199,6 @@ select {
 }.scrollbar-thin.overflow-x-hidden {
   overflow-x: hidden;
 }body {
-  height: 100vh;
   min-height: 100vh;
   width: 100vw;
   overflow-y: auto;
@@ -1654,4 +1653,4 @@ select {
   }
 }
 
-/*# sourceMappingURL=app.1585f143977bc7648123.css.map*/
+/*# sourceMappingURL=app.55ca39adaf4d079d4f18.css.map*/
