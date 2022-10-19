@@ -144,14 +144,18 @@ INSTALLED_APPS += ["anymail"]  # noqa F405
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
 # https://anymail.readthedocs.io/en/stable/esps
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 ANYMAIL = {}
-# if ses not available, use mailgun
-EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default='mail@gmail.com')# sendgrid
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="password.")
-EMAIL_PORT = env("EMAIL_HOST_PORT", default="465")
-EMAIL_USE_SSL = True
+if SES:
+    EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    # if ses not available, use mailgun
+    EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER", default='mail@gmail.com')# sendgrid
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="password.")
+    EMAIL_PORT = env("EMAIL_HOST_PORT", default="465")
+    EMAIL_USE_SSL = True
 
 
 # LOGGING

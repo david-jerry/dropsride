@@ -66,7 +66,7 @@ class SupportCreateView(FormView):
 
     def send_mail(self, valid_data):
         LOGGER.info(valid_data['name'])
-        send_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", message=f"Mobile Line: {valid_data['phone']}\n\nMessage: {valid_data['message']}", from_email=valid_data['email'], recipient_list=['support@dropsride.com'], fail_silently=False)
+        send_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", message=f"Mobile Line: {valid_data['phone']}\nEmail Address: {valid_data['email']}\n\n\nMessage: {valid_data['message']}", from_email="DROPSRIDE SUPPORT <noreply@dropsride.com>", recipient_list=['support@dropsride.com'], fail_silently=False)
         pass
 
 support = SupportCreateView.as_view()
