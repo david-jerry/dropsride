@@ -155,7 +155,8 @@ else:
     EMAIL_HOST_USER = env("EMAIL_HOST_USER", default='mail@gmail.com')# sendgrid
     EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="password.")
     EMAIL_PORT = env("EMAIL_HOST_PORT", default="465")
-    EMAIL_USE_SSL = True
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
 
 
 # LOGGING
