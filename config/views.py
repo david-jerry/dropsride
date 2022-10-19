@@ -16,6 +16,8 @@ from django.urls import reverse
 from django.templatetags.static import static
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, FormView
+from django.utils.safestring import mark_safe
+
 from config.forms import ContactForm
 
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -65,8 +67,17 @@ class SupportCreateView(FormView):
         })
 
     def send_mail(self, valid_data):
-        LOGGER.info(valid_data['name'])
-        send_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", message=f"Mobile Line: {valid_data['phone']}\nEmail Address: {valid_data['email']}\n\n\nMessage: {valid_data['message']}", from_email="DROPSRIDE SUPPORT <noreply@dropsride.com>", recipient_list=['support@dropsride.com'], fail_silently=False)
+        msg = f"""
+        Dear Support,
+        <br>
+        <br>
+        <strong>{valid_data['name'].title()}</strong> with <strong>Phone: {valid_data['phone']}</strong> | <strong>Phone: {valid_data['email']}</strong> just sent you a message.
+        <br>
+        <br>
+        <strong>Message: {valid_data['message']}
+        <br>
+        """
+        send_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", message=mark_safe(msg), from_email="DROPSRIDE SUPPORT <noreply@dropsride.com>", recipient_list=['support@dropsride.com'], fail_silently=False)
         pass
 
 support = SupportCreateView.as_view()
