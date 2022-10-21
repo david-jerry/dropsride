@@ -55,7 +55,7 @@ class SupportCreateView(FormView):
             # name = form.cleaned_data['name']
             self.send_mail(valid_data=form.cleaned_data)
             # send_mail(subject=f"{name} | {phone}", message=form.cleaned_data['message'], from_email=form.cleaned_data['email'], recipient_list=['support@dropsride.com'], fail_silently=False)
-            return JsonResponse(status=201, data={"message":"Support Mail Successfully Sent"})
+            return JsonResponse(status=201, data={"message":"Support Mail Successfully Sent", "title":"Support Mail"})
         # return render(request, 'pages/contact.html', context=context)
         return super().post(request, *args, **kwargs)
 
@@ -72,10 +72,10 @@ class SupportCreateView(FormView):
         Dear Support,
         <br>
         <br>
-        <strong>{valid_data['name'].title()}</strong> with <strong>Phone: {valid_data['phone']}</strong> | <strong>Phone: {valid_data['email']}</strong> just sent you a message.
+        <strong>Mail From: </strong> {valid_data['name'].title()}<br><strong>Phone: </strong>{valid_data['phone']} <br><strong>Email: </strong>{valid_data['email']}
         <br>
         <br>
-        <strong>Message: {valid_data['message']}
+        <strong> {valid_data['message']}</strong>
         <br>
         """
         send_html_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", html_content=msg, from_email="DROPSRIDE SUPPORT <noreply@dropsride.com>", recipient_list=['support@dropsride.com'])
