@@ -107,7 +107,7 @@ earn more while taking up rides {% endblock %}
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14 bg-gray-100 md:flex items-center md:justify-between">
   <div class="space-y-4 md:w-2/5">
     <h4 class="text-2xl md:text-4xl font-bold">Become a Revolutionary</h4>
-    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'careers:list' %}" hx-push-url="{% url 'careers:list' %}" hx-swap="outerHTML" hx-target="#main" class="py-3 px-4 bg-black text-white rounded-xl hover:shadow-xl hover:scale-105 duration-300">Seek a Career
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'careers:list' %}" hx-push-url="{% url 'careers:list' %}" hx-swap="outerHTML" hx-target="body" class="py-3 px-4 bg-black text-white rounded-xl hover:shadow-xl hover:scale-105 duration-300">Seek a Career
       Role</button>
   </div>
 
@@ -119,5 +119,14 @@ earn more while taking up rides {% endblock %}
 {% endblock content %}
 
 
-{% block google_map %}
-{% endblock google_map %}
+{% block floats %}
+{{ block.super }}
+{% endblock floats %}
+
+{% block footer %}
+{{ block.super }}
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}

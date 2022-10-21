@@ -21,7 +21,7 @@
         Control, manage and pay for your team's work rides from a single account with Drops Business. Cut your travel costs and avoid the hassle of expense reports, taking your business to the next level.
       </p>
       <div class="flex items-center space-x-3">
-        <button hx-get="{% url 'company_signup' %}" hx-push-url="{% url 'company_signup' %}" hx-target="#main" hx-swap="outerHTML show:window:top" class="py-3 px-4 bg-white rounded-xl hover:scale-105 hover:shadow-xl duration-300">
+        <button hx-get="{% url 'company_signup' %}" hx-push-url="{% url 'company_signup' %}" hx-target="body" hx-swap="outerHTML show:window:top" class="py-3 px-4 bg-white rounded-xl hover:scale-105 hover:shadow-xl duration-300">
           Get your business moving
         </button>
       </div>
@@ -96,5 +96,15 @@
   </div>
 </section>
 {% endblock content %}
-{% block google_map %}
-{% endblock google_map %}
+
+{% block floats %}
+{{ block.super }}
+{% endblock floats %}
+
+{% block footer %}
+{{ block.super }}
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}

@@ -93,11 +93,9 @@
   </head>
 
   <body hx-ext="debug, event-header" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' x-init="initState" @scroll.window="scrollNav" x-data="{}">
-    {% if not request.htmx %}
     {% block nav %}
     {% include "snippets/header.html" %}
     {% endblock nav %}
-    {% endif %}
 
 
 
@@ -111,7 +109,7 @@
 
     {% block modal %}{% endblock modal %}
 
-    {% if not request.htmx %}
+    {% block floats %}
     <button title="smooth scroll to top" :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-black text-white hover:text-warning focus:animate-bounce-slow hover::animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
@@ -122,9 +120,8 @@
         <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
       </svg>
     </button>
-    {% endif %}
+    {% endblock floats %}
 
-    {% if not request.htmx %}
     {% block footer %}
     {% include "snippets/footer.html" %}
     {% endblock footer %}
@@ -145,7 +142,6 @@
     {% block javascript %}
     {% javascript_pack 'app' %}
     {% endblock javascript %}
-    {% endif %}
 
 
   </body>

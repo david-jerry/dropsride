@@ -32,6 +32,10 @@ function validateField(formElement, fieldElement) {
           errorsWrapperElement.innerHTML = errorsHtml;
         }
       }
+
+      if(response.data.avatar){
+        document.getElementById('avatar').src = response.data.avatar;
+      }
     });
   }
 
@@ -84,7 +88,17 @@ export default function AccountForm() {
                             htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
                             // sleep(3500); //wait 1 sec and then htmx redirect get
                             // location.reload();
-                        } else {
+                        } else if (response.status === 403) {
+                            iziToast.error({
+                                title: response.data.title,
+                                balloon: true,
+                                position: "topRight",
+                                animateInside: true,
+                                message: response.data.message
+                            });
+                            // sleep(3500); //wait 1 sec and then htmx redirect get
+                            htmx.ajax('GET', response.data.success_url, {target:'main', swap:'outerHTML'});
+                        }else {
                             iziToast.error({
                                 title: response.data.title,
                                 balloon: true,
@@ -96,6 +110,17 @@ export default function AccountForm() {
 
                         console.log(response);
                     }).catch(function (error) {
+                        if (error.response.status === 403) {
+                            iziToast.error({
+                                title: error.response.data.title,
+                                balloon: true,
+                                position: "topRight",
+                                animateInside: true,
+                                message: error.response.data.message
+                            });
+                            // sleep(3500); //wait 1 sec and then htmx redirect get
+                            return htmx.ajax('GET', error.response.data.success_url, {target:'body', swap:'outerHTML'});
+                        }
                         iziToast.error({
                             title: "Form Error",
                             balloon: true,
@@ -122,6 +147,24 @@ export default function AccountForm() {
                 htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
             }
 
+        },
+
+        async showPassword() {
+            var x = document.getElementById("id_password");
+            if (x.type === "password") {
+              x.type = "text";
+            } else {
+              x.type = "password";
+            }
+        },
+
+        async showSingupPassword() {
+            var x = document.getElementById("id_password");
+            if (x.type === "password") {
+              x.type = "text";
+            } else {
+              x.type = "password";
+            }
         },
 
         async submitFileForm() {
@@ -166,7 +209,7 @@ export default function AccountForm() {
                                 message: response.data.message
                             });
                             sleep(3500); //wait 1 sec and then htmx redirect get
-                            htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
+                            htmx.ajax('GET', redirect, {target:'body', swap:'outerHTML'});
                             // sleep(3500); //wait 1 sec and then htmx redirect get
                             // location.reload();
                         } else {

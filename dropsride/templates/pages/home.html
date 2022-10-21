@@ -144,14 +144,15 @@
 {% endblock content %}
 
 
+{% block floats %}
+{{ block.super }}
+{% endblock floats %}
 
-
-
-
-
+{% block footer %}
+{{ block.super }}
+{% endblock footer %}
 
 {% block javascript %}
 {{ block.super }}
 {% endblock javascript %}
-{% block google_map %}
-{% endblock google_map %}
+

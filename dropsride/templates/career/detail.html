@@ -12,6 +12,18 @@
 
 {% block nav %}{{ block.super }}{% endblock nav %}
 
+{% block floats %}
+{{ block.super }}
+{% endblock floats %}
+
+{% block footer %}
+{{ block.super }}
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}
+
 {% block content %}
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14">
   <div class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-success/30 h-94" style="background-image:url({% static 'vendors/images/business/business-bg.svg' %}); background-position:bottom; background-size:cover">
@@ -164,7 +176,7 @@
         <span id="error-wrapper-consent" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
       </div>
 
-      <button title="apply now" x-transition.duration.300ms class="block mt-4 w-full md:w-1/3 rounded-xl bg-success text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submitForm">
+      <button title="apply now" x-transition.duration.300ms class="flex items-center space-x-3 text-center mt-4 w-full md:w-1/3 rounded-xl bg-success text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submitForm">
         <svg x-show="processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

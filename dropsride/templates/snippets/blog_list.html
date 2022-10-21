@@ -43,6 +43,6 @@
       </span>
     </div>
   </div>
-  <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="#main" class="w-full py-3 hover:scale-105 duration-300 bg-black text-white font-medium uppercase text-base">VIEW</button>
+  <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="body" class="w-full py-3 hover:scale-105 duration-300 bg-black text-white font-medium uppercase text-base">VIEW</button>
 </div>
 {% endfor %}

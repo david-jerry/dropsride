@@ -4,21 +4,21 @@
 {% else %}
 <tr class="py-2">
 {% endif %}
-  <th hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="#main" >
+  <th hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="body" >
     <label>
       <div class="w-1 h-1 rounded-full border-2 border-black bg-warning"></div>
     </label>
   </th>
-  <td hx-get="{{object.team.get_absolute_url}}" hx-push-url="{{object.team.get_absolute_url}}" hx-swap="outerHTML" hx-target="#main" class="py-3 flex-none">
+  <td hx-get="{{object.team.get_absolute_url}}" hx-push-url="{{object.team.get_absolute_url}}" hx-swap="outerHTML" hx-target="body" class="py-3 flex-none">
       <div class="font-bold text-base md:text-xl uppercase cursor-pointer">{{object.team.title}}</div>
   </td>
-  <td hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="#main" class="py-3">
+  <td hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="body" class="py-3">
     <div class="font-bold cursor-pointer">{{object.title}}</div>
     <div class="line-clamp-2 prose">{{object.summary|safe}}</div>
   </td>
   <td class="py-3 flex-none space-x-2 h-full items-center">{% for location in object.location.all %} <span class="block">{{location.title}}</span> {% endfor %}</td>
   <th class="py-3 flex-none">
-    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="#main" class="btn btn-ghost btn-xs">details</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="body" class="btn btn-ghost btn-xs">details</button>
   </th>
 </tr>
 {% empty %}

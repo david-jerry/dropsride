@@ -11,6 +11,17 @@
 {% block author %} {{ block.super }} {% endblock %}
 
 {% block nav %}{{ block.super }}{% endblock nav %}
+{% block floats %}
+{{ block.super }}
+{% endblock floats %}
+
+{% block footer %}
+{{ block.super }}
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}
 
 {% block content %}
 {% if objects %}
@@ -110,13 +121,13 @@
           </span>
         </div>
       </div>
-      <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="#main" class="w-full py-3 hover:scale-105 duration-300 bg-warning text-black font-medium uppercase text-base">VIEW</button>
+      <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="body" class="w-full py-3 hover:scale-105 duration-300 bg-warning text-black font-medium uppercase text-base">VIEW</button>
     </div>
     {% if forloop.last %}
     <div class="flex-grow flex-none space-y-2 px-2">
       <h3 class="text-xl font-bold pb-3 border-b-0.5 border-b-black/10 w-full">Most Recent Posts</h3>
       {% for object in recent_posts|slice:4 %}
-      <div @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="#main" class="w-full hover:scale-105 hover:shadow-md duration-300 cursor-pointer flex items-start h-min w-full flex-none  bg-black text-white border-b-0.5 border-black/10 text-black text-sm rounded-xl">
+      <div @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{{object.get_absolute_url}}" hx-push-url="{{object.get_absolute_url}}" hx-swap="outerHTML" hx-target="body" class="w-full hover:scale-105 hover:shadow-md duration-300 cursor-pointer flex items-start h-min w-full flex-none  bg-black text-white border-b-0.5 border-black/10 text-black text-sm rounded-xl">
         <img src="{{object.image.thumbnail.url}}" alt="{{object.title}}" class="h-16 aspect-1 object-cover bg-white">
         <div class="flex flex-col space-y-1 p-2">
           <h4 class="text-base font-bold text-white">{{object.title|title}}</h4>

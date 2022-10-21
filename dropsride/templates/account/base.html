@@ -2,23 +2,41 @@
 {% load static i18n %}
 
 {% block title %}{% block head_title %}{% endblock head_title %}{% endblock title %}
-{% block description %} Our support is availble 24/7 {% endblock %}
+{% block description %} User Account Informations {% endblock %}
 {% block keywords %} drops business, business trips, {{ block.super }} {% endblock %}
-{% block og_title %} {{ block.super }} Contact Us {% endblock %}
+{% block og_title %} {{ block.super }} Account {% endblock %}
 {% block og_sitename %} {{ block.super }} {% endblock %}
-{% block og_description %} Our support is availble 24/7 {% endblock %}
+{% block og_description %} User Account Informations {% endblock %}
 {% block og_favicon %} {{ block.super }} {% endblock %}
 {% block author %} {{ block.super }} {% endblock %}
 
 
 {% block content %}
 <section style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom right; background-size:fit; background-repeat:no-repeat" class="w-screen min-h-screen py-16 px-4 md:px-44 xl:px-64 flex flex-col justify-center">
-  <div class="w-full md:w-3/5 mx-auto py-8">
+  <div class="w-full md:w-3/5 mx-auto py-8 space-y-4">
+    
     {% block inner %}{% endblock %}
   </div>
 </section>
 {% endblock %}
 
-{% block footer %}{% endblock footer %}
-{% block google_map %}{% endblock google_map %}
+{% block nav %}
+<button @click="history.go(-1)" class="fixed top-6 left-6 py-3 px-6 bg-black text-white uppercase hover:shadow-xl rounded-xl group flex items-center duration-300">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 group_hover:pl-0 pl-3 flex-none duration-300">
+    <path fill-rule="evenodd" d="M20.25 12a.75.75 0 01-.75.75H6.31l5.47 5.47a.75.75 0 11-1.06 1.06l-6.75-6.75a.75.75 0 010-1.06l6.75-6.75a.75.75 0 111.06 1.06l-5.47 5.47H19.5a.75.75 0 01.75.75z" clip-rule="evenodd" />
+  </svg>
+  <span class="flex pl-2">back</span>
+</button>
+{% endblock nav %}
+
+{% block floats %}
+{{ block.super }}
+{% endblock floats %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}
 

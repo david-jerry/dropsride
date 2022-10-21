@@ -1,6 +1,5 @@
 import asyncio
-from dropsride.companies.models import Company
-from dropsride.utils.logger import LOGGER
+from config.commons import signup_users
 import httpx
 from datetime import timedelta
 
@@ -20,6 +19,7 @@ from django.utils import timezone
 from allauth import app_settings
 from allauth.account.views import SignupView, LoginView
 from allauth.account.utils import complete_signup
+from allauth.account.models import EmailAddress
 from allauth.exceptions import ImmediateHttpResponse
 from paystackapi.paystack import Paystack
 from paystackapi.verification import Verification
@@ -27,6 +27,8 @@ from asgiref.sync import sync_to_async
 from messente_api import OmnimessageApi, SMS, Omnimessage, Configuration, ApiClient
 from messente_api.rest import ApiException
 
+from dropsride.companies.models import Company
+from dropsride.utils.logger import LOGGER
 from dropsride.drivers.models import Drivers
 from dropsride.riders.models import Riders
 from dropsride.users.models import UserNextOfKin, UserSocialAccounts, VerifiedPhone
@@ -160,7 +162,8 @@ class UserSignupView(SignupView):
         form.is_company = False
         self.user = form.save(self.request)
         try:
-            complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
+            # complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
+            signup_users(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url(), None)
             return JsonResponse(status=201, data={"message":"Your Account Was Created Successfully", "title":"Successful Registration"})
         except ImmediateHttpResponse as e:
             return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Signup Form Error"})
@@ -199,7 +202,8 @@ class DriverSignupView(SignupView):
         form.is_company = False
         self.user = form.save(self.request)
         try:
-            complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
+            # complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
+            signup_users(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url(), None)
             return JsonResponse(status=201, data={"message":"Your Account Was Created Successfully", "title":"Successful Registration"})
         except ImmediateHttpResponse as e:
             return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Signup Form Error"})
@@ -239,10 +243,11 @@ class CompanySignupView(SignupView):
         form.is_company = True
         self.user = form.save(self.request)
         try:
-            complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
-            if Company.objects.filter(user=self.user).exists():
-                Company.objects.filter(user=self.user).update(company_name=company_name)
-                LOGGER.info("[COMPANY SIGNUP VIEW] Company name has been added")
+            # complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
+            # if Company.objects.filter(user=self.user).exists():
+            #     Company.objects.filter(user=self.user).update(company_name=company_name)
+            #     LOGGER.info("[COMPANY SIGNUP VIEW] Company name has been added")
+            signup_users(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url(), company_name)
             return JsonResponse(status=201, data={"message":"Your Account Was Created Successfully", "title":"Successful Registration"})
         except ImmediateHttpResponse as e:
             return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Signup Form Error"})
@@ -271,11 +276,21 @@ class UserLoginView(LoginView):
     """
     def form_valid(self, form):
         success_url = self.get_success_url()
+        user = User.objects.get(email=form.cleaned_data['login'])
         try:
             form.login(self.request, redirect_url=success_url)
-            return JsonResponse(status=201, data={"message":"Logged In Successfully", "title":"Success"})
+            email_address = EmailAddress.objects.get_for_user(user, user.email)
+
+            if not email_address.verified:
+                verification_link = reverse('account_email_verification_sent')
+                return JsonResponse(status=403, data={"message":"Your Email is not verified", "title":"Email Verification", 'success_url':verification_link})
+            return JsonResponse(status=201, data={"message":"Logged In Successfully", "title":"Success", 'success_url':success_url})
         except ImmediateHttpResponse as e:
             return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Login Form Error"})
+
+    def form_invalid(self, form):
+        verification_link = reverse('account_email_verification_sent')
+        return JsonResponse(status=403, data={"message":"Your Email is not verified", "title":"Email Verification", 'success_url':verification_link})
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST:
@@ -285,9 +300,12 @@ class UserLoginView(LoginView):
     def validate_field(self, request):
         field_name = request.POST.get("__field_name__")
         form = UserLoginForm(request.POST)
+        user = User.objects.get(email=request.POST.get('login')) if User.objects.filter(email=request.POST.get('login')).exists() else None
+        avatar = user.image.url if user.image else "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
         form.is_valid()
         return JsonResponse(status=203, data={
             "errors": form.errors.get(field_name, []),
+            "avatar": avatar,
         })
 
 account_login = UserLoginView.as_view()
