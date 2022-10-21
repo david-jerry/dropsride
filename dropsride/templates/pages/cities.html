@@ -16,7 +16,7 @@
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14 text-white">
   <div class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-warning h-96 md:h-[512px]" style="background-image:url({% static 'vendors/images/cities/cities-bg.png' %}); background-position:bottom; background-size:cover">
     <div class="space-y-4 md:p-14 md:w-2/5">
-      <h1 class="text-2xl md:text-4xl font-semibold">We are operational in over {{states}} states</h1>
+      <h1 class="text-2xl md:text-4xl font-semibold">We are operational in over {{counts}} states</h1>
       <p class="text-base">
         As our bid to continue serving you better we have expanded our services to an overall of {{states}} states in Nigeria
       </p>
@@ -24,6 +24,10 @@
   </div>
 </section>
 
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    {% include "snippets/cities_list.html" %}
+  </div>
+</section>
 {% endblock content %}
-{% block google_map %}
-{% endblock google_map %}
+

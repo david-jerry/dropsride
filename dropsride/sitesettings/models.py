@@ -146,6 +146,7 @@ class Localization(TimeStampedModel):
     drivers = ManyToManyField(Drivers, blank=True)
     riders = ManyToManyField(Riders, blank=True)
 
+    active = BooleanField(default=True)
 
     def __str__(self) -> str:
         return self.title.title()

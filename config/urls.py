@@ -12,6 +12,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from webpush.views import save_info
 
+from dropsride.sitesettings.views import cities_view
 from dropsride.users.views import sms_verification_link, verify_phone_number, account_login, account_singup as account_signup, driver_singup as driver_signup, company_singup as company_signup
 from .views import offline_view, send_notification, service_worker, service_worker_map, support
 from config.sitemaps import StaticViewSitemap
@@ -23,7 +24,7 @@ sitemaps = {
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path("business/", TemplateView.as_view(template_name="pages/business.html"), name="business"),
-    path("cities/", TemplateView.as_view(template_name="pages/cities.html"), name="cities"),
+    path("cities/", view=cities_view, name="cities"),
     path("features/", TemplateView.as_view(template_name="pages/features.html"), name="features"),
     path("support/", support, name="support"),
     path("offline/", offline_view, name="offline"),
