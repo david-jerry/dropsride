@@ -13,6 +13,7 @@
 {% block nav %}{{ block.super }}{% endblock nav %}
 
 {% block content %}
+{% if objects %}
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14">
   <div
     class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-black/30 h-94"
@@ -65,9 +66,10 @@
 
     <img
       src="https://images.pexels.com/photos/13067890/pexels-photo-13067890.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
-      alt="{{object.title}}" class="block h-64 md:h-96 object-cover rounded-xl aspect-1">
+      alt="{{object.title}}" class="block w-full md:w-96 md:h-96 object-cover rounded-xl aspect-1">
   </div>
 </section>
+{% endif %}
 
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14">
   {% if popular_posts %}
