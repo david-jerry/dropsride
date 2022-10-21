@@ -1,5 +1,6 @@
 from datetime import timedelta
 from allauth.socialaccount.signals import pre_social_login, social_account_added
+from config.commons import send_html_mail
 from dropsride.companies.models import Company
 
 import geocoder
@@ -131,10 +132,7 @@ def user_logged_in_callback(sender, request, user, **kwargs):
         <br>
         <br>
         """
-        msg = EmailMultiAlternatives("New IP Login", message, "security@dropsride.com", [request.user.email])
-        msg.attach_alternative(mark_safe(html_message), "text/html")
-        msg.content_subtype = "html"
-        msg.send()
+        send_html_mail(subject="LOGIN FROM NEW IP", html_content=html_message, from_email="SECURITY ALERT <noreply@dropsride.com>", recipient_list=user.email)
         LOGGER.info(f"New Ip {user.last_ip} Updated for {user.username.title()} account")
     elif last_ip == None:
         User.objects.filter(username=user.username).update(last_ip=request.ip)

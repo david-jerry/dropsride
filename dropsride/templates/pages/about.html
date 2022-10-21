@@ -1,21 +1,27 @@
 {% extends "base.html" %}
 {% load static i18n %}
 
-{% block description %} Drops Ride is leading the convenient ride sharing services with a focus to enable drivers earn more while taking up rides {% endblock %}
+{% block description %} Drops Ride is leading the convenient ride sharing services with a focus to enable drivers earn
+more while taking up rides {% endblock %}
 {% block keywords %} ride sharing, {{ block.super }} {% endblock %}
 {% block og_title %} {{ block.super }} About Us {% endblock %}
 {% block title %} {{ block.super }} About Us {% endblock %}
 {% block og_sitename %} {{ block.super }} {% endblock %}
-{% block og_description %} Drops Ride is leading the convenient ride sharing services with a focus to enable drivers earn more while taking up rides {% endblock %}
+{% block og_description %} Drops Ride is leading the convenient ride sharing services with a focus to enable drivers
+earn more while taking up rides {% endblock %}
 {% block og_favicon %} {{ block.super }} {% endblock %}
 {% block author %} {{ block.super }} {% endblock %}
 
 {% block nav %}{{ block.super }}{% endblock nav %}
 
 {% block content %}
-<section class="space-y-6 w-screen bg-warning px-4 md:px-44 xl:px-64 min-h-[40vh] flex flex-col justify-center" style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom; background-repeat:no-repeat; background-size:contain">
-  <h1 class="text-6xl font-semibold text-center">About Us</h1>
-  <p class="text-center text-base md:text-xl md:w-3/5 mx-auto">Dropsride is an advanced logistic company providing affordable, convenient E-Ride hailing and sharing services for all</p>
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <div class="space-y-6 w-full bg-warning px-4 md:px-44 xl:px-64 min-h-[40vh] flex flex-col justify-center rounded-xl"
+    style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom; background-repeat:no-repeat; background-size:contain">
+    <h1 class="text-6xl font-semibold text-center">About Us</h1>
+    <p class="text-center text-base md:text-xl md:w-3/5 mx-auto">Dropsride is an advanced logistic company providing
+      affordable, convenient E-Ride hailing and sharing services for all</p>
+  </div>
 </section>
 
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14 space-y-8">
@@ -55,8 +61,10 @@
       </p>
     </div>
     <div class="space-y-4 text-center">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="block mx-auto w-14 h-14">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="block mx-auto w-14 h-14">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
       </svg>
 
       <h4 class="text-3xl font-semibold">Quick & Easy Set-up</h4>
@@ -79,7 +87,10 @@
     The Future of Ride Sharing
   </h3>
   <div class="rounded-xl border-warning border-4 mx-auto md:w-3/5">
-    <iframe width="100%" height="373" src="https://www.youtube.com/embed/B8_cBTmXfYk" title="Does ride-hailing business model have potential?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="100%" height="373" src="https://www.youtube.com/embed/B8_cBTmXfYk"
+      title="Does ride-hailing business model have potential?" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
   </div>
   <h3 class="text-2xl md:text-4xl font-semibold text-center">Ready to Ride?</h3>
   <div class="flex items-center space-x-3 mx-auto">
@@ -96,11 +107,13 @@
 <section class="w-screen px-4 md:px-44 xl:px-64 py-14 bg-gray-100 md:flex items-center md:justify-between">
   <div class="space-y-4 md:w-2/5">
     <h4 class="text-2xl md:text-4xl font-bold">Become a Revolutionary</h4>
-    <button class="py-3 px-4 bg-black text-white rounded-xl hover:shadow-xl hover:scale-105 duration-300">Seek a Career Role</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'careers:list' %}" hx-push-url="{% url 'careers:list' %}" hx-swap="outerHTML" hx-target="#main" class="py-3 px-4 bg-black text-white rounded-xl hover:shadow-xl hover:scale-105 duration-300">Seek a Career
+      Role</button>
   </div>
 
   <div class="md:w-2/5 aspect-1">
-    <lottie-player autoplay loop mode="normal" src="{% static 'vendors/images/lottie/career.json' %}" style="width:100%"></lottie-player>
+    <lottie-player autoplay loop mode="normal" src="{% static 'vendors/images/lottie/career.json' %}"
+      style="width:100%"></lottie-player>
   </div>
 </section>
 {% endblock content %}

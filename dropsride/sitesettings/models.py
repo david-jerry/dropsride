@@ -20,13 +20,14 @@ from django.db.models import (
 )
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-# from dropsride.drivers.models import Drivers
 
 from stdimage import StdImageField
 from model_utils.models import TimeStampedModel
 from countries_plus.models import Country
 
 from dropsride.users.models import User
+from dropsride.drivers.models import Drivers
+from dropsride.riders.models import Riders
 # from dropsride.sitesettings.models import Localization
 
 
@@ -136,16 +137,18 @@ class Localization(TimeStampedModel):
     Returns:
         _type_: _description_
     """
-    state = CharField(max_length=50, unique=True, blank=True, null=True)
+    title = CharField(max_length=50, unique=True, blank=True, null=True)
     amount = DecimalField(decimal_places=2, max_digits=20, default=0.00)
     rep = CharField(max_length=250, blank=True)
     head_office = CharField(max_length=500, blank=True)
     office_phone_1 = CharField(max_length=14, blank=True)
     office_phone_2 = CharField(max_length=14, blank=True)
+    drivers = ManyToManyField(Drivers, blank=True)
+    riders = ManyToManyField(Riders, blank=True)
 
 
     def __str__(self) -> str:
-        return self.state.title()
+        return self.title.title()
 
     class Meta:
         managed = True

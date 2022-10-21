@@ -20,13 +20,13 @@ from django.db.models import (
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-from dropsride.drivers.managers import DriversManager
-from dropsride.sitesettings.models import VehicleType
 
 from stdimage import StdImageField
 from model_utils.models import TimeStampedModel
 from countries_plus.models import Country
 
+from dropsride.drivers.managers import DriversManager
+# from dropsride.sitesettings.models import VehicleType
 from dropsride.users.models import User
 
 
@@ -60,7 +60,7 @@ class Drivers(TimeStampedModel):
     country = CharField(max_length=500, blank=True, null=True)
     latitude = CharField(max_length=500, blank=True, null=True)
     longitude = CharField(max_length=500, blank=True, null=True)
-    
+
     captcha_score = FloatField(default=0.00)
 
     objects = DriversManager()
@@ -127,7 +127,7 @@ class Subscription(TimeStampedModel):
     plan = CharField(max_length=20, choices=PLANS, default=DAY)
     code = CharField(max_length=255)
     vehicle_type = ForeignKey(
-        VehicleType, on_delete=CASCADE, related_name="subscription_vehicle_type"
+        'sitesettings.VehicleType', on_delete=CASCADE, related_name="subscription_vehicle_type"
     )
 
     active = BooleanField(default=False)

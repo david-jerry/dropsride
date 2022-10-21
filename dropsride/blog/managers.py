@@ -16,20 +16,26 @@ class NewsQueryset(QuerySet):
         if query is not None:
             lookup = (
                 Q(title__icontains=query) |
-                Q(content__icontains=query) 
+                Q(content__icontains=query)
             )
             qs = qs.published().filter(lookup).distinct()
         return qs
 
     def get_popular_posts(self):
         try:
-            return self.published().order_by("-hit_count_generic__hits")[:12]
+            return self.published().order_by("-hit_count_generic__hits")[1:12]
         except IndexError:
             return None
 
     def get_recent_posts(self):
         try:
             return self.published()[:12]
+        except IndexError:
+            return None
+
+    def featured_post(self):
+        try:
+            return self.published().filter(featured=True).first()
         except IndexError:
             return None
 
@@ -49,5 +55,8 @@ class NewsManager(Manager):
 
     def get_recent_posts(self):
         return self.get_queryset().get_recent_posts()
+
+    def get_featured_post(self):
+        return self.get_queryset().featured_post()
 
 

@@ -15,6 +15,7 @@ class NewsForm(ModelForm):
             "draft",
             "content",
             "tags",
+            'featured',
         ]
 
     def clean_image(self):

@@ -88,7 +88,7 @@
     {% block css %}
     {% endblock %}
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
 
   </head>
 
@@ -142,36 +142,11 @@
     </script>
 
 
-
-    {% block google_map %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{google_api_key}}&callback=initMap&v=weekly" defer></script>
-
-    <script>
-      // Initialize and add the map
-      /* eslint-disable */
-      function initMap() {
-        // The location of Uluru
-        const uluru = { lat: -25.344, lng: 131.031 };
-        // The map, centered at Uluru
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 4,
-          center: uluru,
-        });
-        // The marker, positioned at Uluru
-        new google.maps.Marker({
-          position: uluru,
-          map: map,
-        });
-      }
-
-      window.initMap = initMap;
-    </script>
-    {% endblock google_map %}
-
-
     {% block javascript %}
     {% javascript_pack 'app' %}
     {% endblock javascript %}
     {% endif %}
+
+
   </body>
 </html>

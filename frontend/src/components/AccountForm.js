@@ -15,13 +15,13 @@ function validateField(formElement, fieldElement) {
       let errors = response.data.errors;
       let errorsWrapperElement = document.getElementById(`error-wrapper-${fieldElement.name}`);
       if (errors.length === 0) {
-        document.getElementById('submit').classList.remove('hidden');
+        document.getElementById('submitForm').classList.remove('hidden');
         errorsWrapperElement.classList.add('hidden');
         if (errorsWrapperElement) {
           errorsWrapperElement.innerHTML = "";
         }
       } else {
-        document.getElementById('submit').classList.add('hidden');
+        document.getElementById('submitForm').classList.add('hidden');
         errorsWrapperElement.classList.remove('hidden');
         errorsWrapperElement.classList.add('flex');
         if (errorsWrapperElement) {
@@ -50,7 +50,15 @@ export default function AccountForm() {
             const csrf = formElement.dataset.csrf;
             let data = new FormData(formElement);
             formElement.querySelectorAll("[name]").forEach(fieldElement => {
-                data.append(fieldElement.name, fieldElement.value);
+                if (fieldElement.type === "textarea") {
+                    let textarea = fieldElement.id;
+                    console.log('textarea content: ', window.parent.tinymce.get(textarea).getContent());
+                    data.append(fieldElement.name, window.parent.tinymce.get(textarea).getContent());
+                }
+
+                if (fieldElement.type !== "textarea"){
+                    data.append(fieldElement.name, fieldElement.value);
+                }
             });
 
             if (formElement.checkValidity()) {
@@ -126,7 +134,15 @@ export default function AccountForm() {
             const csrf = formElement.dataset.csrf;
             let data = new FormData(formElement);
             formElement.querySelectorAll("[name]").forEach(fieldElement => {
-                data.append(fieldElement.name, fieldElement.value);
+                if (fieldElement.type === "textarea") {
+                    let textarea = fieldElement.id;
+                    console.log('textarea content: ', window.parent.tinymce.get(textarea).getContent());
+                    data.append(fieldElement.name, window.parent.tinymce.get(textarea).getContent());
+                }
+
+                if (fieldElement.type !== "textarea"){
+                    data.append(fieldElement.name, fieldElement.value);
+                }
             });
 
             if (formElement.checkValidity()) {
@@ -194,7 +210,7 @@ export default function AccountForm() {
         },
 
         async checkValidity() {
-            const formElement = this.$refs.contactForm;
+            const formElement = this.$refs.form;
             formElement.querySelectorAll('[name]').forEach(fieldElement => {
                 fieldElement.addEventListener('change', event => {
                     console.log(event);

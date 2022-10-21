@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static i18n widget_tweaks %}
+
+{% block description %} {{object.summary|safe}}{% endblock %}
+{% block keywords %} ride sharing, dropsride news, dropsride information, dropsride career, job vacancy, job vacancies, vacancies in nigeria, {{ block.super }} {% endblock %}
+{% block og_title %} {{ block.super }} {{object.title}} {% endblock %}
+{% block title %} {{ block.super }} {{object.title}} {% endblock %}
+{% block og_sitename %} {{ block.super }} {% endblock %}
+{% block og_description %}  {{object.summary|safe}} {% endblock %}
+{% block og_favicon %} {{ block.super }} {% endblock %}
+{% block author %} Dropsride {% endblock %}
+
+{% block nav %}{{ block.super }}{% endblock nav %}
+
+{% block content %}
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <div class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-success/30 h-94" style="background-image:url({% static 'vendors/images/business/business-bg.svg' %}); background-position:bottom; background-size:cover">
+    <div class="space-y-4 md:p-14 md:w-2/5">
+      <h1 class="text-2xl md:text-4xl font-semibold">{{object.title}}</h1>
+      <div class="text-base prose line-clamp-5 md:line-clamp-3 md:text-justify">
+        {{object.summary|safe}}
+      </div>
+      <div class="md:flex items-center md:space-y-0 space-y-3 md:space-x-6 md:flex-wrap">
+        <div class="flex items-center space-x-3 flex-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
+          </svg>
+          <span class="block">{{object.team.title}}</span>
+        </div>
+        <div class="flex items-center space-x-3 flex-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+          </svg>
+          <span class="block flex flex-wrap space-x-2">{% for location in object.location.all %}{{location.title}} {% endfor %}</span>
+        </div>
+      </div>
+      <div class="md:flex items-center md:space-y-0 space-y-3 md:space-x-6 md:flex-wrap">
+        <div class="flex items-center space-x-3 flex-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M10.464 8.746c.227-.18.497-.311.786-.394v2.795a2.252 2.252 0 01-.786-.393c-.394-.313-.546-.681-.546-1.004 0-.323.152-.691.546-1.004zM12.75 15.662v-2.824c.347.085.664.228.921.421.427.32.579.686.579.991 0 .305-.152.671-.579.991a2.534 2.534 0 01-.921.42z" />
+            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v.816a3.836 3.836 0 00-1.72.756c-.712.566-1.112 1.35-1.112 2.178 0 .829.4 1.612 1.113 2.178.502.4 1.102.647 1.719.756v2.978a2.536 2.536 0 01-.921-.421l-.879-.66a.75.75 0 00-.9 1.2l.879.66c.533.4 1.169.645 1.821.75V18a.75.75 0 001.5 0v-.81a4.124 4.124 0 001.821-.749c.745-.559 1.179-1.344 1.179-2.191 0-.847-.434-1.632-1.179-2.191a4.122 4.122 0 00-1.821-.75V8.354c.29.082.559.213.786.393l.415.33a.75.75 0 00.933-1.175l-.415-.33a3.836 3.836 0 00-1.719-.755V6z" clip-rule="evenodd" />
+          </svg>
+
+          <span class="block">{{object.salary|floatformat:2}}</span>
+        </div>
+        <div class="flex items-center space-x-3 flex-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+            <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clip-rule="evenodd" />
+          </svg>
+
+          <span class="block">{{object.published_date|date:"D M, Y"}}</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button @click="document.getElementById('apply').scrollIntoView({top: '50px', behavior: 'smooth'})" class="py-3 px-8 bg-black text-white rounded-xl hover:scale-105 hover:shadow-xl duration-300">
+          APPLY
+        </button>
+      </div>
+    </div>
+
+    <img src="https://images.pexels.com/photos/2467506/pexels-photo-2467506.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="driver" class="block h-64 md:h-96 object-cover rounded-xl">
+  </div>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <article class="max-w-none w-full pb-14 prose md:prose-base prose-gray prose-table:table prose-table:w-full">
+    {{object.content|safe}}
+  </article>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 space-y-3" id="apply">
+  <h3 class="text-xl md:text-2xl font-bold text-center">Ready to apply?</h3>
+  <div class="rounded-md bg-primary/20 text-primary p-2 text-center text-sm font-semibold">
+    Please fill all fields required accurately. Once the form has been submitted you wont be allowed to fill for the same position again.
+  </div>
+  <div id="form" class="pt-8">
+    <form x-data="AccountForm" x-init="checkValidity" x-ref="form" method="post" action="." enctype="multipart/form-data" data-csrf="{{csrf_token}}" data-redirect="{% url 'careers:list' %}" @submit.prevent="submitFileForm" class="w-full py-3 rounded-xl shadow-md bg-white px-4 md:px-8 space-y-8 md:space-y-14">
+      {% csrf_token %}
+      {{form.media}}
+
+      {% for hidden in form.hidden_fields %}
+      {{hidden}}
+      {% endfor %}
+
+      <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5">
+        <div class="w-full">
+          {% render_field form.first_name required="true" placeholder="your first name" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-first_name" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+        <div class="w-full">
+          {% render_field form.middle_name required="true" placeholder="your middle name" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-middle_name" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+        <div class="w-full">
+          {% render_field form.last_name required="true" placeholder="your last name" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-last_name" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+      </div>
+
+      <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5">
+        <div class="w-full">
+          {% render_field form.email placeholder="your email" type="email" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-email" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+        <div class="w-full">
+          {% render_field form.phone_number required="true" placeholder="your phone number" type="tel" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-phone_number" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+      </div>
+
+      <div class="w-full grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-5">
+        <div class="w-full">
+          <label class="font-bold text-sm pb-4" for="id_gender">How do you identify?</label>
+          {% render_field form.gender placeholder="your gender" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-gender" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+        <div class="w-full">
+          <label class="font-bold text-sm pb-4" for="id_age">What is your age bracket?</label>
+          {% render_field form.age placeholder="your age" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-age" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+        <div class="w-full">
+          <label class="font-bold text-sm pb-4" for="id_gender">Where will you like to work?</label>
+          {% render_field form.location placeholder="your preferred location" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-location" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+        <div class="w-full">
+          <label class="font-bold text-sm pb-4" for="id_country">Country of Origin</label>
+          {% render_field form.country placeholder="your country" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-country" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <label class="font-bold text-sm pb-4" for="id_file">Upload Your CV</label>
+        <div>
+          {% render_field form.file required="true" placeholder="your cv" type="file" class="file input placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-file" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <label class="font-bold text-sm pb-4" for="id_cover_letter">Why would you be a good fit for us?</label>
+        <div>
+          {% render_field form.cover_letter required="false" placeholder="write a cover letter" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <span id="error-wrapper-cover_letter" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <label class="font-bold text-sm pb-" for="id_disability">
+          {% render_field form.disability type="checkbox" class="checkbox" %}
+          <span class="px-3">Do you have a disability?</span>
+        </label>
+        <span id="error-wrapper-disability" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+      <div class="w-full">
+        <label class="font-bold text-sm pb-" for="id_consent">
+          {% render_field form.consent type="checkbox" class="checkbox" %}
+          <span class="px-3">would you like to subscribe for job offers notification?</span>
+        </label>
+        <span id="error-wrapper-consent" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+      <button title="apply now" x-transition.duration.300ms class="block mt-4 w-full md:w-1/3 rounded-xl bg-success text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submitForm">
+        <svg x-show="processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span x-text="getBtnText"></span>
+      </button>
+    </form>
+  </div>
+</section>
+  {% endblock content %}

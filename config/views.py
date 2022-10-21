@@ -17,6 +17,7 @@ from django.templatetags.static import static
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, FormView
 from django.utils.safestring import mark_safe
+from config.commons import send_html_mail
 
 from config.forms import ContactForm
 
@@ -77,7 +78,8 @@ class SupportCreateView(FormView):
         <strong>Message: {valid_data['message']}
         <br>
         """
-        send_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", message=mark_safe(msg), from_email="DROPSRIDE SUPPORT <noreply@dropsride.com>", recipient_list=['support@dropsride.com'], fail_silently=False)
+        send_html_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", html_content=msg, from_email="DROPSRIDE SUPPORT <noreply@dropsride.com>", recipient_list=['support@dropsride.com'])
+        # send_mail(subject=f"SUPPORT MAIL [{valid_data['name'].title()}]", message=mark_safe(msg), from_email="DROPSRIDE SUPPORT <noreply@dropsride.com>", recipient_list=['support@dropsride.com'], fail_silently=False)
         pass
 
 support = SupportCreateView.as_view()
@@ -99,27 +101,18 @@ support = SupportCreateView.as_view()
 @require_POST
 @csrf_exempt
 def send_notification(request):
-    # registration_id = request.data.get('registration_id')
-    # if registration_id:
-    #     device = WebPushDevice.objects.get(registration_id=registration_id)
-    #     if device:
-    #         device.send_message('[PUSH NOTIFICATION] Hello World')
-
-    # return HttpResponse()
     try:
         data = json.loads(request.body.decode('utf-8'))
         # LOGGER.info(data)
     except ValueError:
         return HttpResponse(status=400)
 
-    # Process the push data to match with the model
-
 
     try:
         head = data.pop("head")
         # reg = data.pop("registration_id")
         body = data.pop("body")
-        group = data.pop("group")
+        # group = data.pop("group") if data.pop('group') else None
         # LOGGER.info(f"Data: {head}\nbody: {body}\ngroup: {group}")
         # user_id = data['id']
         # user = get_object_or_404(User, id=user_id)
@@ -128,17 +121,19 @@ def send_notification(request):
 
 
         payload = {
-            'head': "Welcome Onboard",
+            'head': head,
             'body': body,
             'icon': static('vendors/images/favicon/favicon.png'),
             # add url if there is a link to visit from the push notification
             # 'url': f"{request._current_scheme_host}",
         }
 
-        if group is None or group == "" and request.user.is_authenticated:
-            send_user_notification(user=request.user, payload=payload, ttl=1000)
-        else:
-            send_group_notification(group_name=group, payload=payload, ttl=1500)
+        LOGGER.info(payload)
+
+        # if group is None or group == "" and request.user.is_authenticated:
+        send_user_notification(user=request.user, payload=payload, ttl=1000)
+        # else:
+        #     send_group_notification(group_name=group, payload=payload, ttl=1500)
         return JsonResponse(status=200, data={'message':"Notification sent"})
     except TypeError:
         return JsonResponse(status=500, data={'message':"An Error occurred while sending notification"})

@@ -77,3 +77,21 @@ class ApplicantsForm(ModelForm):
             'consent',
             'country',
         ]
+
+    def clean_first_name(self):
+        data = self.cleaned_data['first_name']
+        if len(data) < 3:
+            raise forms.ValidationError("This name is too short")
+        return data
+
+    def clean_middle_name(self):
+        data = self.cleaned_data['middle_name']
+        if len(data) < 3:
+            raise forms.ValidationError("This name is too short")
+        return data
+
+    def clean_last_name(self):
+        data = self.cleaned_data['last_name']
+        if len(data) < 3:
+            raise forms.ValidationError("This name is too short")
+        return data

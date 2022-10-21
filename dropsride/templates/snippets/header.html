@@ -10,16 +10,17 @@
 {% url 'driver_signup' as driver_signup %}
 {% url 'comapny_signup' as company_signup %}
 {% url 'staff:dashboard' as dashboard %}
+{% url 'careers:list' as career %}
 {% url 'users:detail' user.username as profile %}
 
 
 
 
-<header x-data="{selected: {% if request.path == about or request.path == business or request.path == features %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}, open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 top-0 left-0 shadow-xl' : showNav, 'z-50 relative' : !showNav}" class="w-screen bg-white py-5 px-4 md:px-44 xl:px-64 flex items-center justify-between">
+<header x-data="{selected: {% if request.path == about or request.path == business or request.path == features or request.path == career %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}, open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 top-0 left-0 shadow-xl' : showNav, 'z-50 relative' : !showNav}" class="w-screen bg-white py-5 px-4 md:px-44 xl:px-64 flex items-center justify-between">
   <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-dark.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
 
   <nav class="space-x-4 items-center hidden md:flex">
-    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-get="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" :class="{'text-warning':selected === 'option1'}" class="hover:text-warning hover:font-bold duration-300 px-6">Home</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="#main" hx-swap="outerHTML" :class="{'text-warning':selected === 'option1'}" class="hover:text-warning hover:font-bold duration-300 px-6">Home</button>
     <button class="relative group px-6 h-14" :class="{'text-warning':selected === 'option2'}">Company
       <div class="shadow-xl text-white group-hover:flex group-hover:flex-col group-hover:p-4 rounded-b-xl space-y-3 bg-black absolute z-50 top-14 w-44 flex-none -left-6 hidden">
         <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="#main" hx-swap="outerHTML" hx-push-url="{% url 'about' %}" hx-get="{% url 'about' %}" class="hover:text-warning hover:font-bold duration-300 px-6">About</a>

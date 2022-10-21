@@ -9,6 +9,7 @@ from django.views.generic import DetailView, DeleteView, RedirectView, UpdateVie
 from django.http import JsonResponse
 
 from config.mixins import StaffRequiredMixin
+from dropsride.utils.logger import LOGGER
 
 from .models import Careers, Applicants, Teams
 from .forms import ApplicantsForm, CareersForm, DepartmentForm
@@ -27,6 +28,30 @@ class CareerListView(ListView):
     allow_empty = True
     queryset = Careers.objects.published()
 
+    def get_template_names(self):
+        url = f"{self.request.scheme}://{self.request.META['HTTP_HOST']}{reverse('careers:list')}"
+        home = f"{self.request.scheme}://{self.request.META['HTTP_HOST']}{reverse('home')}"
+        # LOGGER.info(self.request.path == reverse('careers:list') and self.request.htmx)
+        # LOGGER.info(self.request.META.get('HTTP_REFERER') == url)
+        # LOGGER.info(self.request.path == reverse('careers:list'))
+        if self.request.META.get('HTTP_REFERER') != url and self.request.htmx:
+            LOGGER.info("serving from request without htmx 1")
+            return 'career/list.html'
+        elif self.request.META.get('HTTP_REFERER') != url and not self.request.htmx:
+            LOGGER.info("serving from request without htmx 1")
+            return 'career/list.html'
+        elif self.request.path == reverse('careers:list') and self.request.htmx:
+            LOGGER.info("serving from request with htmx 1")
+            return 'snippets/career_list.html'
+        # else:
+        #     LOGGER.info("serving from request without htmx 1")
+        #     return 'career/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['counts'] = self.queryset.count()
+        return context
+
 list_view = CareerListView.as_view()
 
 class CareerDetailView(DetailView):
@@ -39,6 +64,23 @@ class CareerDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['form'] = ApplicantsForm()
         return context
+
+class DepartmentDetailView(DetailView):
+    template_name = 'career/department_detail.html'
+    model = Teams
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+
+department_detail_view = DepartmentDetailView.as_view()
+
+class ApplicantDetailView(DetailView):
+    template_name = 'career/applicant_detail.html'
+    model = Applicants
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+
+applicant_detail_view = ApplicantDetailView.as_view()
+
 
 class ApplicantApplyView(FormView, SingleObjectMixin):
     template_name = 'career/detail.html'
@@ -60,12 +102,14 @@ class ApplicantApplyView(FormView, SingleObjectMixin):
 
         form = ApplicantsForm(data=request.POST, files=request.FILES)
         if form.is_valid():
-            form = form.save(commit=False)
-            form.position = self.get_object()
-            form.save()
-            return JsonResponse(status=201, data={"message":"You have successfully applied for this job role", "title":"Application Successful"})
-        else:
-            return JsonResponse(status=400, data={"message":"Invalid form details", "title":"Form Validation Error"})
+            if not Applicants.objects.filter(position=self.get_object(), email=form.cleaned_data['email'], phone_number=form.cleaned_data['phone_number']):
+                form = form.save(commit=False)
+                form.position = self.get_object()
+                form.save()
+                return JsonResponse(status=201, data={"message":"You have successfully applied for this job role", "title":"Application Successful"})
+            else:
+                return JsonResponse(status=400, data={"message":"Sorry, You have already applied for this position", "title":"Application Failed or Invalid"})
+        return JsonResponse(status=400, data={"message":"Sorry, You have applied for this job role", "title":"Application Successful"})
 
 
     def validate_field(self, request):
@@ -82,7 +126,7 @@ class CareerView(View):
         view = CareerDetailView.as_view()
         return view(request, *args, **kwargs)
 
-    def post(self, request, args, **kwargs):
+    def post(self, request, *args, **kwargs):
         view = ApplicantApplyView.as_view()
         return view(request, *args, **kwargs)
 

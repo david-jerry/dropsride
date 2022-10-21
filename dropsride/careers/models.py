@@ -45,6 +45,26 @@ User = settings.AUTH_USER_MODEL
 
 class Teams(TimeStampedModel):
     title = CharField(blank=True, max_length=255)
+    slug = SlugField(_("Slug"), blank=True, max_length=500)
+
+    def __str__(self) -> str:
+        return self.title.title()
+
+    def get_all_positions(self):
+        if self.careers_set.published:
+            return self.careers_set.published()
+        return None
+
+    def get_all_recent_positions(self):
+        if self.careers_set.get_recent_careers():
+            return self.careers_set.get_recent_careers()
+        return None
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular instance of careers post.
+        """
+        return reverse("careers:department_detail", kwargs={"slug": self.slug})
 
     class Meta:
         managed = True
@@ -78,6 +98,9 @@ class Careers(TimeStampedModel):
     draft = BooleanField(_("Draft/Published"), default=True)
 
     objects = CareersManager()
+
+    def __str__(self) -> str:
+        return self.title.title()
 
     class Meta:
         managed = True
@@ -113,7 +136,7 @@ class Careers(TimeStampedModel):
         """
         Returns the url to access a particular instance of careers post.
         """
-        return reverse("career:detail", kwargs={"slug": self.slug})
+        return reverse("careers:detail", kwargs={"slug": self.slug})
 
 class Applicants(TimeStampedModel):
     MALE = 'MALE'
@@ -161,6 +184,9 @@ class Applicants(TimeStampedModel):
     consent = BooleanField(default=False)
 
     country = ForeignKey(Country, on_delete=CASCADE, verbose_name=_("Country"), blank=True, null=True)
+
+    def  __str__(self):
+        return f"{self.first_name} {self.last_name} | {self.email} | {self.position.title} | {self.location.title}"
 
     class Meta:
         managed = True

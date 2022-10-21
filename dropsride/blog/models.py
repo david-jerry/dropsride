@@ -46,18 +46,11 @@ class News(TimeStampedModel):
     This is a model to blog contents wards for children will read.
     """
 
-    # TYPE = (
-    #     (1, "Read Only"),
-    #     (2, "Audio Read"),
-    #     (3, "Quiz"),
-    #     (4, "Quiz & Audio Read"),
-    # )
 
     image = StdImageField(_("Post Cover Photo"), upload_to="reads/cover", blank=True, delete_orphans=True, variations={'thumbnail': {"width": 100, "height": 100, "crop": True}})
     title = CharField(_("Post Title"), blank=True, max_length=160)
     summary = HTMLField(_("Post Summary"), blank=True, max_length=255)
     keywords = CharField(_("Post Keywords"), blank=True, max_length=500)
-    # activity = PositiveSmallIntegerField(_("Post Type"), blank=True, choices=TYPE, default=1)
 
     content = HTMLField(_("Post Content"), blank=False)
 
@@ -69,12 +62,16 @@ class News(TimeStampedModel):
     slug = SlugField(_("Slug"), blank=True, max_length=500)
 
     draft = BooleanField(_("Draft/Published"), default=True)
+    featured = BooleanField(_("Featured Post"), default=False)
 
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
 
     tags = TaggableManager()
 
     objects = NewsManager()
+
+    def __str__(self):
+        return self.title.title()
 
     class Meta:
         managed = True
@@ -86,9 +83,9 @@ class News(TimeStampedModel):
     def get_total_views(self):
         return self.hit_count_generic.hits.count()
 
-    @property
-    def get_total_likes(self):
-        return self.likes.all().count()
+    # @property
+    # def get_total_likes(self):
+    #     return self.likes.all().count()
 
     def related_articles(self):
         return self.tags.similar_objects()
@@ -116,9 +113,6 @@ class News(TimeStampedModel):
             return f"http://{Site.objects.get_current()}{self.get_absolute_url()}"
         else:
             return f"http://localhost:8000/{self.get_absolute_url()}"
-
-
-
 
     def get_absolute_url(self):
         """

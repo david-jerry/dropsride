@@ -15,7 +15,19 @@ from django.utils.safestring import mark_safe
 from dropsride.utils.unique_generators import unique_slug_generator
 from dropsride.utils.logger import LOGGER
 
-from dropsride.careers.models import Careers, Applicants
+from dropsride.careers.models import Careers, Applicants, Teams
+
+@receiver(pre_save, sender=Teams)
+def create_career_slug(instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+        LOGGER.info("[CAREERS DEPARTMENT SLUG] Created New Department Slug")
+
+@receiver(post_save, sender=Teams)
+def create_career_slug(instance, created, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+        LOGGER.info("[CAREERS DEPARTMENT SLUG] Created New Department Slug")
 
 
 @receiver(pre_save, sender=Careers)
