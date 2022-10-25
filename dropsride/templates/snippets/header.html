@@ -6,17 +6,18 @@
 {% url 'cities' as cities %}
 {% url 'support' as support %}
 {% url 'account_login' as login %}
-{% url 'account_signup' as passenger_signup %}
+{% url 'rider_signup' as passenger_signup %}
 {% url 'driver_signup' as driver_signup %}
 {% url 'comapny_signup' as company_signup %}
 {% url 'staff:dashboard' as dashboard %}
 {% url 'careers:list' as career %}
+{% url 'news:list' as blog %}
 {% url 'users:detail' user.username as profile %}
 
 
 
 
-<header x-data="{selected: {% if request.path == about or request.path == business or request.path == features or request.path == career %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% else %}'option5'{% endif %}, open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 top-0 left-0 shadow-xl' : showNav, 'z-50 relative' : !showNav}" class="w-screen bg-white py-5 px-4 md:px-44 xl:px-64 flex items-center justify-between">
+<header hx-preserver="true" x-data="{selected: {% if request.path == about or request.path == business or request.path == features or request.path == career %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% elif request.path == news %}'option7'{% else %}'option5'{% endif %}, open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 top-0 left-0 shadow-xl' : showNav, 'z-50 relative' : !showNav}" class="w-screen bg-white py-5 px-4 md:px-44 xl:px-64 flex items-center justify-between">
   <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-dark.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
 
   <nav class="space-x-4 items-center hidden md:flex">
@@ -30,7 +31,7 @@
       </div>
     </button>
     <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option3'" hx-get="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option3'}" class="hover:text-warning hover:font-bold duration-300 px-6">Cities</button>
-    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option5'" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option5'}" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</button>
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option7'" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option7'}" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</button>
     <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option4'" hx-get="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option4'}" class="hover:text-warning hover:font-bold duration-300 px-6">Support</button>
   </nav>
 
@@ -42,7 +43,7 @@
       </svg>
       <span class="hidden md:block">Login</span>
     </button>
-    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="body" hx-swap="outerHTML" hx-get="{% url 'account_signup' %}" hx-push-url="{% url 'account_signup' %}" class="bg-black hidden md:flex rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 items-center space-x-3">
+    <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="body" hx-swap="outerHTML" hx-get="{% url 'driver_signup' %}" hx-push-url="{% url 'driver_signup' %}" class="bg-black hidden md:flex rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 items-center space-x-3">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
         <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
       </svg>

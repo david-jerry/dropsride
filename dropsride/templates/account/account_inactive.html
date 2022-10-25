@@ -5,7 +5,9 @@
 {% block head_title %}{% translate "Account Inactive" %}{% endblock %}
 
 {% block inner %}
-<h1>{% translate "Account Inactive" %}</h1>
+<div class="md:w-2/3 mx-auto py-4 space-y-2">
+  <h1 class="font-bold text-xl md:text-2xl text-center uppercase">{% translate "Account Inactive" %}</h1>
 
-<p>{% translate "This account is inactive." %}</p>
+  <p class="text-xs md:text-sm text-justify md:text-left">{% translate "This account is inactive." %}</p>
+</div>
 {% endblock %}

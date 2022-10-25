@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 from django.core.mail import EmailMultiAlternatives
 from allauth.account.adapter import DefaultAccountAdapter
 from dropsride.companies.models import Company
+from dropsride.users.models import VerifiedPhone
 from dropsride.utils.logger import LOGGER
 
 class EmailThread(Thread):
@@ -50,21 +51,22 @@ from allauth.account.utils import complete_signup
 class SignupThreading(Thread):
 
     # complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
-    def __init__(self, request, user, settings, success, object):
+    def __init__(self, request, user, settings, success, company_name):
         self.request = request
         self.user = user
         self.settings = settings
         self.success = success
-        self.object = object
+        self.company_name = company_name
         super().__init__(self)
 
     def run(self):
         complete_signup(self.request, self.user, self.settings, self.success)
-        if self.object:
-            if Company.objects.filter(user=self.user).exists():
-                Company.objects.filter(user=self.user).update(company_name=self.object)
+
+        if self.company_name is not None:
+            if Company.company_names.filter(user=self.user).exists():
+                Company.company_names.filter(user=self.user).update(company_name=self.company_name)
                 LOGGER.info("[COMPANY SIGNUP VIEW] Company name has been added")
 
-def signup_users(request, user, settings, success, object):
-    SignupThreading(request, user, settings, success, object).start()
+def signup_users(request, user, settings, success, company_name):
+    SignupThreading(request, user, settings, success, company_name).start()
 

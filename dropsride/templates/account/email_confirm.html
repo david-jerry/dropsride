@@ -7,25 +7,35 @@
 
 
 {% block inner %}
-<h1>{% translate "Confirm E-mail Address" %}</h1>
+<div class="md:w-2/3 mx-auto py-4 space-y-2">
+  <h1 class="font-bold text-xl md:text-2xl text-center uppercase">{% translate "Confirm E-mail Address" %}</h1>
 
-{% if confirmation %}
+  {% if confirmation %}
 
-{% user_display confirmation.email_address.user as user_display %}
+  {% user_display confirmation.email_address.user as user_display %}
 
-<p>{% blocktranslate with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktranslate %}</p>
+  <p class="text-xs md:text-sm text-justify md:text-left">{% blocktranslate with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktranslate %}</p>
 
-<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
-{% csrf_token %}
-    <button class="btn btn-primary" type="submit">{% translate 'Confirm' %}</button>
-</form>
+  <div id="form">
+    <form hx-boost="true" x-data="AccountForm" x-ref="form" method="post" action="{% url 'account_confirm_email' confirmation.key %}" data-csrf="{{csrf_token}}" data-redirect="{% if confirmation.email_address.user %}{% url 'users:detail' confirmation.email_address.user.username %}{% else %}{% url 'account_login' %}{% endif %}" @submit.prevent="submitEmailConfirmForm" class="w-full py-3 space-y-4 md:space-y-6">
+      {% csrf_token %}
+      <button title="apply now" x-transition.duration.300ms class="flex items-center space-x-3 text-center justify-center mt-4 w-full rounded-xl bg-black text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submitForm">
+        <svg x-show="processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-center block mx-auto" x-text="getBtnText"></span>
+      </button>
+    </form>
+  </div>
+  {% else %}
 
-{% else %}
+  {% url 'account_email' as email_url %}
 
-{% url 'account_email' as email_url %}
+  <p class="text-xs md:text-sm text-center">{% blocktranslate %}This e-mail confirmation link expired or is invalid. Please <br><a href="{{ email_url }}" class="font-bold uppercase">issue a new e-mail confirmation request</a>.{% endblocktranslate %}</p>
 
-<p>{% blocktranslate %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktranslate %}</p>
-
-{% endif %}
-
+  {% endif %}
+</div>
 {% endblock %}

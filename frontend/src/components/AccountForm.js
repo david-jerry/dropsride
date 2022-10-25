@@ -13,15 +13,20 @@ function validateField(formElement, fieldElement) {
 
     axios.post(formElement.action, formData).then(function (response) {
       let errors = response.data.errors;
+      console.log(errors);
       let errorsWrapperElement = document.getElementById(`error-wrapper-${fieldElement.name}`);
       if (errors.length === 0) {
-        document.getElementById('submitForm').classList.remove('hidden');
+        if (document.getElementById('submitForm')) document.getElementById('submitForm').classList.remove('hidden');
+        if (document.getElementById('subscribeDriver')) document.getElementById('subscribeDriver').classList.remove('hidden');
+        if (document.getElementById('subscribeCompany')) document.getElementById('subscribeCompany').classList.remove('hidden');
         errorsWrapperElement.classList.add('hidden');
         if (errorsWrapperElement) {
           errorsWrapperElement.innerHTML = "";
         }
       } else {
-        document.getElementById('submitForm').classList.add('hidden');
+        if (document.getElementById('submitForm')) document.getElementById('submitForm').classList.add('hidden');
+        if (document.getElementById('subscribeDriver')) document.getElementById('subscribeDriver').classList.add('hidden');
+        if (document.getElementById('subscribeCompany')) document.getElementById('subscribeCompany').classList.add('hidden');
         errorsWrapperElement.classList.remove('hidden');
         errorsWrapperElement.classList.add('flex');
         if (errorsWrapperElement) {
@@ -50,7 +55,7 @@ export default function AccountForm() {
             const formElement = this.$refs.form;
             const div = document.getElementById('form');
             const action = formElement.action;
-            const redirect = formElement.dataset.redirect;
+            const redirect = formElement.dataset.errorurl || formElement.dataset.redirect;
             const csrf = formElement.dataset.csrf;
             let data = new FormData(formElement);
             formElement.querySelectorAll("[name]").forEach(fieldElement => {
@@ -71,12 +76,10 @@ export default function AccountForm() {
                       'X-CSRFToken': csrf,
                     }})
                     .then(function (response) {
-                        // console.info("RESPONSE DATA: ", response);
 
+                        div.appendChild(formElement);
+                        sleep(4500); //wait 1 sec and then htmx redirect get
                         if (response.status === 200 || response.status === 201) {
-                            div.innerHTML = `
-                            ${formElement}
-                            `;
                             iziToast.success({
                                 title: response.data.title,
                                 balloon: true,
@@ -84,67 +87,253 @@ export default function AccountForm() {
                                 animateInside: true,
                                 message: response.data.message
                             });
-                            sleep(3500); //wait 1 sec and then htmx redirect get
-                            htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
-                            // sleep(3500); //wait 1 sec and then htmx redirect get
                             // location.reload();
-                        } else if (response.status === 403) {
-                            iziToast.error({
-                                title: response.data.title,
-                                balloon: true,
-                                position: "topRight",
-                                animateInside: true,
-                                message: response.data.message
-                            });
-                            // sleep(3500); //wait 1 sec and then htmx redirect get
-                            htmx.ajax('GET', response.data.success_url, {target:'main', swap:'outerHTML'});
-                        }else {
-                            iziToast.error({
-                                title: response.data.title,
-                                balloon: true,
-                                position: "topRight",
-                                animateInside: true,
-                                message: response.data.message
-                            });
                         }
 
-                        console.log(response);
+                        if(response.data.username) {
+                            return window.location.replace(`${window.location.origin}/users/${response.data.username}/`);
+                        }
+
+                        if (redirect) {
+                            return window.location.replace(redirect); // htmx.ajax('GET', redirect, {target:'body', swap:'outerHTML'});
+                        }
+
                     }).catch(function (error) {
-                        if (error.response.status === 403) {
-                            iziToast.error({
+
+                        if (error.response && error.response.status === 403) {
+                            return iziToast.error({
                                 title: error.response.data.title,
                                 balloon: true,
                                 position: "topRight",
                                 animateInside: true,
                                 message: error.response.data.message
                             });
-                            // sleep(3500); //wait 1 sec and then htmx redirect get
-                            return htmx.ajax('GET', error.response.data.success_url, {target:'body', swap:'outerHTML'});
                         }
-                        iziToast.error({
+
+                        return iziToast.error({
                             title: "Form Error",
                             balloon: true,
                             position: "topRight",
                             animateInside: true,
                             message: `Something wrong happened: ${error}`
                         });
+
+                        // sleep(7500); //wait 1 sec and then htmx redirect get
+                        // return window.location.reload();
                     });
-                    // .finally(function () {
-                    //     console.log("finally");
-                    // });
 
                 this.processing = false;
-            } else {
-                iziToast.error({
-                    title: "Form Sending Incomplete",
-                    balloon: true,
-                    position: "topRight",
-                    animateInside: true,
-                    message: `Form data is not valid. Ensure you have filled all fields accurately! ${formElement.reportValidity()}`
-                });
-                sleep(2500); //wait 2.5 sec and then htmx redirect get
+            }
+
+        },
+
+        async submitSignupForm() {
+            this.processing = true;
+
+            const formElement = this.$refs.form;
+            const action = formElement.action;
+            const redirect = formElement.dataset.errorurl || formElement.dataset.redirect;
+            const csrf = formElement.dataset.csrf;
+            let data = new FormData(formElement);
+            formElement.querySelectorAll("[name]").forEach(fieldElement => {
+                if (fieldElement.type === "textarea") {
+                    let textarea = fieldElement.id;
+                    console.log('textarea content: ', window.parent.tinymce.get(textarea).getContent());
+                    data.append(fieldElement.name, window.parent.tinymce.get(textarea).getContent());
+                }
+
+                if (fieldElement.type !== "textarea"){
+                    data.append(fieldElement.name, fieldElement.value);
+                }
+            });
+
+            if (formElement.checkValidity()) {
+                await axios.post(action, data, {
+                    headers: {
+                      'X-CSRFToken': csrf,
+                    }})
+                    .then(function (response) {
+                        iziToast.success({
+                            title: "SINGUP SUCCESSFUL",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: "You have successfully registered a new account" + response
+                        });
+                        sleep(7500); //wait 1 sec and then htmx redirect get
+                        return window.location.replace(redirect);
+
+                    }).catch(function (error) {
+
+                        return iziToast.error({
+                            title: "SIGNUP FORM ERROR",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: `Something wrong happened: ${error}`
+                        });
+                    });
+
                 this.processing = false;
-                htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
+            }
+
+        },
+
+        async submitEmailConfirmForm() {
+            this.processing = true;
+
+            const formElement = this.$refs.form;
+            const action = formElement.action;
+            // const redirect = formElement.dataset.redirect;
+            const csrf = formElement.dataset.csrf;
+            let data = new FormData(formElement);
+            formElement.querySelectorAll("[name]").forEach(fieldElement => {
+                if (fieldElement.type === "textarea") {
+                    let textarea = fieldElement.id;
+                    console.log('textarea content: ', window.parent.tinymce.get(textarea).getContent());
+                    data.append(fieldElement.name, window.parent.tinymce.get(textarea).getContent());
+                }
+
+                if (fieldElement.type !== "textarea"){
+                    data.append(fieldElement.name, fieldElement.value);
+                }
+            });
+
+            if (formElement.checkValidity()) {
+                await axios.post(action, data, {
+                    headers: {
+                      'X-CSRFToken': csrf,
+                    }})
+                    .then(function (response) {
+
+                        iziToast.success({
+                            title: "EMAIL CONFIRMATION  SUCCESSFUL",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: "You have successfully confirmed your email address" + response.data.message
+                        });
+                        sleep(7500); //wait 1 sec and then htmx redirect get
+                        if(response.data.redirect) return window.location.replace(response.data.redirect);
+
+                    }).catch(function (error) {
+
+                        return iziToast.error({
+                            title: "EMAIL CONFIRMATION ERROR",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: `Something wrong happened: ${error}`
+                        });
+                    });
+
+                this.processing = false;
+            }
+
+        },
+
+        async submitLoginForm() {
+            this.processing = true;
+
+            const formElement = this.$refs.form;
+            const action = formElement.action;
+            const redirect = formElement.dataset.errorurl || formElement.dataset.redirect;
+            const csrf = formElement.dataset.csrf;
+            let data = new FormData(formElement);
+            formElement.querySelectorAll("[name]").forEach(fieldElement => {
+                if (fieldElement.type === "textarea") {
+                    let textarea = fieldElement.id;
+                    console.log('textarea content: ', window.parent.tinymce.get(textarea).getContent());
+                    data.append(fieldElement.name, window.parent.tinymce.get(textarea).getContent());
+                }
+
+                if (fieldElement.type !== "textarea"){
+                    data.append(fieldElement.name, fieldElement.value);
+                }
+            });
+
+            if (formElement.checkValidity()) {
+                await axios.post(action, data, {
+                    headers: {
+                      'X-CSRFToken': csrf,
+                    }})
+                    .then(function (response) {
+                        iziToast.success({
+                            title: "LOGIN SUCCESSFUL",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: "You have successfully logged into your account" + response
+                        });
+                        sleep(7500); //wait 1 sec and then htmx redirect get
+                        return window.location.replace(redirect);
+
+                    }).catch(function (error) {
+
+                        return iziToast.error({
+                            title: "LOGIN FORM ERROR",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: `Something wrong happened: ${error}`
+                        });
+                    });
+
+                this.processing = false;
+            }
+
+        },
+
+        async submitPasswordForm() {
+            this.processing = true;
+
+            const formElement = this.$refs.form;
+            const action = formElement.action;
+            const redirect = formElement.dataset.redirect;
+            // const eredirect = formElement.dataset.errorurl;
+            const csrf = formElement.dataset.csrf;
+            let data = new FormData(formElement);
+            formElement.querySelectorAll("[name]").forEach(fieldElement => {
+                if (fieldElement.type === "textarea") {
+                    let textarea = fieldElement.id;
+                    console.log('textarea content: ', window.parent.tinymce.get(textarea).getContent());
+                    data.append(fieldElement.name, window.parent.tinymce.get(textarea).getContent());
+                }
+
+                if (fieldElement.type !== "textarea"){
+                    data.append(fieldElement.name, fieldElement.value);
+                }
+            });
+
+            if (formElement.checkValidity()) {
+                await axios.post(action, data, {
+                    headers: {
+                      'X-CSRFToken': csrf,
+                    }})
+                    .then(function (response) {
+                        iziToast.success({
+                            title: "PASSWORD SUCCESSFULLY UPDATED",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: response
+                        });
+                        sleep(7500); //wait 1 sec and then htmx redirect get
+                        return window.location.replace(redirect);
+
+
+                    }).catch(function (error) {
+
+                        return iziToast.error({
+                            title: "PASSWORD FORM ERROR",
+                            balloon: true,
+                            position: "topRight",
+                            animateInside: true,
+                            message: `Something wrong happened: ${error}`
+                        });
+                    });
+
+                this.processing = false;
             }
 
         },
@@ -159,11 +348,14 @@ export default function AccountForm() {
         },
 
         async showSingupPassword() {
-            var x = document.getElementById("id_password");
-            if (x.type === "password") {
+            var x = document.getElementById("id_password1");
+            var y = document.getElementById("id_password2");
+            if (x.type === "password" && y.type === "password") {
               x.type = "text";
+              y.type = "text";
             } else {
               x.type = "password";
+              y.type = "password";
             }
         },
 
@@ -172,7 +364,7 @@ export default function AccountForm() {
 
             const formElement = this.$refs.form;
             const div = document.getElementById('form');
-            const action = formElement.action;
+            const action = formElement.action || window.location;
             const redirect = formElement.dataset.redirect;
             const csrf = formElement.dataset.csrf;
             let data = new FormData(formElement);
@@ -195,12 +387,8 @@ export default function AccountForm() {
                       'Content-Type':'multipart/form-data'
                     }})
                     .then(function (response) {
-                        // console.info("RESPONSE DATA: ", response);
-
+                        div.appendChild(formElement);
                         if (response.status === 200 || response.status === 201) {
-                            div.innerHTML = `
-                            ${formElement}
-                            `;
                             iziToast.success({
                                 title: response.data.title,
                                 balloon: true,
@@ -208,22 +396,22 @@ export default function AccountForm() {
                                 animateInside: true,
                                 message: response.data.message
                             });
-                            sleep(3500); //wait 1 sec and then htmx redirect get
-                            htmx.ajax('GET', redirect, {target:'body', swap:'outerHTML'});
-                            // sleep(3500); //wait 1 sec and then htmx redirect get
-                            // location.reload();
-                        } else {
+                            sleep(4500); //wait 1 sec and then htmx redirect get
+                            if (redirect) {
+                                return htmx.ajax('GET', redirect, {target:'body', swap:'outerHTML'});
+                            }
+                            return;
+                        }
+                    }).catch(function (error) {
+                        if (error.response && error.response.status === 403) {
                             iziToast.error({
-                                title: response.data.title,
+                                title: error.response.data.title,
                                 balloon: true,
                                 position: "topRight",
                                 animateInside: true,
-                                message: response.data.message
+                                message: error.response.data.message
                             });
                         }
-
-                        console.log(response);
-                    }).catch(function (error) {
                         iziToast.error({
                             title: "Form Error",
                             balloon: true,
@@ -232,9 +420,6 @@ export default function AccountForm() {
                             message: `Something wrong happened: ${error}`
                         });
                     });
-                    // .finally(function () {
-                    //     console.log("finally");
-                    // });
 
                 this.processing = false;
             } else {
@@ -245,9 +430,9 @@ export default function AccountForm() {
                     animateInside: true,
                     message: `Form data is not valid. Ensure you have filled all fields accurately! ${formElement.reportValidity()}`
                 });
-                sleep(2500); //wait 2.5 sec and then htmx redirect get
+                sleep(5500); //wait 2.5 sec and then htmx redirect get
                 this.processing = false;
-                htmx.ajax('GET', redirect, {target:'main', swap:'outerHTML'});
+                htmx.ajax('GET', redirect, {target:'body', swap:'outerHTML'});
             }
 
         },

@@ -1,1 +1,83 @@
 <!-- add river signup button id to be subscribeDriver for push notification subscription -->
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags widget_tweaks %}
+
+{% block head_title %}{% translate "Driver Signup" %}{% endblock %}
+
+{% block inner %}
+<div class="md:w-2/3 mx-auto py-4 space-y-2">
+  <h1 class="font-bold text-xl md:text-2xl text-center uppercase">{% translate "Sign Up" %}</h1>
+
+  <p class="text-xs md:text-sm text-justify md:text-left">{% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktranslate %}</p>
+
+  <div id="form">
+    <form hx-boost="true" x-data="AccountForm" x-init="checkValidity" x-ref="form" method="post" data-csrf="{{csrf_token}}" data-redirect="{% url 'users:verify_phone' %}" action="{% url 'driver_signup' %}" @submit.prevent="submitSignupForm">
+      {% csrf_token %}
+
+      {% for hidden in form.hidden_fields %}
+          {{hidden}}
+      {% endfor %}
+
+      <div class="w-full">
+        {% render_field form.username required="true" type="text" placeholder="Username" class="text placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+        <span id="error-wrapper-username" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+      <div class="w-full">
+        {% render_field form.email required="true" type="email" placeholder="Email Address" class="email placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+        <span id="error-wrapper-email" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+      <div class="w-full">
+        {% render_field form.phone_number required="true" type="text" placeholder="Phone Number" class="text placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+        <span id="error-wrapper-phone_number" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+
+      <div class="w-full">
+        <div class="w-full flex items-center border-b-2 border-b-black">
+          {% render_field form.password1 required="true" type="password" placeholder="New Password" class="password placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <button title="password reveal" type="button" @click="showSingupPassword" class="p-2 aspect-1 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+              <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+              <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <span id="error-wrapper-password1" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+      <div class="w-full">
+        <div class="w-full flex items-center border-b-2 border-b-black">
+          {% render_field form.password2 required="true" type="password" placeholder="New Password (again)" class="password placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+          <button title="password reveal" type="button" @click="showSingupPassword" class="p-2 aspect-1 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+              <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+              <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <span id="error-wrapper-password2" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'users:verify_phone' %}" />
+      <span id="error-wrapper-{{ redirect_field_name }}" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      {% endif %}
+
+      <button title="apply now" x-transition.duration.300ms class="flex items-center space-x-3 text-center justify-center mt-4 w-full rounded-xl bg-black text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="subscribeDriver">
+        <svg x-show="processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-center block mx-auto" x-text="getBtnText"></span>
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -5,15 +5,17 @@ export default function StickyNav() {
         lastScroll: 0,
 
         initState() {
-            const main = document.getElementById('main');
-            const navbar = document.getElementById('navbar');
+            if (document.getElementById('navbar')) {
+                const main = document.getElementById('main');
+                const navbar = document.getElementById('navbar');
 
-            // get the height of the navbar and then add it to the top padding of the main content
-            const header_h = navbar.offsetHeight + 10;
+                // get the height of the navbar and then add it to the top padding of the main content
+                const header_h = navbar.offsetHeight + 10;
 
-            main.classList.add(`pt-[${header_h}px]`);
-            this.navTop = true;
-            this.showNav = false;
+                main.classList.add(`pt-[${header_h}px]`);
+                this.navTop = true;
+                this.showNav = false;
+            }
         },
 
         scrollNav() {

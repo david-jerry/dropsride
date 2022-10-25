@@ -1,1 +1,11 @@
-Jeremiah E. David
+DROPSRIDE was built by (<jeremiahedavid@gmail.com> or Jeremiah David - Darkcodr Codes)
+in October 2022, inspired by the Drops Technology Team
+(<abdullahi_musa@dropsride.com>, <jehu_hassan@dropsride.com>, <jacob_hassan@dropsride.com>)
+
+Contributors
+============
+
+Abdullahi Musa
+Emayak Boma
+Jacob Hassan
+Jehu Hassan

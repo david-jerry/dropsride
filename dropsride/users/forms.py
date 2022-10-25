@@ -3,6 +3,7 @@ import requests
 import pprint
 
 from django.conf import settings
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django import forms
@@ -15,11 +16,14 @@ from django.utils import timezone
 from allauth.account.forms import SignupForm, LoginForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from countries_plus.models import Country
-from dropsride.companies.models import Company
+from allauth.account import app_settings, signals
 
 from paystackapi.verification import Verification
 
+from config.commons import signup_users
 
+
+from dropsride.companies.models import Company
 from dropsride.currency.models import Banks
 from dropsride.utils.logger import LOGGER
 from dropsride.users.models import BankAccount, SavedCards, UserNextOfKin, UserSocialAccounts, VerifiedPhone
@@ -210,21 +214,15 @@ class UserSignupForm(SignupForm):
     Check UserSocialSignupForm for accounts created from social.
     """
 
-    # first_name = forms.CharField(max_length=30, label='First Name')
-    # middle_name = forms.CharField(max_length=30, label='Middle Name')
-    # last_name = forms.CharField(max_length=30, label='Last Name')
-    phone_number = forms.CharField(max_length=13, min_length=11, label='Phone Number')
-    token = forms.CharField(widget=forms.HiddenInput())
-    # gender = forms.ChoiceField(choices=User.GENDER)
-    # country = forms.ModelChoiceField(queryset=Country.objects.all(), empty_label="(Country)")
-    # date_of_birth = forms.DateField()
+    phone_number = forms.CharField(max_length=16, min_length=11, label='Phone Number')
+
 
     def clean_username(self):
         username = self.cleaned_data['username']
         if len(username) <= 4:
             raise ValidationError('Username is too short')
 
-        if ("admin", "superuser", "administrator") in username:
+        if "admin" in username or "superuser" in username or "administrator" in username:
             raise ValidationError("Unavailable username parameters")
 
         if User.objects.filter(username=username).exists():
@@ -233,7 +231,7 @@ class UserSignupForm(SignupForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if ("admin", "superuser", "administrator") in email:
+        if "admin" in email or "superuser" in email or "administrator" in email:
             raise ValidationError("Unavailable email name parameters")
 
         if User.objects.filter(email=email).exists():
@@ -242,7 +240,64 @@ class UserSignupForm(SignupForm):
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data['phone_number']
-        if "+" in phone_number:
+        if not "+" in phone_number:
+            raise ValidationError("Phone number should start with your country code eg: +234, +1")
+
+        if User.objects.filter(phone_number=phone_number).exists():
+            raise ValidationError("A user with this phone number already exists")
+        return phone_number
+
+    # @transaction.atomic
+    def save(self, request):
+        user  = super(UserSignupForm, self).save(request)
+        user.phone_number = self.cleaned_data['phone_number']
+        user.gave_consent = True
+        user.is_company = False
+        user.is_driver = False
+        user.save()
+        return user
+
+class DriverSignupForm(SignupForm):
+    """
+    Form that will be rendered on a user sign up section/screen.
+    Default fields will be added automatically.
+    Check UserSocialSignupForm for accounts created from social.
+    """
+
+    # first_name = forms.CharField(max_length=30, label='First Name')
+    # middle_name = forms.CharField(max_length=30, label='Middle Name')
+    # last_name = forms.CharField(max_length=30, label='Last Name')
+    phone_number = forms.CharField(max_length=16, min_length=11, label='Phone Number')
+    # token = forms.CharField(widget=forms.HiddenInput())
+    # gender = forms.ChoiceField(choices=User.GENDER)
+    # country = forms.ModelChoiceField(queryset=Country.objects.all(), empty_label="(Country)")
+    # date_of_birth = forms.DateField()
+
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if len(username) <= 4:
+            raise ValidationError('Username is too short')
+
+        if "admin" in username or "superuser" in username or "administrator" in username:
+            raise ValidationError("Unavailable username parameters")
+
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("A user with this username already exists")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if "admin" in email or "superuser" in email or "administrator" in email:
+            raise ValidationError("Unavailable email name parameters")
+
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("A user with this email already exists")
+        return email
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data['phone_number']
+        if not "+" in phone_number:
             raise ValidationError("Phone number should start with your country code eg: +234, +1")
 
         if User.objects.filter(phone_number=phone_number).exists():
@@ -250,9 +305,13 @@ class UserSignupForm(SignupForm):
         return phone_number
 
     def save(self, request):
-        user = super().save(request)
+        user  = super(UserSignupForm, self).save(request)
+        user.phone_number = self.cleaned_data['phone_number']
         user.gave_consent = True
+        user.is_company = False
+        user.is_driver = True
         user.save()
+        # signup_users(request, user, app_settings.EMAIL_VERIFICATION, settings.LOGIN_REDIRECT_URL, None)
         return user
 
 class CompanySignupForm(SignupForm):
@@ -265,9 +324,9 @@ class CompanySignupForm(SignupForm):
     # first_name = forms.CharField(max_length=30, label='First Name')
     # middle_name = forms.CharField(max_length=30, label='Middle Name')
     # last_name = forms.CharField(max_length=30, label='Last Name')
-    phone_number = forms.CharField(max_length=13, min_length=11, label='Phone Number')
+    phone_number = forms.CharField(max_length=15, min_length=11, label='Phone Number')
     company_name = forms.CharField(max_length=500, min_length=11, label='Company Name')
-    token = forms.CharField(widget=forms.HiddenInput())
+    # token = forms.CharField(widget=forms.HiddenInput())
     # gender = forms.ChoiceField(choices=User.GENDER)
     # country = forms.ModelChoiceField(queryset=Country.objects.all(), empty_label="(Country)")
     # date_of_birth = forms.DateField()
@@ -279,13 +338,12 @@ class CompanySignupForm(SignupForm):
             raise ValidationError(f"This company has already been registered by {cp.user.get_full_name()}. Please contact this email: {cp.user.email} to seek permission to this account or be added as an admin")
         return data
 
-
     def clean_username(self):
         username = self.cleaned_data['username']
         if len(username) <= 4:
             raise ValidationError('Username is too short')
 
-        if ("admin", "superuser", "administrator") in username:
+        if "admin" in username or "superuser" in username or "administrator" in username:
             raise ValidationError("Unavailable username parameters")
 
         if User.objects.filter(username=username).exists():
@@ -294,7 +352,7 @@ class CompanySignupForm(SignupForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if ("admin", "superuser", "administrator") in email:
+        if "admin" in email or "superuser" in email or "administrator" in email:
             raise ValidationError("Unavailable email name parameters")
 
         if User.objects.filter(email=email).exists():
@@ -303,7 +361,7 @@ class CompanySignupForm(SignupForm):
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data['phone_number']
-        if "+" in phone_number:
+        if not "+" in phone_number:
             raise ValidationError("Phone number should start with your country code eg: +234, +1")
 
         if User.objects.filter(phone_number=phone_number).exists():
@@ -311,12 +369,17 @@ class CompanySignupForm(SignupForm):
         return phone_number
 
     def save(self, request):
-        user = super().save(request)
+        user  = super(UserSignupForm, self).save(request)
+        user.phone_number = self.cleaned_data['phone_number']
         user.gave_consent = True
-        user.is_company = True
+        user.is_company = False
+        user.is_driver = False
         user.save()
+        Company.objects.get_or_create(user=user, company_name=self.cleaned_data['company_name'])
+        # signup_users(request, user, app_settings.EMAIL_VERIFICATION, settings.LOGIN_REDIRECT_URL, None)
         return user
 
+    #     return user
 
 
 class UserLoginForm(LoginForm):

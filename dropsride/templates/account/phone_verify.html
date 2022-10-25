@@ -1,4 +1,39 @@
-<form action="{% url 'verify_phone' %}">
+{% extends "account/base.html" %}
 
-</form>
+{% load i18n %}
+{% load crispy_forms_tags widget_tweaks %}
 
+{% block head_title %}{% translate "Verify Phone" %}{% endblock %}
+
+{% block inner %}
+<div class="md:w-2/3 mx-auto py-4 space-y-2">
+  <h1 class="font-bold text-xl md:text-2xl text-center uppercase">{% translate "Verify Phone" %}</h1>
+
+  <p class="text-xs md:text-sm text-center">{% blocktranslate %}You can verify your phone number here by inputing the verification code sent to your mobile device{% endblocktranslate %}</p>
+
+  <div id="form">
+    <form class="space-y-3" @submit.prevent="submitForm" hx-boost="true" x-data="AccountForm" x-init="checkValidity" x-ref="form" method="post" data-csrf="{{csrf_token}}" data-redirect="{% if user.is_authenticated %}{% url 'users:detail' user.username %}{% else %}{% url 'account_login' %}{% endif %}" action="{% url 'users:verify_phone' %}">
+      {% csrf_token %}
+
+      {% for hidden in form.hidden_fields %}
+          {{hidden}}
+      {% endfor %}
+
+      <div class="w-full">
+        {% render_field form.verified_code required="true" type="text" placeholder="Verification Code (eg. 1234)" class="password placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:bg-gray-200 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full" %}
+        <span id="error-wrapper-verified_code" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+      </div>
+
+      <button title="apply now" x-transition.duration.300ms class="flex items-center space-x-3 text-center justify-center mt-4 w-full rounded-xl bg-black text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submitForm">
+        <svg x-show="processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-center block mx-auto" x-text="getBtnText"></span>
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

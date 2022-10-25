@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.contrib.sitemaps.views import sitemap
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
@@ -13,7 +13,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from webpush.views import save_info
 
 from dropsride.sitesettings.views import cities_view
-from dropsride.users.views import sms_verification_link, verify_phone_number, account_login, account_singup as account_signup, driver_singup as driver_signup, company_singup as company_signup
+from dropsride.users.views import sms_verification_link, verify_phone_number, account_login, account_singup as account_signup, driver_singup as driver_signup, company_singup as company_signup, confirm_email, password_set, password_reset, password_reset_from_key, password_change
 from .views import offline_view, send_notification, service_worker, service_worker_map, support
 from config.sitemaps import StaticViewSitemap
 
@@ -50,10 +50,19 @@ urlpatterns = [
     path("users/", include("dropsride.users.urls", namespace="users")),
     path("admins/UcR9JPT074regleE15Xsb0gSZol4lDff/", include("dropsride.admins.urls", namespace="staff")),
     path("accounts/login/", account_login, name="account_login"),
-    path("accounts/rider/signup/", account_signup, name="account_signup"),
+    path("accounts/rider/signup/", account_signup, name="rider_signup"),
     path("accounts/driver/signup/", driver_signup, name="driver_signup"),
     path("accounts/company/signup/", company_signup, name="company_signup"),
-    path('accounts/verify-phone/<code>/<user>/', sms_verification_link, name="sms_verify"),
+    path('accounts/verify-phone/<code>/<user>', sms_verification_link, name="sms_verify"),
+    re_path(
+        r"^accounts/confirm-email/(?P<key>[-:\w]+)/$",
+        confirm_email,
+        name="account_confirm_email",
+    ),
+    path("accounts/password/set/", password_set, name="account_set_password"),
+    path("accounts/password/reset/", password_reset, name="account_reset_password"),
+    path("password/change/", password_change, name="account_change_password",),
+    re_path(r"^accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",password_reset_from_key,name="account_reset_password_from_key",),
     path("accounts/", include("allauth.urls")),
 
     # Your stuff: custom urls includes go here

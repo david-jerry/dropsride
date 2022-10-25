@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import AccessMixin
 from django.conf import settings
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 
@@ -32,19 +33,25 @@ class HtmxResponseMixin(TemplateResponseMixin, ContextMixin):
 class StaffRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
-            return self.handle_no_permission()
+            return redirect(f'/accounts/login/?next={request.path}')
         return super().dispatch(request, *args, **kwargs)
 
 class CompanyRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_company:
-            return self.handle_no_permission()
+            return redirect(f'/accounts/login/?next={request.path}')
         return super().dispatch(request, *args, **kwargs)
 
 class DriverRequiredMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_driver:
-            return self.handle_no_permission()
+            return redirect(f'/accounts/login/?next={request.path}')
+        return super().dispatch(request, *args, **kwargs)
+
+class LoginRequiredMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(f'/accounts/login/?next={request.path}')
         return super().dispatch(request, *args, **kwargs)
 
 def reCAPTCHAValidation(token):

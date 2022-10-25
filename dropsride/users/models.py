@@ -11,8 +11,10 @@ from django.db.models import (
     DateField,
     DecimalField,
     URLField,
+    DateTimeField,
     FloatField,
     TextField,
+    TimeField,
     IntegerField,
     PositiveSmallIntegerField,
     PositiveBigIntegerField,
@@ -99,8 +101,10 @@ class VerifiedPhone(TimeStampedModel):
     user = OneToOneField(User, on_delete=CASCADE, related_name="verified_phone")
     code = CharField(max_length=4, blank=True, null=True, unique=True)
     verified_code = CharField(max_length=4, blank=True, null=True)
+    time = TimeField(blank=True, null=True)
+    endtime = DateTimeField(blank=True, null=True)
 
-    verfied = BooleanField(default=False)
+    verified = BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
@@ -219,3 +223,23 @@ class BankAccount(TimeStampedModel):
         verbose_name = "User Saved Bank"
         verbose_name_plural = "User Saved Banks"
         ordering = ["-acc_name", "verified"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

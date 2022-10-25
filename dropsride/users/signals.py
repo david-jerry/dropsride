@@ -1,5 +1,8 @@
+import datetime
+
+
 from datetime import timedelta
-from allauth.socialaccount.signals import pre_social_login, social_account_added
+from allauth.socialaccount.signals import pre_social_login, social_account_added#, user_signed_up
 from config.commons import send_html_mail
 from dropsride.companies.models import Company
 
@@ -31,22 +34,102 @@ from messente_api.rest import ApiException
 
 User = get_user_model()
 
+@receiver(post_save, sender=User)
+def create_user_relationship_signal(instance, created, **kwargs):
+    if not UserSocialAccounts.objects.filter(user=instance).exists() and created:
+        UserSocialAccounts.objects.create(user=instance)
+        LOGGER.info(f"[NEW USER SOCIAL] Created New Social Account Relationships for {instance.username}")
+
+    if not UserNextOfKin.objects.filter(user=instance).exists() and created:
+        UserNextOfKin.objects.create(user=instance)
+        LOGGER.info(f"[NEW USER NOK] Created New Kin Account Relationships for {instance.username}")
+
+    if instance.is_superuser and created:
+        instance.is_driver = True
+        instance.is_company = True
+        instance.gave_consent = True
+
+    if instance.is_driver and not instance.is_superuser and created:
+        instance.gave_consent = True
+        instance.is_driver = True
+        instance.is_company = False
+        Drivers.objects.create(user=instance)
+        LOGGER.info(f"[NEW DRIVER] Created New Driver Account Relationships for {instance.username}")
+
+    if instance.is_company and not instance.is_superuser and created:
+        instance.gave_consent = True
+        instance.is_driver = False
+        instance.is_company = True
+        Company.objects.create(user=instance)
+        LOGGER.info(f"[NEW BUSINESS ACCOUNT] Created New Company Account Relationships for {instance.username}")
+
+    if instance.is_staff and not instance.is_superuser and created:
+        instance.is_driver = True
+        instance.is_company = True
+        instance.gave_consent = True
+        Admins.objects.create(user=instance)
+        LOGGER.info(f"[NEW STAFF] Created New Administrator Account Relationships for {instance.username}")
+
+    if not instance.is_driver and not instance.is_superuser and created:
+        instance.gave_consent = True
+        instance.is_driver = False
+        instance.is_company = False
+        Riders.objects.create(user=instance)
+        LOGGER.info(f"[NEW RIDER] Created New Rider Account Relationships for {instance.username}")
+
+    if not instance.ref_link and not instance.is_superuser and instance.phone_number and created:
+        res = Customer.create(first_name=instance.first_name, last_name=instance.last_name, email=instance.email, phone=instance.phone_number)
+        instance.ref_link = res['data']['customer_code']
+        LOGGER.info(f"[NEW USER] Created New Referral/Customer Link for {instance.username}")
+
+    if not VerifiedPhone.objects.filter(user=instance).exists() and instance.phone_number and created:
+        LOGGER.info(f'Phone Number: {instance.phone_number}')
+        VerifiedPhone.objects.create(user=instance)
+        LOGGER.info(f"[NEW USER VERIFIED PHONE] Created New Verified Phone Number Relationships for {instance.username}")
+
+@receiver(post_save, sender=User)
+def create_user_relationship_signal(instance, created, **kwargs):
+    instance.user_social_accounts.save()
+    LOGGER.info(f"[NEW USER SOCIAL] Created New Social Account Relationships for {instance.username}")
+
+    instance.next_of_kin.save()
+    LOGGER.info(f"[NEW USER NOK] Created New Kin Relationships for {instance.username}")
+
+
+    if not VerifiedPhone.objects.filter(user=instance).exists() and instance.phone_number:
+        LOGGER.info(f'Phone Number: {instance.phone_number}')
+        VerifiedPhone.objects.create(user=instance)
+        LOGGER.info(f"[NEW USER VERIFIED PHONE] Created New Verified Phone Number Relationships for {instance.username}")
+
+
 
 @receiver(post_save, sender=VerifiedPhone)
 def create_random_code(instance, created, **kwargs):
-    if not instance.code and not instance.user.is_superuser and instance.created:
+    if not instance.code and not instance.user.is_superuser and created:
         instance.code = random_code_generator(instance)
+        fmins = datetime.datetime.now() + datetime.timedelta(minutes=5)
+        VerifiedPhone.objects.filter(user=instance.user, verified=False).update(code=instance.code, endtime=fmins)
         configuration = Configuration()
         configuration.username = settings.MESSENTE_API_USERNAME
         configuration.password = settings.MESSENTE_API_PASSWORD
-        domain = "https://www.dropsride.com" if settings.PRODUCTION else "localhost:8000"
+        domain = "https://www.dropsride.com" if settings.PRODUCTION else "https://localhost:8000"
         link = reverse("sms_verify", kwargs={"code":instance.code, "user":instance.user})
 
         api_instance = OmnimessageApi(ApiClient(configuration))
 
-        sms = SMS(sender="Drops Technology Limited", text=f"please find attached your verification code: {instance.code}\n\nYou can also verify by clicking the link below\n\n{domain}{link}")
-
+        sms = SMS(sender="+2347069916149", text=f"please find attached your verification code: {instance.code}\n\nYou can also verify by clicking the link below\n\n{domain}{link}")
+        # phone_number = User.objects.get(phone_number=instance.user.phone_number)
         omnimessage = Omnimessage(messages=tuple([sms]), to=instance.user.phone_number)
+        msg = f"""
+        Dear {instance.user.username.title()},
+        <br>
+        <br>
+        please find attached your verification code: {instance.code}
+        <br>
+        You can also verify by clicking the link below\n\n{domain}{link}
+        <br>
+        """
+        send_html_mail(subject=f"PHONE VERIFICATION CODE", html_content=msg, from_email="DROPS TECHNOLOGY LIMITED <noreply@dropsride.com>", recipient_list=[instance.user.email])
 
         try:
             response = api_instance.send_omnimessage(omnimessage)
@@ -69,49 +152,15 @@ def create_random_code(instance, created, **kwargs):
             LOGGER.error("[PHONE VERIFICATION ERROR] Exception when sending an omnimessage: %s\n" % exception)
 
 
-@receiver(post_save, sender=User)
-def create_user_relationship_signal(instance, created, **kwargs):
-    if not instance.ref_link and not instance.is_superuser:
-        res = Customer.objects.create(first_name=instance.first_name, last_name=instance.last_name, email=instance.email)
-        LOGGER.info(res)
-        instance.ref_link = res.customer_code
-        LOGGER.info(f"[NEW USER] Created New Referral/Customer Link for {instance.username}")
-
-    if instance.is_driver and not instance.is_superuser:
-        Drivers.objects.create(user=instance)
-        LOGGER.info(f"[NEW DRIVER] Created New Driver Account Relationships for {instance.username}")
-
-    if instance.is_company and not instance.is_superuser:
-        Company.objects.create(user=instance)
-        LOGGER.info(f"[NEW BUSINESS ACCOUNT] Created New Company Account Relationships for {instance.username}")
-
-    if instance.is_staff and not instance.is_superuser:
-        Admins.objects.create(user=instance)
-        LOGGER.info(f"[NEW STAFF] Created New Administrator Account Relationships for {instance.username}")
-
-    if created:
-        if instance.is_superuser:
-            instance.is_driver = True
-            instance.is_company = True
-            instance.gave_consent = True
-        UserSocialAccounts.objects.create(user=instance)
-        VerifiedPhone.objects.create(user=instance)
-        UserNextOfKin.objects.create(user=instance)
-        LOGGER.info(f"[NEW USER] Created New Social Account Relationships for {instance.username}")
-
-    if not instance.is_driver and not instance.is_superuser:
-        Riders.objects.create(user=instance)
-        LOGGER.info(f"[NEW RIDER] Created New Rider Account Relationships for {instance.username}")
-
 
 @receiver(user_logged_in)
 def user_logged_in_callback(sender, request, user, **kwargs):
     assert hasattr(request, 'ip') # check if user is logged in
 
     last_ip = user.last_ip if user.last_ip else None
-    loc = geocoder.ip(request.ip)
 
     if request.ip != last_ip and last_ip != None:
+        loc = geocoder.ip(request.ip)
         User.objects.filter(username=user.username).update(last_ip=request.ip, city=loc.city, country=loc.country.upper())
         payload = {
             'head': "ACCOUNT SECURITY",
@@ -153,7 +202,6 @@ def create_social_account_relationships(request, sociallogin, *args, **kwargs):
         except UserSocialAccounts.DoesNotExist:
             UserSocialAccounts.objects.create(user=user)
             LOGGER.info(f"[NEW USER SOCIAL ACCOUNT] Created New Social Account Relationships for {user.username}")
-
 
 @receiver(social_account_added)
 def add_profile_picture(request, sociallogin, *args, **kwargs):

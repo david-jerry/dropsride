@@ -214,11 +214,11 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
+LOGIN_REDIRECT_URL = "users:redirect" # "users:redirect"
 LOGOUT_REDIRECT_URL = "account_login"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "accounts/login/"
-LOGOUT_URL = "accounts/logout/"
+LOGIN_URL = "account_login"
+LOGOUT_URL = "account_logout"
 LOGIN_EXEMPT_URLS = ["api/users/", "api/drivers/", "api/riders", "api/promos/", "api/admins/", "settings", "mfa", "reset", "users/", "drivers/", "riders/", "admins/", "accounts/"]
 
 # PASSWORDS
@@ -267,8 +267,6 @@ MIDDLEWARE = [
 
     # custom middlewares
     "dropsride.users.ip_middleware.IpAddressMiddleware",
-    # "dropsride.admins.htmx_template_middleware.HtmxResponseMiddleware",
-    # "dropsride.users.login_middlewar.LoginRequiredMiddleware",
 
 
 
@@ -402,6 +400,8 @@ ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 ACCOUNT_AUTHENTICATION_METHOD = "email" #username_email or username
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_SIGNUP_REDIRECT_URL = "/users/verify-phone/"
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS=False
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True

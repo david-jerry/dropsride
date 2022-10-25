@@ -9,7 +9,7 @@ import StickyNav from "../components/StickyNav";
 import Swiper from "swiper";
 import { detect } from "detect-browser";
 import "izitoast/dist/css/iziToast.min.css";
-import "@lottiefiles/lottie-player";
+// import "@lottiefiles/lottie-player";
 import iziToast from "izitoast/dist/js/iziToast.min.js";
 import anime from "animejs/lib/anime.es.js";
 import ScrollMagic from "scrollmagic";
@@ -70,7 +70,8 @@ const browser = detect();
 // get global variables from the base.html file for
 // push notification and pwa install button
 //----------------------------------------------------------
-const { APPLICATION_SERVER_KEY, CREATE_WP_DEVICE, SEND_NOTIFICATION } = window.WEB_PUSH_CFG;
+const { APPLICATION_SERVER_KEY, CREATE_WP_DEVICE, SEND_NOTIFICATION } =
+  window.WEB_PUSH_CFG;
 //----------------------------------------------------------
 
 // generate key for push notifications
@@ -132,8 +133,10 @@ function saveSubscribeObj(subscription) {
         //   animateInside: true,
         //   message: `Notification Subscription ${response.statusText}`,
         // });
-        const subscribeNotificationButton = document.getElementById('subscribeNotificationButton');
-        subscribeNotificationButton.classList.toggle('hidden', true);
+        const subscribeNotificationButton = document.getElementById(
+          "subscribeNotificationButton"
+        );
+        subscribeNotificationButton.classList.toggle("hidden", true);
 
         iziToast.success({
           title: "[PUSH NOTIFICATION SUBSCRIPTION]",
@@ -143,10 +146,9 @@ function saveSubscribeObj(subscription) {
           message: `Subscription Sent Successfully ${response.statusText}`,
         });
 
-      // if subscription is successfully saved to the server
-      // then enable the test notification push button to be visible
-      setupTriggerButton(subscription);
-
+        // if subscription is successfully saved to the server
+        // then enable the test notification push button to be visible
+        setupTriggerButton(subscription);
       }
     })
     .catch(function (error) {
@@ -293,7 +295,15 @@ function subscribe(registration) {
 
       // subscription is now saved to the server
       saveSubscribeObj(subscription);
-
+      if (process.env.NODE_ENV === "development") {
+        iziToast.success({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `Subscription Sent Successfully`,
+        });
+      }
     },
 
     // if there is an error figure the error and throw an appropraite error message to
@@ -302,15 +312,14 @@ function subscribe(registration) {
     function (error) {
       if (process.env.NODE_ENV === "development") {
         console.log(error);
+        iziToast.error({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `${error}`,
+        });
       }
-
-      iziToast.error({
-        title: "[PUSH NOTIFICATION SUBSCRIPTION]",
-        balloon: true,
-        position: "topRight",
-        animateInside: true,
-        message: `${error}`,
-      });
     }
   );
 }
@@ -340,14 +349,15 @@ function subscribeDriver(registration) {
       // subscription is now saved to the server
       saveDriverSubscribeObj(subscription);
 
-
-      iziToast.success({
-        title: "[PUSH NOTIFICATION SUBSCRIPTION]",
-        balloon: true,
-        position: "topRight",
-        animateInside: true,
-        message: `Subscription Sent Successfully`,
-      });
+      if (process.env.NODE_ENV === "development") {
+        iziToast.success({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `Push Notification Subscription for Driver Successful`,
+        });
+      }
     },
 
     // if there is an error figure the error and throw an appropraite error message to
@@ -356,15 +366,14 @@ function subscribeDriver(registration) {
     function (error) {
       if (process.env.NODE_ENV === "development") {
         console.log(error);
+        iziToast.error({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `${error}`,
+        });
       }
-
-      iziToast.error({
-        title: "[PUSH NOTIFICATION SUBSCRIPTION]",
-        balloon: true,
-        position: "topRight",
-        animateInside: true,
-        message: `${error}`,
-      });
     }
   );
 }
@@ -394,13 +403,15 @@ function subscribeCompany(registration) {
       // subscription is now saved to the server
       saveCompanySubscribeObj(subscription);
 
-      iziToast.success({
-        title: "[PUSH NOTIFICATION SUBSCRIPTION]",
-        balloon: true,
-        position: "topRight",
-        animateInside: true,
-        message: `Subscription Sent Successfully`,
-      });
+      if (process.env.NODE_ENV === "development") {
+        iziToast.success({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `Push Notification Subscription for Company Successful`,
+        });
+      }
     },
 
     // if there is an error figure the error and throw an appropraite error message to
@@ -409,15 +420,14 @@ function subscribeCompany(registration) {
     function (error) {
       if (process.env.NODE_ENV === "development") {
         console.log(error);
+        iziToast.error({
+          title: "[PUSH NOTIFICATION SUBSCRIPTION]",
+          balloon: true,
+          position: "topRight",
+          animateInside: true,
+          message: `${error}`,
+        });
       }
-
-      iziToast.error({
-        title: "[PUSH NOTIFICATION SUBSCRIPTION]",
-        balloon: true,
-        position: "topRight",
-        animateInside: true,
-        message: `${error}`,
-      });
     }
   );
 }
@@ -427,10 +437,12 @@ function subscribeCompany(registration) {
 //----------------------------------------------------------
 // subscribe(reg);
 function setupSubscribeButton(reg) {
-  if (document.getElementById('subscribeNotificationButton')) {
-    const subscribeNotificationButton = document.getElementById('subscribeNotificationButton');
-    subscribeNotificationButton.classList.toggle('hidden', false);
-    subscribeNotificationButton.addEventListener('click', () => {
+  if (document.getElementById("subscribeNotificationButton")) {
+    const subscribeNotificationButton = document.getElementById(
+      "subscribeNotificationButton"
+    );
+    subscribeNotificationButton.classList.toggle("hidden", false);
+    subscribeNotificationButton.addEventListener("click", () => {
       subscribe(reg);
       console.log("Subscribe Button Set");
     });
@@ -438,18 +450,18 @@ function setupSubscribeButton(reg) {
 }
 
 function setupDriverSubscribeButton(reg) {
-  if (document.getElementById('subscribeDriver')) {
-    const subscribeDriverButton = document.getElementById('subscribeDriver');
-    subscribeDriverButton.addEventListener('click', () => {
+  if (document.getElementById("subscribeDriver")) {
+    const subscribeDriverButton = document.getElementById("subscribeDriver");
+    subscribeDriverButton.addEventListener("click", () => {
       subscribeDriver(reg);
     });
   }
 }
 
 function setupCompanySubscribeButton(reg) {
-  if (document.getElementById('subscribeCompany')) {
-    const subscribeCompanyButton = document.getElementById('subscribeCompany');
-    subscribeCompanyButton.addEventListener('click', () => {
+  if (document.getElementById("subscribeCompany")) {
+    const subscribeCompanyButton = document.getElementById("subscribeCompany");
+    subscribeCompanyButton.addEventListener("click", () => {
       subscribeCompany(reg);
     });
   }
@@ -501,33 +513,38 @@ function setupTriggerButton(subscription) {
 // End push notification button
 //----------------------------------------------------------
 
-if (document.getElementById('shareUrl')) {
-const shareButton = document.getElementById('shareUrl');
-const url = shareButton.dataset.url;
-const title = document.title;
-shareButton.addEventListener('click', () => {
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      text: `Check out ${title.toUpperCase()}.`,
-      url: url,
-    })
-      .then(() => iziToast.success({
-        title: "[SHARE PAGE]",
-        balloon: true,
-        position: "topRight",
-        animateInside: true,
-        message: `Successfully share ${url}`,
-      }))
-      .catch((error) => iziToast.error({
-        title: "[SHARE PAGE ERROR]",
-        balloon: true,
-        position: "topRight",
-        animateInside: true,
-        message: error,
-      }));
+if (document.getElementById("shareUrl")) {
+  const shareButton = document.getElementById("shareUrl");
+  const url = shareButton.dataset.url;
+  const title = document.title;
+  shareButton.addEventListener("click", () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: title,
+          text: `Check out ${title.toUpperCase()}.`,
+          url: url,
+        })
+        .then(() =>
+          iziToast.success({
+            title: "[SHARE PAGE]",
+            balloon: true,
+            position: "topRight",
+            animateInside: true,
+            message: `Successfully share ${url}`,
+          })
+        )
+        .catch((error) =>
+          iziToast.error({
+            title: "[SHARE PAGE ERROR]",
+            balloon: true,
+            position: "topRight",
+            animateInside: true,
+            message: error,
+          })
+        );
     }
-});
+  });
 }
 
 //----------------------------------------------------------
@@ -607,7 +624,7 @@ const initialiseState = (reg) => {
     console.log("Registration Object", reg);
     if (!sub || sub === null) {
       setupSubscribeButton(reg);
-    } else if(sub !== null){
+    } else if (sub !== null) {
       console.log("Subscribe Already Done");
       // setupTriggerButton(sub);
       iziToast.info({
@@ -629,51 +646,50 @@ const initialiseState = (reg) => {
 // -----------------------------------------------------------------
 // INSTALL BUTTON FOR PROGRESSIVE WEB APPLICATION
 // ------------------------------------------------------------------
-if (document.getElementById("installButton")){
+if (document.getElementById("installButton")) {
   const installButton = document.getElementById("installButton");
-// when page loads for the first time, install button will be visible
-// if the user has not installed the app or PWA.
-window.addEventListener("beforeinstallprompt", (event) => {
-  if (process.env.NODE_ENV === "development") {
-    console.log("👍[PWA]", "beforeinstallprompt", event);
-  }
-  // Stash the event so it can be triggered later.
-  window.deferredPrompt = event;
-  // Remove the 'hidden' class from the install button container
-  // if the PWA has been installed, hide the install button or if it has not
-  // then allow for click
-  installButton.classList.toggle("hidden", false);
-});
-
-installButton.addEventListener("click", () => {
-  if (process.env.NODE_ENV === "development") {
-    console.log("👍[PWA] Install Button Clicked");
-  }
-
-  const promptEvent = window.deferredPrompt;
-  if (!promptEvent) {
-    // The deferred prompt isn't available. so return nothing
-    return;
-  }
-  promptEvent.prompt();
-  promptEvent.userChoice.then((choice) => {
+  // when page loads for the first time, install button will be visible
+  // if the user has not installed the app or PWA.
+  window.addEventListener("beforeinstallprompt", (event) => {
     if (process.env.NODE_ENV === "development") {
-      console.log("👍[PWA] User Choice: ", choice);
+      console.log("👍[PWA]", "beforeinstallprompt", event);
     }
-    // iziToast.success({
-    //   title: `[PWA: ${choice}]`,
-    //   message: '👍 You have successfully installed the readville app',
-    // });
-    // Reset the deferred prompt variable, since
-    // prompt() can only be called once.
-    window.deferredPrompt = null;
-    // Hide the install button once the PWA has been installed
-    installButton.classList.toggle("hidden", true);
+    // Stash the event so it can be triggered later.
+    window.deferredPrompt = event;
+    // Remove the 'hidden' class from the install button container
+    // if the PWA has been installed, hide the install button or if it has not
+    // then allow for click
+    installButton.classList.toggle("hidden", false);
   });
-});
-//----------------------------------------------------------
-}
 
+  installButton.addEventListener("click", () => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("👍[PWA] Install Button Clicked");
+    }
+
+    const promptEvent = window.deferredPrompt;
+    if (!promptEvent) {
+      // The deferred prompt isn't available. so return nothing
+      return;
+    }
+    promptEvent.prompt();
+    promptEvent.userChoice.then((choice) => {
+      if (process.env.NODE_ENV === "development") {
+        console.log("👍[PWA] User Choice: ", choice);
+      }
+      // iziToast.success({
+      //   title: `[PWA: ${choice}]`,
+      //   message: '👍 You have successfully installed the readville app',
+      // });
+      // Reset the deferred prompt variable, since
+      // prompt() can only be called once.
+      window.deferredPrompt = null;
+      // Hide the install button once the PWA has been installed
+      installButton.classList.toggle("hidden", true);
+    });
+  });
+  //----------------------------------------------------------
+}
 
 // if app is installed, thank the user for installing the app
 //----------------------------------------------------------
@@ -692,8 +708,6 @@ window.addEventListener("appinstalled", (event) => {
 });
 //----------------------------------------------------------
 
-
-
 // HTMX Console logs
 if (process.env.NODE_ENV === "development") {
   // enable logging for htmx in development server only
@@ -709,9 +723,8 @@ if (process.env.NODE_ENV === "development") {
   "htmx:afterRequest",
 ].forEach((evt) => {
   window.addEventListener(evt, function () {
-
     const counters = document.querySelectorAll(".counter");
-    const car = document.getElementById('car');
+    const car = document.getElementById("car");
 
     const controller = new ScrollMagic.Controller();
 
@@ -741,7 +754,7 @@ if (process.env.NODE_ENV === "development") {
     }
 
     function animateHows() {
-      if (document.querySelectorAll('.how')) {
+      if (document.querySelectorAll(".how")) {
         anime({
           targets: ".how",
           translateX: 56,
@@ -753,44 +766,49 @@ if (process.env.NODE_ENV === "development") {
       }
     }
 
-    if(document.getElementById('countTrigger')) {
+    if (document.getElementById("countTrigger")) {
       new ScrollMagic.Scene({
-        triggerElement: '#countTrigger',
-        triggerHook: 'onEnter',
-        duration: '100%',
+        triggerElement: "#countTrigger",
+        triggerHook: "onEnter",
+        duration: "100%",
         reverse: false,
-        offset: 50
-      }).on('enter', function() {
-        startCounting();
-      }).addTo(controller);
+        offset: 50,
+      })
+        .on("enter", function () {
+          startCounting();
+        })
+        .addTo(controller);
     }
 
-    if(document.getElementById('track')) {
-        new ScrollMagic.Scene({
-        triggerElement: '#track',
-        triggerHook: 'onEnter',
-        duration: '100%',
+    if (document.getElementById("track")) {
+      new ScrollMagic.Scene({
+        triggerElement: "#track",
+        triggerHook: "onEnter",
+        duration: "100%",
         reverse: true,
-        offset: 50
-      }).on('enter', function() {
-        carDrive();
-      }).addTo(controller);
+        offset: 50,
+      })
+        .on("enter", function () {
+          carDrive();
+        })
+        .addTo(controller);
     }
 
-
-    if(document.getElementById('hows')) {
+    if (document.getElementById("hows")) {
       new ScrollMagic.Scene({
-        triggerElement: '#hows',
-        triggerHook: 'onEnter',
-        duration: '100%',
+        triggerElement: "#hows",
+        triggerHook: "onEnter",
+        duration: "100%",
         reverse: false,
-        offset: 100
-      }).on('enter', function() {
-        animateHows();
-      }).addTo(controller);
+        offset: 100,
+      })
+        .on("enter", function () {
+          animateHows();
+        })
+        .addTo(controller);
     }
 
-    if(document.querySelectorAll('.intro')) {
+    if (document.querySelectorAll(".intro")) {
       anime({
         targets: ".intro",
         translateX: -56,
@@ -800,7 +818,6 @@ if (process.env.NODE_ENV === "development") {
         delay: anime.stagger(200, { start: 500 }),
       });
     }
-
 
     function carDrive() {
       if (car) {

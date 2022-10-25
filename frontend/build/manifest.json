@@ -1,6 +1,6 @@
 {
-  "app.css": "/static/css/app.64930e4921d1f097128e.css",
-  "app.js": "/static/js/app.bd5b98ed.js",
+  "app.css": "/static/css/app.b61f3a0af7d5e99400bc.css",
+  "app.js": "/static/js/app.af45c309.js",
   "app2.js": "/static/js/app2.0412df8f.js",
   "assets/android-chrome-144x144.png": "/static/assets/android-chrome-144x144.png",
   "assets/android-chrome-192x192.png": "/static/assets/android-chrome-192x192.png",
@@ -41,20 +41,20 @@
   "assets/mstile-70x70.png": "/static/assets/mstile-70x70.png",
   "assets/yandex-browser-50x50.png": "/static/assets/yandex-browser-50x50.png",
   "assets/yandex-browser-manifest.json": "/static/assets/yandex-browser-manifest.json",
-  "css/266.085301f083b891b3412a.css": "/static/css/266.085301f083b891b3412a.css",
-  "css/266.085301f083b891b3412a.css.map": "/static/css/266.085301f083b891b3412a.css.map",
-  "css/app.64930e4921d1f097128e.css.map": "/static/css/app.64930e4921d1f097128e.css.map",
+  "css/63.e90730e53d36f68faec3.css": "/static/css/63.e90730e53d36f68faec3.css",
+  "css/63.e90730e53d36f68faec3.css.map": "/static/css/63.e90730e53d36f68faec3.css.map",
+  "css/app.b61f3a0af7d5e99400bc.css.map": "/static/css/app.b61f3a0af7d5e99400bc.css.map",
   "entrypoints": {
     "app": {
       "assets": {
         "js": [
           "/static/js/runtime.b7968b3e.js",
-          "/static/js/266.23ba56de.js",
-          "/static/js/app.bd5b98ed.js"
+          "/static/js/63.7fae1c93.js",
+          "/static/js/app.af45c309.js"
         ],
         "css": [
-          "/static/css/266.085301f083b891b3412a.css",
-          "/static/css/app.64930e4921d1f097128e.css"
+          "/static/css/63.e90730e53d36f68faec3.css",
+          "/static/css/app.b61f3a0af7d5e99400bc.css"
         ]
       }
     },
@@ -68,10 +68,10 @@
     }
   },
   "index.html": "/static/index.html",
-  "js/266.23ba56de.js": "/static/js/266.23ba56de.js",
-  "js/266.23ba56de.js.LICENSE.txt": "/static/js/266.23ba56de.js.LICENSE.txt",
-  "js/266.23ba56de.js.map": "/static/js/266.23ba56de.js.map",
-  "js/app.bd5b98ed.js.map": "/static/js/app.bd5b98ed.js.map",
+  "js/63.7fae1c93.js": "/static/js/63.7fae1c93.js",
+  "js/63.7fae1c93.js.LICENSE.txt": "/static/js/63.7fae1c93.js.LICENSE.txt",
+  "js/63.7fae1c93.js.map": "/static/js/63.7fae1c93.js.map",
+  "js/app.af45c309.js.map": "/static/js/app.af45c309.js.map",
   "js/runtime.b7968b3e.js.map": "/static/js/runtime.b7968b3e.js.map",
   "runtime.js": "/static/js/runtime.b7968b3e.js",
   "sw.js": "/static/sw.js",

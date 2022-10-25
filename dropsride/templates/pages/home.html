@@ -17,7 +17,7 @@
   style="background-image:url({% static 'vendors/images/home/hero-image.jpg' %}); background-size:cover;">
   <div class="w-full space-y-4">
     <h1 class="ml-14 intro text-5xl md:text-8xl font-semibold">Convinience</h1>
-    <h1 class="ml-14 intro text-5xl md:text-8xl font-semibold">Always</h1>
+   <div class="flex space-x-2"> <h1 class="ml-14 intro text-5xl md:text-8xl font-semibold">Always</h1></div>
     <strong class="ml-14 intro block text-base font-medium">Download the Drops App</strong>
     <div class="ml-14 intro flex items-center space-x-3">
       <img src="{% static 'vendors/images/apple-store.svg' %}" alt="apple store icon"
@@ -33,8 +33,8 @@
   style="background-image:url({% static 'vendors/images/home/hero-2.png' %}); background-position:bottom; background-size:cover; background-repeat:no-repeat;">
   <div class="sm:2/4 md:w-3/5 mx-auto md:flex-row flex items-center flex-col md:space-x-4 md:space-y-0 space-y-4 px-8 md:px-0">
     <div class="space-y-2 text-center md:text-right">
-      <h2 class="text-2xl md:text-4xl font-medium md:text-left">Earn extra money driving</h2>
-      <p class="block text-sm md:text-base md:text-left px-14">Set your own schedule. Be your own boss.</p>
+      <h2 class="text-2xl md:text-4xl font-medium md:text-left">Earn as you Drive</h2>
+      <p class="block text-sm md:text-base md:text-left px-14">Drive at your conveniene. Make money your own way.</p>
     </div>
     <button hx-get="{% url 'driver_signup' %}" hx-push-url="{% url 'driver_signup' %}" hx-target="body"
       hx-swap="outerHTML"
@@ -72,8 +72,7 @@
     <div class="space-y-3 text-center">
       <img loading="lazy" src="{% static 'vendors/images/home/works4.gif' %}" alt="payments gif" class="h-24 mx-auto">
       <h4 class="font-medium text-xl">Make Payments</h4>
-      <p class="text-sm">We have multiple options to enable you make payments, including <strong>Crypto
-          options</strong>.</p>
+      <p class="text-sm">We have provided you with seemless payment options</p>
     </div>
   </div>
 </section>

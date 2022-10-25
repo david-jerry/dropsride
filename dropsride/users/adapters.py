@@ -1,5 +1,7 @@
 from typing import Any
 
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
@@ -14,6 +16,20 @@ class AccountAdapter(DefaultAccountAdapter):
 
     def is_open_for_signup(self, request: HttpRequest):
         return getattr(settings, "ACCOUNT_ALLOW_REGISTRATION", True)
+
+    def get_login_redirect_url(self, request):
+        path = "/users/{username}/"
+        return path.format(username=request.user.username)
+
+    def get_email_confirmation_redirect_url(self, request):
+        path = "/accounts/login/"
+        return path
+
+    # def save_user(self, request, user, form, commit=False):
+    #     user = super(AccountAdapter, self).save_user(request, user, form, commit=False)
+    #     user.phone_number = form.cleaned_data.get('phone_number')
+    #     user.gave_consent = True
+        # user.save()
 
 
 class SocialAccountAdapter(DefaultSocialAccountAdapter):

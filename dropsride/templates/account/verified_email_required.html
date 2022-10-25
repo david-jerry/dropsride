@@ -5,17 +5,19 @@
 {% block head_title %}{% translate "Verify Your E-mail Address" %}{% endblock %}
 
 {% block inner %}
-<h1>{% translate "Verify Your E-mail Address" %}</h1>
+<div class="md:w-2/3 mx-auto py-4 space-y-2">
+  <h1 class="font-bold text-xl md:text-2xl text-center uppercase">{% translate "Verify Your E-mail Address" %}</h1>
 
-{% url 'account_email' as email_url %}
+  {% url 'account_email' as email_url %}
 
-<p>{% blocktranslate %}This part of the site requires us to verify that
-you are who you claim to be. For this purpose, we require that you
-verify ownership of your e-mail address. {% endblocktranslate %}</p>
+  <p class="text-xs md:text-sm text-center">{% blocktranslate %}This part of the site requires us to verify that
+  you are who you claim to be. For this purpose, we require that you
+  verify ownership of your e-mail address. {% endblocktranslate %}</p>
 
-<p>{% blocktranslate %}We have sent an e-mail to you for
-verification. Please click on the link inside this e-mail. Please
-contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
+  <p class="text-xs md:text-sm text-center">{% blocktranslate %}We have sent an e-mail to you for
+  verification. Please click on the link inside this e-mail. Please
+  contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
 
-<p>{% blocktranslate %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktranslate %}</p>
+  <p class="text-xs md:text-sm text-center" hx-boost="true">{% blocktranslate %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktranslate %}</p>
+</div>
 {% endblock %}

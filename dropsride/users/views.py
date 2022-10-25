@@ -1,29 +1,38 @@
-import asyncio
-from config.commons import signup_users
+import datetime
+from asgiref.sync import sync_to_async
 import httpx
+import asyncio
+from config.commons import send_html_mail, signup_users
 from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+# from config.mixins import LoginRequiredMixin
+from config.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView, CreateView, ListView, FormView
 from django.http import JsonResponse
 from django.utils import timezone
 
-from allauth import app_settings
-from allauth.account.views import SignupView, LoginView
-from allauth.account.utils import complete_signup
+# from allauth import app_settings
+from allauth.account import app_settings, signals
+from allauth.account.adapter import get_adapter
+from allauth.account.forms import *
+from allauth.account.views import SignupView, PasswordResetFromKeyView, LoginView, ConfirmEmailView, PasswordChangeView, PasswordResetView, PasswordSetView
+from allauth.account.utils import complete_signup, logout_on_password_change, perform_login
 from allauth.account.models import EmailAddress
 from allauth.exceptions import ImmediateHttpResponse
+from allauth import ratelimit
+
 from paystackapi.paystack import Paystack
 from paystackapi.verification import Verification
-from asgiref.sync import sync_to_async
+
 from messente_api import OmnimessageApi, SMS, Omnimessage, Configuration, ApiClient
 from messente_api.rest import ApiException
 
@@ -32,7 +41,7 @@ from dropsride.utils.logger import LOGGER
 from dropsride.drivers.models import Drivers
 from dropsride.riders.models import Riders
 from dropsride.users.models import UserNextOfKin, UserSocialAccounts, VerifiedPhone
-from dropsride.users.forms import AddBankAccountForm, AddCardForm, AddNextOfKin, CompanySignupForm, UserAddressForm, UserLoginForm, UserSignupForm, UserUpdateForm, UserUpdateImageForm, UserUpdateSocialAccounts, ValidatePhoneForm
+from dropsride.users.forms import AddBankAccountForm, AddCardForm, AddNextOfKin, CompanySignupForm, DriverSignupForm, UserAddressForm, UserLoginForm, UserSignupForm, UserUpdateForm, UserUpdateImageForm, UserUpdateSocialAccounts, ValidatePhoneForm
 from dropsride.utils.unique_generators import random_code_generator
 
 User = get_user_model()
@@ -59,18 +68,35 @@ def time_out_phone_verification(instance):
     Returns:
         _type_: _description_
     """
-    five_min = instance.modified.minutes + timedelta(minutes=5)
-    if timezone.now() > five_min:
-        instance.code = random_code_generator(instance)
+    # five_min = instance.modified > instance.endtime
+    if timezone.now() > instance.endtime:
+        VerifiedPhone.objects.filter(user=instance.user, code=instance.code, verified=False).update(code=random_code_generator(instance))
+        # instance.code = random_code_generator(instance)
         configuration = Configuration()
         configuration.username = settings.MESSENTE_API_USERNAME
         configuration.password = settings.MESSENTE_API_PASSWORD
 
         api_instance = OmnimessageApi(ApiClient(configuration))
 
-        sms = SMS(sender="Drops Technology Limited", text=f"The verification code had expired. \nPlease verify within 5 mins time to avoid code expiration again.\n\nYour new code is: {instance.code}")
+        sms = SMS(sender="+2347069916149", text=f"The verification code had expired. \nPlease verify within 5 mins time to avoid code expiration again.\n\nYour new code is: {instance.code}")
 
         omnimessage = Omnimessage(messages=tuple([sms]), to=instance.user.phone_number)
+
+        domain = "https://www.dropsride.com" if settings.PRODUCTION else "http://localhost:8000"
+        link = reverse("sms_verify", kwargs={"code":instance.code, "user":instance.user})
+
+        msg = f"""
+        Dear {instance.user.username.title()},
+        <br>
+        <br>
+        Your previous verification code expired.<br>
+        please find attached your new verification code: {instance.code}
+        <br>
+        You can also verify by clicking the link below\n\n{domain}{link}
+        <br>
+        """
+        send_html_mail(subject=f"PHONE VERIFICATION CODE", html_content=msg, from_email="DROPS TECHNOLOGY LIMITED <noreply@dropsride.com>", recipient_list=[instance.user.email])
+
 
         try:
             response = api_instance.send_omnimessage(omnimessage)
@@ -80,13 +106,13 @@ def time_out_phone_verification(instance):
             )
             for message in response.messages:
                 LOGGER.info(message)
-            return JsonResponse(status=200, data={"message":"Reverification sms has been sent to your registered mobile line", "title":"Verification Code Expired"})
+            pass
         except ApiException as exception:
             LOGGER.error("[PHONE VERIFICATION ERROR] Exception when sending an omnimessage: %s\n" % exception)
-            return JsonResponse(status=400, data={"message":f"Exception when sending verification sms: %s\n{exception}", "title":"Verification Code Expired Error"})
+            pass
     pass
 
-def sms_verification_link(request, code):
+def sms_verification_link(request, code, user):
     """sends the verification code via a link through the sms
 
     Args:
@@ -96,15 +122,62 @@ def sms_verification_link(request, code):
     Returns:
         _type_: _description_
     """
-    instance = get_object_or_404(VerifiedPhone, code=code)
-    time_out_phone_verification(instance=instance)
-    if VerifiedPhone.objects.filter(code=code, verified=False).exists():
-        VerifiedPhone.objects.filter(code=code, verified=False).update(verified=True, verified_code=code)
-        return JsonResponse(status=201, data={"message":"Phone Number was Successfully Verified", "title":"Successful Verification"})
-    else:
-        return JsonResponse(status=400, data={"message":"Invalid Verification Code Used", "title":"Phone Verification Error"})
+    usr = get_object_or_404(User, username=user)
+    LOGGER.info(usr)
+    if VerifiedPhone.objects.filter(code=code, user=usr.id, verified=False).exists():
+        instance = VerifiedPhone.objects.get(code=code, user=usr, verified=False) or get_object_or_404(VerifiedPhone, code=code)
+        # five_min = instance.time + timedelta(minutes=5)
+        if timezone.now() > instance.endtime:
+            fmins = datetime.datetime.now() + datetime.timedelta(minutes=5)
+            new_code = random_code_generator(instance)
+            VerifiedPhone.objects.filter(user=instance.user, code=instance.code, verified=False).update(code=new_code, endtime=fmins)
+            # instance.code = random_code_generator(instance)
+            configuration = Configuration()
+            configuration.username = settings.MESSENTE_API_USERNAME
+            configuration.password = settings.MESSENTE_API_PASSWORD
 
-class VerifyPhone(LoginRequiredMixin, FormView):
+            api_instance = OmnimessageApi(ApiClient(configuration))
+
+            sms = SMS(sender="+2347069916149", text=f"The verification code had expired. \nPlease verify within 5 mins time to avoid code expiration again.\n\nYour new code is: {new_code}")
+
+            omnimessage = Omnimessage(messages=tuple([sms]), to=instance.user.phone_number)
+
+            domain = "https://www.dropsride.com" if settings.PRODUCTION else "http://localhost:8000"
+            link = reverse("sms_verify", kwargs={"code":new_code, "user":instance.user})
+
+            msg = f"""
+            Dear {instance.user.username.title()},
+            <br>
+            <br>
+            Your previous verification code expired.<br>
+            please find attached your new verification code: {new_code}
+            <br>
+            You can also verify by clicking the link below\n\n{domain}{link}
+            <br>
+            """
+            send_html_mail(subject=f"PHONE VERIFICATION CODE", html_content=msg, from_email="DROPS TECHNOLOGY LIMITED <noreply@dropsride.com>", recipient_list=[instance.user.email])
+
+
+            try:
+                response = api_instance.send_omnimessage(omnimessage)
+                LOGGER.info(
+                    "[PHONE VERIFICATION SMS SENT SUCCESSFULLY] Successfully sent Omnimessage with id: %s that consists of the following messages:"
+                    % response.omnimessage_id
+                )
+                for message in response.messages:
+                    LOGGER.info(message)
+                return redirect(reverse_lazy('users:verify_phone'))
+            except ApiException as exception:
+                LOGGER.error("[PHONE VERIFICATION ERROR] Exception when sending an omnimessage: %s\n" % exception)
+                return redirect(reverse_lazy('account_login'))
+        else:
+            VerifiedPhone.objects.filter(code=code, user=usr, verified=False).update(verified=True, verified_code=code)
+            LOGGER.info("[PHONE VERIFIED SUCCESSFULLY] The code has been used")
+            return redirect(reverse_lazy('account_login'))
+    else:
+        return redirect(reverse_lazy('account_login'))
+
+class VerifyPhone(FormView):
     """This view verifies a users phone number by checking if the code sent to
     a users phone number validates against the random 4 digit code created when
     they were creating their user account registration.
@@ -116,7 +189,8 @@ class VerifyPhone(LoginRequiredMixin, FormView):
         _type_: _description_
     """
     template_name = "account/phone_verify.html"
-    form_class = ValidatePhoneForm()
+    form_class = ValidatePhoneForm
+    success_url = reverse_lazy("account_login")
 
     def post(self, request, *args, **kwargs):
 
@@ -125,13 +199,55 @@ class VerifyPhone(LoginRequiredMixin, FormView):
             return self.validate_field(request)
 
         instance = get_object_or_404(VerifiedPhone, code=code)
-        time_out_phone_verification(instance)
+        if timezone.now() > instance.endtime:
+            fmins = datetime.datetime.now() + datetime.timedelta(minutes=5)
+            new_code = random_code_generator(instance)
+            VerifiedPhone.objects.filter(user=instance.user, code=instance.code, verified=False).update(code=new_code, endtime=fmins)
+            # instance.code = random_code_generator(instance)
+            configuration = Configuration()
+            configuration.username = settings.MESSENTE_API_USERNAME
+            configuration.password = settings.MESSENTE_API_PASSWORD
 
-        if VerifiedPhone.objects.filter(user=request.user, code=code, verified=False).exists():
-            VerifiedPhone.objects.filter(user=request.user, code=code, verified=False).update(verified=True, verified_code=code)
-            return JsonResponse(status=201, data={"message":"Phone Number was Successfully Verified", "title":"Successful Verification"})
+            api_instance = OmnimessageApi(ApiClient(configuration))
+
+            sms = SMS(sender="+2347069916149", text=f"The verification code had expired. \nPlease verify within 5 mins time to avoid code expiration again.\n\nYour new code is: {new_code}")
+
+            omnimessage = Omnimessage(messages=tuple([sms]), to=instance.user.phone_number)
+
+            domain = "https://www.dropsride.com" if settings.PRODUCTION else "http://localhost:8000"
+            link = reverse("sms_verify", kwargs={"code":new_code, "user":instance.user})
+
+            msg = f"""
+            Dear {instance.user.username.title()},
+            <br>
+            <br>
+            Your previous verification code expired.<br>
+            please find attached your new verification code: {new_code}
+            <br>
+            You can also verify by clicking the link below\n\n{domain}{link}
+            <br>
+            """
+            send_html_mail(subject=f"PHONE VERIFICATION CODE", html_content=msg, from_email="DROPS TECHNOLOGY LIMITED <noreply@dropsride.com>", recipient_list=[instance.user.email])
+
+
+            try:
+                response = api_instance.send_omnimessage(omnimessage)
+                LOGGER.info(
+                    "[PHONE VERIFICATION SMS SENT SUCCESSFULLY] Successfully sent Omnimessage with id: %s that consists of the following messages:"
+                    % response.omnimessage_id
+                )
+                for message in response.messages:
+                    LOGGER.info(message)
+                return JsonResponse(status=200, data={"message":"Phone Number was resent successfully", "title":"CODE RESENT SUCCESSFULLY"})
+            except ApiException as exception:
+                LOGGER.error("[PHONE VERIFICATION ERROR] Exception when sending an omnimessage: %s\n" % exception)
+                return JsonResponse(status=403, data={"message":exception, "title":"PHONE VERIFICATION ERROR"})
         else:
-            return JsonResponse(status=400, data={"message":"Invalid Verification Code Used", "title":"Phone Verification Error"})
+            if VerifiedPhone.objects.filter(user=instance.user, code=code, verified=False).exists():
+                VerifiedPhone.objects.filter(user=instance.user, code=code, verified=False).update(verified=True, verified_code=code)
+                return JsonResponse(status=201, data={"message":"Phone Number was Successfully Verified", "title":"Successful Verification"})
+            else:
+                return JsonResponse(status=403, data={"message":"Invalid Verification Code Used", "title":"Phone Verification Error"})
 
 
     def validate_field(self, request):
@@ -153,20 +269,13 @@ class UserSignupView(SignupView):
     Args:
         SignupView (_type_): _description_
     """
-    form_class = UserSignupForm
 
-    def form_valid(self, form):
-        form = form.save(commit=False)
-        form.gave_consent = True
-        form.is_driver = False
-        form.is_company = False
-        self.user = form.save(self.request)
-        try:
-            # complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
-            signup_users(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url(), None)
-            return JsonResponse(status=201, data={"message":"Your Account Was Created Successfully", "title":"Successful Registration"})
-        except ImmediateHttpResponse as e:
-            return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Signup Form Error"})
+    form_class = UserSignupForm
+    template_name = "account/signup.html"
+    success_url = reverse_lazy('users:verify_phone')
+
+    def get_success_url(self):
+        return reverse('users:verify_phone')
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST:
@@ -192,21 +301,13 @@ class DriverSignupView(SignupView):
     Args:
         SignupView (_type_): _description_
     """
-    form_class = UserSignupForm
+    form_class = DriverSignupForm
     template_name = "account/driver_signup.html"
+    success_url = reverse_lazy('users:verify_phone')
 
-    def form_valid(self, form):
-        form = form.save(commit=False)
-        form.gave_consent = True
-        form.is_driver = True
-        form.is_company = False
-        self.user = form.save(self.request)
-        try:
-            # complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
-            signup_users(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url(), None)
-            return JsonResponse(status=201, data={"message":"Your Account Was Created Successfully", "title":"Successful Registration"})
-        except ImmediateHttpResponse as e:
-            return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Signup Form Error"})
+    def get_success_url(self):
+        return reverse('users:verify_phone')
+
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST:
@@ -215,7 +316,7 @@ class DriverSignupView(SignupView):
 
     def validate_field(self, request):
         field_name = request.POST.get("__field_name__")
-        form = UserSignupForm(request.POST)
+        form = DriverSignupForm(request.POST)
         form.is_valid()
         return JsonResponse(status=203, data={
             "errors": form.errors.get(field_name, []),
@@ -234,23 +335,10 @@ class CompanySignupView(SignupView):
     """
     template_name = "account/company_signup.html"
     form_class = CompanySignupForm
+    success_url = reverse_lazy('users:verify_phone')
 
-    def form_valid(self, form):
-        company_name = self.request.POST.get('company_name')
-        form = form.save(commit=False)
-        form.gave_consent = True
-        form.is_driver = False
-        form.is_company = True
-        self.user = form.save(self.request)
-        try:
-            # complete_signup(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url())
-            # if Company.objects.filter(user=self.user).exists():
-            #     Company.objects.filter(user=self.user).update(company_name=company_name)
-            #     LOGGER.info("[COMPANY SIGNUP VIEW] Company name has been added")
-            signup_users(self.request, self.user, app_settings.EMAIL_VERIFICATION, self.get_success_url(), company_name)
-            return JsonResponse(status=201, data={"message":"Your Account Was Created Successfully", "title":"Successful Registration"})
-        except ImmediateHttpResponse as e:
-            return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Signup Form Error"})
+    def get_success_url(self):
+        return reverse('users:verify_phone')
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST:
@@ -274,23 +362,6 @@ class UserLoginView(LoginView):
     Args:
         LoginView (_type_): _description_
     """
-    def form_valid(self, form):
-        success_url = self.get_success_url()
-        user = User.objects.get(email=form.cleaned_data['login'])
-        try:
-            form.login(self.request, redirect_url=success_url)
-            email_address = EmailAddress.objects.get_for_user(user, user.email)
-
-            if not email_address.verified:
-                verification_link = reverse('account_email_verification_sent')
-                return JsonResponse(status=403, data={"message":"Your Email is not verified", "title":"Email Verification", 'success_url':verification_link})
-            return JsonResponse(status=201, data={"message":"Logged In Successfully", "title":"Success", 'success_url':success_url})
-        except ImmediateHttpResponse as e:
-            return JsonResponse(status=400, data={"message":f"{e.response}", "title":"Login Form Error"})
-
-    def form_invalid(self, form):
-        verification_link = reverse('account_email_verification_sent')
-        return JsonResponse(status=403, data={"message":"Your Email is not verified", "title":"Email Verification", 'success_url':verification_link})
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST:
@@ -310,6 +381,184 @@ class UserLoginView(LoginView):
 
 account_login = UserLoginView.as_view()
 
+class EmailConfirmView(ConfirmEmailView):
+    def post(self, request, *args, **kwargs):
+        # if "__field_name__" in request.POST:
+        #     return self.validate_field(request)
+
+        self.object = confirmation = self.get_object()
+        confirmation.confirm(self.request)
+
+        # In the event someone clicks on an email confirmation link
+        # for one account while logged into another account,
+        # logout of the currently logged in account.
+        if (
+            self.request.user.is_authenticated
+            and self.request.user.pk != confirmation.email_address.user_id
+        ):
+            self.logout()
+
+        get_adapter(self.request).add_message(
+            self.request,
+            messages.SUCCESS,
+            "account/messages/email_confirmed.txt",
+            {"email": confirmation.email_address.email},
+        )
+        if app_settings.LOGIN_ON_EMAIL_CONFIRMATION:
+            resp = self.login_on_confirm(confirmation)
+            if resp is not None:
+                return resp
+        # Don't -- allauth doesn't touch is_active so that sys admin can
+        # use it to block users et al
+        #
+        # user = confirmation.email_address.user
+        # user.is_active = True
+        # user.save()
+        redirect_url = self.get_redirect_url()
+        if not redirect_url:
+            ctx = self.get_context_data()
+            return self.render_to_response(ctx)
+        # return redirect()
+        return JsonResponse(status=201, data={"message":"You have successfully confirmed your email address and verified your account.", "title":"Email Confirmed", "redirect":redirect_url})
+
+confirm_email = EmailConfirmView.as_view()
+
+class UserPasswordChangeView(PasswordChangeView):
+    # def form_valid(self, form):
+    #     success_url = self.success_url
+    #     form.save()
+    #     logout_on_password_change(self.request, form.user)
+    #     get_adapter(self.request).add_message(
+    #         self.request,
+    #         messages.SUCCESS,
+    #         "account/messages/password_changed.txt",
+    #     )
+    #     signals.password_changed.send(
+    #         sender=self.request.user.__class__,
+    #         request=self.request,
+    #         user=self.request.user,
+    #     )
+    #     return JsonResponse(status=200, data={"message":"your password was changed successfully", "title":"Password Change Successful"})
+
+    def post(self, request, *args, **kwargs):
+        if "__field_name__" in request.POST:
+            return self.validate_field(request)
+        return super().post(request, *args, **kwargs)
+
+    def validate_field(self, request):
+        field_name = request.POST.get("__field_name__")
+        form = self.form_class(request.POST)
+        form.is_valid()
+        return JsonResponse(status=203, data={
+            "errors": form.errors.get(field_name, []),
+        })
+
+password_change = UserPasswordChangeView.as_view()
+
+class UserPasswordSetView(PasswordSetView):
+    # def form_valid(self, form):
+    #     logout_on_password_change(self.request, form.user)
+    #     get_adapter(self.request).add_message(
+    #         self.request, messages.SUCCESS, "account/messages/password_set.txt"
+    #     )
+    #     signals.password_set.send(
+    #         sender=self.request.user.__class__,
+    #         request=self.request,
+    #         user=self.request.user,
+    #     )
+    #     return JsonResponse(status=200, data={"message":"You have successfully set your password", "title":"Password Set Successful"})
+
+    def post(self, request, *args, **kwargs):
+        if "__field_name__" in request.POST:
+            return self.validate_field(request)
+        return super().post(request, *args, **kwargs)
+
+    def validate_field(self, request):
+        field_name = request.POST.get("__field_name__")
+        form = self.form_class(request.POST)
+        form.is_valid()
+        return JsonResponse(status=203, data={
+            "errors": form.errors.get(field_name, []),
+        })
+
+password_set = UserPasswordSetView.as_view()
+
+
+class UserPasswordResetFromKey(PasswordResetFromKeyView):
+
+    # def form_valid(self, form):
+    #     form.save()
+    #     adapter = get_adapter(self.request)
+
+    #     if self.reset_user and app_settings.LOGIN_ATTEMPTS_LIMIT:
+    #         # User successfully reset the password, clear any
+    #         # possible cache entries for all email addresses.
+    #         for email in self.reset_user.emailaddress_set.all():
+    #             adapter._delete_login_attempts_cached_email(
+    #                 self.request, email=email.email
+    #             )
+
+    #     adapter.add_message(
+    #         self.request,
+    #         messages.SUCCESS,
+    #         "account/messages/password_changed.txt",
+    #     )
+    #     signals.password_reset.send(
+    #         sender=self.reset_user.__class__,
+    #         request=self.request,
+    #         user=self.reset_user,
+    #     )
+
+    #     if app_settings.LOGIN_ON_PASSWORD_RESET:
+    #         return perform_login(
+    #             self.request,
+    #             self.reset_user,
+    #             email_verification=app_settings.EMAIL_VERIFICATION,
+    #         )
+    #     return JsonResponse(status=200, data={"message":"Your password has successfully been changed", "title":"Password Reset Done"})
+
+    def post(self, request, *args, **kwargs):
+        if "__field_name__" in request.POST:
+            return self.validate_field(request)
+        return super().post(request, *args, **kwargs)
+
+    def validate_field(self, request):
+        field_name = request.POST.get("__field_name__")
+        form = self.form_class(request.POST)
+        form.is_valid()
+        return JsonResponse(status=203, data={
+            "errors": form.errors.get(field_name, []),
+        })
+
+password_reset_from_key = UserPasswordResetFromKey.as_view()
+
+class UserPasswordReset(PasswordResetView):
+
+    # def form_valid(self, form):
+    #     r429 = ratelimit.consume_or_429(
+    #         self.request,
+    #         action="reset_password_email",
+    #         key=form.cleaned_data["email"].lower(),
+    #     )
+    #     if r429:
+    #         return r429
+    #     form.save(self.request)
+    #     return JsonResponse(status=200, data={"message":"Your password has successfully been reset", "title":"Password Reset Done"})
+
+    def post(self, request, *args, **kwargs):
+        if "__field_name__" in request.POST:
+            return self.validate_field(request)
+        return super().post(request, *args, **kwargs)
+
+    def validate_field(self, request):
+        field_name = request.POST.get("__field_name__")
+        form = self.form_class(request.POST)
+        form.is_valid()
+        return JsonResponse(status=203, data={
+            "errors": form.errors.get(field_name, []),
+        })
+
+password_reset = UserPasswordReset.as_view()
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -335,7 +584,7 @@ user_detail_view = UserDetailView.as_view()
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     model = User
-    form_class = UserUpdateForm()
+    form_class = UserUpdateForm
     success_message = _("Information successfully updated")
 
     def post(self, request, *args, **kwargs):
@@ -372,7 +621,7 @@ user_update_view = UserUpdateView.as_view()
 class UserUpdatePhoto(LoginRequiredMixin, UpdateView):
 
     model = User
-    form_class = UserUpdateImageForm()
+    form_class = UserUpdateImageForm
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST or "__field_name__" in request.FILES:
@@ -406,7 +655,7 @@ user_update_photo = UserUpdatePhoto.as_view()
 class UserUpdateAddress(LoginRequiredMixin, UpdateView):
 
     model = User
-    form_class = UserAddressForm()
+    form_class = UserAddressForm
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST :
@@ -441,7 +690,7 @@ user_update_address = UserUpdateAddress.as_view()
 class UserUpdateSocial(LoginRequiredMixin, UpdateView):
 
     model = UserSocialAccounts
-    form_class = UserUpdateSocialAccounts()
+    form_class = UserUpdateSocialAccounts
 
     def post(self, request, *args, **kwargs):
         if "__field_name__" in request.POST:
@@ -507,7 +756,7 @@ class AddNextOfKinView(LoginRequiredMixin, FormView):
         _type_: _description_
     """
     template_name = "users/kin_form.html"
-    form_class = AddNextOfKin()
+    form_class = AddNextOfKin
 
     def post(self, request, *args, **kwargs):
 
@@ -546,7 +795,7 @@ class AddBankAccountDetails(LoginRequiredMixin, FormView):
         _type_: _description_
     """
     template_name = "users/bank_form.html"
-    form_class = AddBankAccountForm()
+    form_class = AddBankAccountForm
 
     def post(self, request, *args, **kwargs):
 
@@ -584,7 +833,7 @@ class AddCard(LoginRequiredMixin, FormView):
         _type_: _description_
     """
     template_name = "users/card_form.html"
-    form_class = AddCardForm()
+    form_class = AddCardForm
 
     def post(self, request, *args, **kwargs):
 

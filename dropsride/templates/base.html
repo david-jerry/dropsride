@@ -11,7 +11,9 @@
 {% url 'cities' as cities %}
 {% url 'support' as support %}
 {% url 'account_login' as login %}
-{% url 'account_signup' as signup %}
+{% url 'rider_signup' as signup %}
+{% url 'driver_signup' as dsignup %}
+{% url 'company_signup' as csignup %}
 {% url 'staff:dashboard' as dashboard %}
 {% url 'careers:list' as careers %}
 {% url 'news:list' as news %}
@@ -115,7 +117,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
       </svg>
     </button>
-    <button id="shareUrl" data-url="{{request.build_absolute_uri}}" title="share website" :class="{'flex' : showNav, 'hidden' : !showNav}" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-warning text-black animate-pulse duration-300 rounded-full fixed right-8 bottom-[176px] md:bottom-[200px]">
+    <button id="shareUrl" data-url="{{request.build_absolute_uri}}" title="share website" :class="{'flex' : showNav, 'hidden' : !showNav}" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-warning text-black animate-pulse duration-300 rounded-full fixed right-4 bottom-[176px] md:bottom-[200px]">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
         <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
       </svg>
