@@ -94,7 +94,7 @@
 
   </head>
 
-  <body hx-ext="debug, event-header" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' x-init="initState" @scroll.window="scrollNav" x-data="{}">
+  <body hx-ext="debug, event-header" x-init="initState" @scroll.window="scrollNav" x-data="{}">
     {% block nav %}
     {% include "snippets/header.html" %}
     {% endblock nav %}

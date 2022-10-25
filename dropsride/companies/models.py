@@ -122,12 +122,12 @@ class CompanyWallet(TimeStampedModel):
     alert_when_low = DecimalField(decimal_places=2, max_digits=20, default=0.00)
 
     def __str__(self):
-        return f"{self.rider.user.username.upper()} {self.balance}"
+        return f"{self.company.user.username.upper()} {self.balance}"
 
     class Meta:
         managed = True
-        verbose_name = "Rider Wallet"
-        verbose_name_plural = "Riders Wallet"
+        verbose_name = "Company Wallet"
+        verbose_name_plural = "Companys Wallet"
         ordering = ["-created"]
 
 
@@ -152,3 +152,11 @@ class CompanyTransactionHistory(TimeStampedModel):
     transaction_id = CharField(max_length=50, blank=True)
     status = CharField(max_length=25, choices=TRANSACTION_STATUS, default=PENDING)
 
+    def __str__(self):
+        return f"{self.company.user.username.upper()} {self.transaction_id}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Company Transaction History"
+        verbose_name_plural = "Companys Transaction Histories"
+        ordering = ["-created"]

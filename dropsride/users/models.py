@@ -178,12 +178,19 @@ class SavedCards(TimeStampedModel):
     user = ForeignKey(User, on_delete=CASCADE, related_name="saved_card")
     name_on_card = CharField(max_length=255)
     card_no = CharField(max_length=18)
+    cvv = CharField(max_length=18, blank=True, null=True)
     card_exp_month = PositiveSmallIntegerField()
     card_exp_year = PositiveSmallIntegerField()
+    card_provider = CharField(max_length=40, default="master")
 
     active = BooleanField(default=False)
 
     # expired = BooleanField(default=False)
+
+    @property
+    def formatted_no(self):
+        formatted = f"{self.card_no[:4]}-{self.card_no[4:8]-{self.card_no[8:12]}-{self.card_no[12:]}}"
+        return formatted
 
     @property
     def expired(self):

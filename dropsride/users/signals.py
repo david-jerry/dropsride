@@ -77,10 +77,11 @@ def create_user_relationship_signal(instance, created, **kwargs):
         Riders.objects.create(user=instance)
         LOGGER.info(f"[NEW RIDER] Created New Rider Account Relationships for {instance.username}")
 
-    if not instance.ref_link and not instance.is_superuser and instance.phone_number and created:
+    if not instance.ref_link and not instance.is_superuser and instance.phone_number:
         res = Customer.create(first_name=instance.first_name, last_name=instance.last_name, email=instance.email, phone=instance.phone_number)
         instance.ref_link = res['data']['customer_code']
-        LOGGER.info(f"[NEW USER] Created New Referral/Customer Link for {instance.username}")
+        User.objects.filter(username=instance.username, phone_number=instance.phone_number).update(ref_link=instance.ref_link)
+        LOGGER.info(f"[NEW USER] Created New Referral/Customer Link for {instance.ref_link}")
 
     if not VerifiedPhone.objects.filter(user=instance).exists() and instance.phone_number and created:
         LOGGER.info(f'Phone Number: {instance.phone_number}')

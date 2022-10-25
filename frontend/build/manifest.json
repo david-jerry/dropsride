@@ -1,6 +1,6 @@
 {
-  "app.css": "/static/css/app.f683a524770e88bc02ed.css",
-  "app.js": "/static/js/app.fbfe81e4.js",
+  "app.css": "/static/css/app.79750b5533a9c4b8b4be.css",
+  "app.js": "/static/js/app.d57521ee.js",
   "app2.js": "/static/js/app2.0412df8f.js",
   "assets/android-chrome-144x144.png": "/static/assets/android-chrome-144x144.png",
   "assets/android-chrome-192x192.png": "/static/assets/android-chrome-192x192.png",
@@ -43,18 +43,18 @@
   "assets/yandex-browser-manifest.json": "/static/assets/yandex-browser-manifest.json",
   "css/266.085301f083b891b3412a.css": "/static/css/266.085301f083b891b3412a.css",
   "css/266.085301f083b891b3412a.css.map": "/static/css/266.085301f083b891b3412a.css.map",
-  "css/app.f683a524770e88bc02ed.css.map": "/static/css/app.f683a524770e88bc02ed.css.map",
+  "css/app.79750b5533a9c4b8b4be.css.map": "/static/css/app.79750b5533a9c4b8b4be.css.map",
   "entrypoints": {
     "app": {
       "assets": {
         "js": [
           "/static/js/runtime.b7968b3e.js",
           "/static/js/266.23ba56de.js",
-          "/static/js/app.fbfe81e4.js"
+          "/static/js/app.d57521ee.js"
         ],
         "css": [
           "/static/css/266.085301f083b891b3412a.css",
-          "/static/css/app.f683a524770e88bc02ed.css"
+          "/static/css/app.79750b5533a9c4b8b4be.css"
         ]
       }
     },
@@ -71,7 +71,7 @@
   "js/266.23ba56de.js": "/static/js/266.23ba56de.js",
   "js/266.23ba56de.js.LICENSE.txt": "/static/js/266.23ba56de.js.LICENSE.txt",
   "js/266.23ba56de.js.map": "/static/js/266.23ba56de.js.map",
-  "js/app.fbfe81e4.js.map": "/static/js/app.fbfe81e4.js.map",
+  "js/app.d57521ee.js.map": "/static/js/app.d57521ee.js.map",
   "js/runtime.b7968b3e.js.map": "/static/js/runtime.b7968b3e.js.map",
   "runtime.js": "/static/js/runtime.b7968b3e.js",
   "sw.js": "/static/sw.js",
@@ -82,6 +82,7 @@
   "vendors/images/about/nigeria-map.png": "/static/vendors/images/about/nigeria-map.png",
   "vendors/images/about/shop.svg": "/static/vendors/images/about/shop.svg",
   "vendors/images/apple-store.svg": "/static/vendors/images/apple-store.svg",
+  "vendors/images/blank-profile.webp": "/static/vendors/images/blank-profile.webp",
   "vendors/images/business/business-bg.svg": "/static/vendors/images/business/business-bg.svg",
   "vendors/images/business/female-driver.jpg": "/static/vendors/images/business/female-driver.jpg",
   "vendors/images/business/how-to-use1.jpg": "/static/vendors/images/business/how-to-use1.jpg",
@@ -89,6 +90,8 @@
   "vendors/images/business/how-to-use3.jpg": "/static/vendors/images/business/how-to-use3.jpg",
   "vendors/images/business/image1.jpg": "/static/vendors/images/business/image1.jpg",
   "vendors/images/business/image2.jpg": "/static/vendors/images/business/image2.jpg",
+  "vendors/images/card/master.svg": "/static/vendors/images/card/master.svg",
+  "vendors/images/card/visa.svg": "/static/vendors/images/card/visa.svg",
   "vendors/images/careers/growth.svg": "/static/vendors/images/careers/growth.svg",
   "vendors/images/careers/impact.svg": "/static/vendors/images/careers/impact.svg",
   "vendors/images/careers/money.svg": "/static/vendors/images/careers/money.svg",

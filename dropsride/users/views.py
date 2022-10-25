@@ -570,6 +570,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "User's Profile"
+        obj = self.request.user
+        context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
         return context
 
 

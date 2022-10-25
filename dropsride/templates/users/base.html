@@ -12,8 +12,8 @@
 
 
 {% block content %}
-<section class="w-screen flex items-center">
-  <nav class="relative hidden flex-none md:block md:w-96 bg-black h-screen space-y-3 text-white">
+<section class="w-screen relative">
+  <nav class="z-50 fixed hidden flex-none md:block md:w-96 bg-black h-screen space-y-3 text-white top-0 left-0">
     <div class="rounded-b-xl shadow-md flex items-center justify-between py-7 bg-white/20 px-4">
       <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-yellow.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
       <div class="form-control">
@@ -29,7 +29,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
           <path fill-rule="evenodd" d="M1.5 7.125c0-1.036.84-1.875 1.875-1.875h6c1.036 0 1.875.84 1.875 1.875v3.75c0 1.036-.84 1.875-1.875 1.875h-6A1.875 1.875 0 011.5 10.875v-3.75zm12 1.5c0-1.036.84-1.875 1.875-1.875h5.25c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875h-5.25a1.875 1.875 0 01-1.875-1.875v-8.25zM3 16.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875v2.25c0 1.035-.84 1.875-1.875 1.875h-5.25A1.875 1.875 0 013 18.375v-2.25z" clip-rule="evenodd" />
         </svg>
-        <span class="text-base font-bold">My Dashboard</span>
+        <span class="text-base font-bold">My Profile</span>
       </button>
       <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -70,9 +70,8 @@
       © copyright 2022, Drops Technology.
     </div>
   </nav>
-  <section class="flex-grow px-4 pt-4 pb-24 md:pb-8 bg-warning/10 h-screen overflow-y-auto scrollbar-small">
-
-    <header hx-preserver="true" x-data="{selected: {% if request.path == about or request.path == business or request.path == features or request.path == career %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% elif request.path == news %}'option7'{% else %}'option5'{% endif %}, open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 shadow-xl rounded-xl top-4 left-4 right-4' : showNav, 'z-50 relative shadow-xl rounded-xl' : !showNav}" class="w-full bg-black text-white rounded-xl py-5 px-4 md:px-24 xl:px-24 flex items-center justify-between">
+  <section class="w-full md:w-[100vw_-_24rem] md:relative md:pl-[24rem] pb-24 md:pb-8 bg-warning/10 min-h-screen flex-none">
+    <header hx-preserver="true" x-data="{open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 left-4 right-4 shadow-xl rounded-xl top-4 md:left-[25rem] w-[100vw_-_4rem] md:w-[100vw_-_26rem]' : showNav, 'z-50 w-full relative' : !showNav}" class="bg-black text-white py-5 px-4 flex items-center justify-between">
       <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-light.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer md:hidden">
 
       <nav class="space-x-4 items-center hidden md:flex">
@@ -119,10 +118,9 @@
       </div>
     </header>
 
-    <div class="py-4 w-full flex-none">
-
+    <div class="py-4 w-full flex-none px-4">
+      {% block inner %}{% endblock %}
     </div>
-    {% block inner %}{% endblock %}
 
     <button title="smooth scroll to top" :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-black text-white hover:text-warning focus:animate-bounce-slow hover::animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

@@ -116,8 +116,8 @@ class RiderWallet(TimeStampedModel):
     Args:
         TimeStampedModel (_type_): _description_
     """
-    rider = ForeignKey(Riders, on_delete=CASCADE, related_name="rider_wallet")
-    balance = DecimalField(decimal_places=2, max_digits=20)
+    rider = OneToOneField(Riders, on_delete=CASCADE, related_name="rider_wallet")
+    balance = DecimalField(decimal_places=2, max_digits=20, default=0.00)
     unlocked = BooleanField(default=False)
 
     def __str__(self):
@@ -150,4 +150,13 @@ class RiderTransactionHistory(TimeStampedModel):
     amount = DecimalField(decimal_places=2, max_digits=20, default=0.00)
     transaction_id = CharField(max_length=50, blank=True)
     status = CharField(max_length=25, choices=TRANSACTION_STATUS, default=PENDING)
+
+    def __str__(self):
+        return f"{self.rider.user.username.upper()} {self.transaction_id}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Rider Transaction History"
+        verbose_name_plural = "Riders Transaction Histories"
+        ordering = ["-created"]
 

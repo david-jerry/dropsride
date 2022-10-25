@@ -159,3 +159,55 @@ class Subscription(TimeStampedModel):
         verbose_name = "Driver Subscription"
         verbose_name_plural = "Drivers Subscriptions"
         ordering = ["-created", "active"]
+
+
+class DriverWallet(TimeStampedModel):
+    """Wallet to store riders deposited funds for rides.
+
+    Args:
+        TimeStampedModel (_type_): _description_
+    """
+    driver = OneToOneField(Drivers, on_delete=CASCADE, related_name="driver_wallet")
+    balance = DecimalField(decimal_places=2, max_digits=20, default=0.00)
+    unlocked = BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.driver.user.username.upper()} {self.balance}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Driver Wallet"
+        verbose_name_plural = "Drivers Wallet"
+        ordering = ["-created"]
+
+
+class DriverTransactionHistory(TimeStampedModel):
+    """Transactional history for a specific rider for wallet
+
+    Args:
+        TimeStampedModel (_type_): _description_
+    """
+
+    SUCCESS = "SUCCESS"
+    PENDING = "PENDING"
+    FAILED = "FAILED"
+    TRANSACTION_STATUS = (
+        (SUCCESS, SUCCESS),
+        (PENDING, PENDING),
+        (FAILED, FAILED),
+    )
+
+    driver = ForeignKey(Drivers, on_delete=CASCADE, related_name="driver_transactions")
+    amount = DecimalField(decimal_places=2, max_digits=20, default=0.00)
+    transaction_id = CharField(max_length=50, blank=True)
+    status = CharField(max_length=25, choices=TRANSACTION_STATUS, default=PENDING)
+
+    def __str__(self):
+        return f"{self.driver.user.username.upper()} {self.transaction_id}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Driver Transaction History"
+        verbose_name_plural = "Drivers Transaction Histories"
+        ordering = ["-created"]
+
