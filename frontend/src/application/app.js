@@ -9,7 +9,7 @@ import StickyNav from "../components/StickyNav";
 import Swiper from "swiper";
 import { detect } from "detect-browser";
 import "izitoast/dist/css/iziToast.min.css";
-// import "@lottiefiles/lottie-player";
+import "@lottiefiles/lottie-player";
 import iziToast from "izitoast/dist/js/iziToast.min.js";
 import anime from "animejs/lib/anime.es.js";
 import ScrollMagic from "scrollmagic";

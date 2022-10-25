@@ -59,7 +59,7 @@
   {% endif %}
 {% endif %}
   <div id="form">
-    <form hx-boost="true" x-data="AccountForm" x-init="checkValidity" x-ref="form" method="post" action="{% url 'account_login' %}" data-csrf="{{csrf_token}}" data-redirect="{% if user.is_authenticated %}{% url 'users:detail' user.username %}{% elif user.is_staff %}{% url 'staff:dashboard' %}{% elif redirect_field_value %}{{ redirect_field_value }}{% endif %}" @submit.prevent="submitLoginForm" class="w-full py-3 space-y-4 md:space-y-6">
+    <form hx-boost="true" x-data="AccountForm" x-init="checkValidity" x-ref="form" method="post" action="{% url 'account_login' %}" data-csrf="{{csrf_token}}" data-redirect="{% if user.is_authenticated %}{% url 'users:detail' user.username %}{% elif user.is_staff %}{% url 'staff:dashboard' %}{% elif redirect_field_value %}{{ redirect_field_value }}{% else %}{% url 'users:redirect' %}{% endif %}" @submit.prevent="submitLoginForm" class="w-full py-3 space-y-4 md:space-y-6">
       {% csrf_token %}
 
       {% for hidden in form.hidden_fields %}
