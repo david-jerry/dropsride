@@ -89,17 +89,18 @@ def create_user_relationship_signal(instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def create_user_relationship_signal(instance, created, **kwargs):
-    instance.user_social_accounts.save()
-    LOGGER.info(f"[NEW USER SOCIAL] Created New Social Account Relationships for {instance.username}")
+    if instance.phone_number:
+        instance.user_social_accounts.save()
+        LOGGER.info(f"[NEW USER SOCIAL] Created New Social Account Relationships for {instance.username}")
 
-    instance.next_of_kin.save()
-    LOGGER.info(f"[NEW USER NOK] Created New Kin Relationships for {instance.username}")
+        instance.next_of_kin.save()
+        LOGGER.info(f"[NEW USER NOK] Created New Kin Relationships for {instance.username}")
 
 
-    if not VerifiedPhone.objects.filter(user=instance).exists() and instance.phone_number:
-        LOGGER.info(f'Phone Number: {instance.phone_number}')
-        VerifiedPhone.objects.create(user=instance)
-        LOGGER.info(f"[NEW USER VERIFIED PHONE] Created New Verified Phone Number Relationships for {instance.username}")
+        if not VerifiedPhone.objects.filter(user=instance).exists():
+            LOGGER.info(f'Phone Number: {instance.phone_number}')
+            VerifiedPhone.objects.create(user=instance)
+            LOGGER.info(f"[NEW USER VERIFIED PHONE] Created New Verified Phone Number Relationships for {instance.username}")
 
 
 
