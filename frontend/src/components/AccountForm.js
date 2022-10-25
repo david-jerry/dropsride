@@ -184,7 +184,7 @@ export default function AccountForm() {
 
             const formElement = this.$refs.form;
             const action = formElement.action;
-            // const redirect = formElement.dataset.redirect;
+            const redirect = formElement.dataset.redirect;
             const csrf = formElement.dataset.csrf;
             let data = new FormData(formElement);
             formElement.querySelectorAll("[name]").forEach(fieldElement => {
@@ -216,6 +216,7 @@ export default function AccountForm() {
                         sleep(7500); //wait 1 sec and then htmx redirect get
                         if(response.data.redirect) return window.location.replace(response.data.redirect);
 
+                        window.location.replace(redirect);
                     }).catch(function (error) {
 
                         return iziToast.error({

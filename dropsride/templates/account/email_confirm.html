@@ -17,7 +17,7 @@
   <p class="text-xs md:text-sm text-justify md:text-left">{% blocktranslate with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktranslate %}</p>
 
   <div id="form">
-    <form hx-boost="true" x-data="AccountForm" x-ref="form" method="post" action="{% url 'account_confirm_email' confirmation.key %}" data-csrf="{{csrf_token}}" data-redirect="{% if confirmation.email_address.user %}{% url 'users:detail' confirmation.email_address.user.username %}{% else %}{% url 'account_login' %}{% endif %}" @submit.prevent="submitEmailConfirmForm" class="w-full py-3 space-y-4 md:space-y-6">
+    <form hx-boost="true" x-data="AccountForm" x-ref="form" method="post" action="{% url 'account_confirm_email' confirmation.key %}" data-csrf="{{csrf_token}}" data-redirect="{% if request.user.is %}{% url 'users:detail' confirmation.email_address.user.username {% url 'account_login' %}{% endif %}" @submit.prevent="submitEmailConfirmForm" class="w-full py-3 space-y-4 md:space-y-6">
       {% csrf_token %}
       <button title="apply now" x-transition.duration.300ms class="flex items-center space-x-3 text-center justify-center mt-4 w-full rounded-xl bg-black text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submitForm">
         <svg x-show="processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
