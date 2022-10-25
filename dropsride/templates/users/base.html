@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ block.super }}{% block head_title %}{% endblock head_title %}{% endblock title %}
+{% block description %} User Account Informations {% endblock %}
+{% block keywords %} drops business, business trips, {{ block.super }} {% endblock %}
+{% block og_title %} {{ block.super }} Account {% endblock %}
+{% block og_sitename %} {{ block.super }} {% endblock %}
+{% block og_description %} User Account Informations {% endblock %}
+{% block og_favicon %} {{ block.super }} {% endblock %}
+{% block author %} {{ block.super }} {% endblock %}
+
+
+{% block content %}
+<section class="w-screen flex items-center">
+  <nav class="relative hidden flex-none md:block md:w-96 bg-black h-screen space-y-3 text-white">
+    <div class="rounded-b-xl shadow-md flex items-center justify-between py-7 bg-white/20 px-4">
+      <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-yellow.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
+      <div class="form-control">
+        <label class="label cursor-pointer text-white">
+          <span class="label-text pr-4 text-right text-white">Switch to <br>Driver</span>
+          <input type="checkbox" class="toggle text-warning" checked />
+        </label>
+      </div>
+    </div>
+
+    <div class="w-full px-4 py-14 space-y-3">
+      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M1.5 7.125c0-1.036.84-1.875 1.875-1.875h6c1.036 0 1.875.84 1.875 1.875v3.75c0 1.036-.84 1.875-1.875 1.875h-6A1.875 1.875 0 011.5 10.875v-3.75zm12 1.5c0-1.036.84-1.875 1.875-1.875h5.25c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875h-5.25a1.875 1.875 0 01-1.875-1.875v-8.25zM3 16.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875v2.25c0 1.035-.84 1.875-1.875 1.875h-5.25A1.875 1.875 0 013 18.375v-2.25z" clip-rule="evenodd" />
+        </svg>
+        <span class="text-base font-bold">My Dashboard</span>
+      </button>
+      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.04 16.5l.5-1.5h6.42l.5 1.5H8.29zm7.46-12a.75.75 0 00-1.5 0v6a.75.75 0 001.5 0v-6zm-3 2.25a.75.75 0 00-1.5 0v3.75a.75.75 0 001.5 0V9zm-3 2.25a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5z" clip-rule="evenodd" />
+        </svg>
+
+        <span class="text-base font-bold">Transactions</span>
+      </button>
+
+      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 01.75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 019.75 22.5a.75.75 0 01-.75-.75v-4.131A15.838 15.838 0 016.382 15H2.25a.75.75 0 01-.75-.75 6.75 6.75 0 017.815-6.666zM15 6.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" clip-rule="evenodd" />
+          <path d="M5.26 17.242a.75.75 0 10-.897-1.203 5.243 5.243 0 00-2.05 5.022.75.75 0 00.625.627 5.243 5.243 0 005.022-2.051.75.75 0 10-1.202-.897 3.744 3.744 0 01-3.008 1.51c0-1.23.592-2.323 1.51-3.008z" />
+        </svg>
+        <span class="text-base font-bold">Travel History</span>
+      </button>
+
+      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+        </svg>
+
+        <span class="text-base font-bold">Security</span>
+      </button>
+
+      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M12 6.75a5.25 5.25 0 016.775-5.025.75.75 0 01.313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 011.248.313 5.25 5.25 0 01-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 112.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0112 6.75zM4.117 19.125a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.008a.75.75 0 01-.75-.75v-.008z" clip-rule="evenodd" />
+          <path d="M10.076 8.64l-2.201-2.2V4.874a.75.75 0 00-.364-.643l-3.75-2.25a.75.75 0 00-.916.113l-.75.75a.75.75 0 00-.113.916l2.25 3.75a.75.75 0 00.643.364h1.564l2.062 2.062 1.575-1.297z" />
+          <path fill-rule="evenodd" d="M12.556 17.329l4.183 4.182a3.375 3.375 0 004.773-4.773l-3.306-3.305a6.803 6.803 0 01-1.53.043c-.394-.034-.682-.006-.867.042a.589.589 0 00-.167.063l-3.086 3.748zm3.414-1.36a.75.75 0 011.06 0l1.875 1.876a.75.75 0 11-1.06 1.06L15.97 17.03a.75.75 0 010-1.06z" clip-rule="evenodd" />
+        </svg>
+
+        <span class="text-base font-bold">Account Settings</span>
+      </button>
+    </div>
+
+    <div class="absolute right-4 text-xs left-4 w-full bottom-4 text-center flex items-center">
+      © copyright 2022, Drops Technology.
+    </div>
+  </nav>
+  <section class="flex-grow px-4 pt-4 pb-24 md:pb-8 bg-warning/10 h-screen overflow-y-auto scrollbar-small">
+
+    <header hx-preserver="true" x-data="{selected: {% if request.path == about or request.path == business or request.path == features or request.path == career %}'option2'{% elif request.path == cities %}'option3'{% elif request.path == login or request.path == passenger_signup or request.path == driver_signup or request.path == company_signup  %}'option6'{% elif request.path == support %}'option4'{% elif request.path == home %}'option1'{% elif request.path == news %}'option7'{% else %}'option5'{% endif %}, open: false, is_dashboard: false}" x-transition.duration.300ms id="navbar" :class="{'z-50 fixed duration-300 shadow-xl rounded-xl top-4 left-4 right-4' : showNav, 'z-50 relative shadow-xl rounded-xl' : !showNav}" class="w-full bg-black text-white rounded-xl py-5 px-4 md:px-24 xl:px-24 flex items-center justify-between">
+      <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-light.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer md:hidden">
+
+      <nav class="space-x-4 items-center hidden md:flex">
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option1'}" class="hover:text-warning hover:font-bold duration-300 px-6">Home</button>
+        <button class="relative group px-6 h-14" :class="{'text-warning':selected === 'option2'}">Company
+          <div class="shadow-xl text-white group-hover:flex group-hover:flex-col group-hover:p-4 rounded-b-xl space-y-3 bg-black absolute z-50 top-14 w-44 flex-none -left-6 hidden">
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'about' %}" hx-get="{% url 'about' %}" class="hover:text-warning hover:font-bold duration-300 px-6">About</a>
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'business' %}" hx-get="{% url 'business' %}" class="hover:text-warning hover:font-bold duration-300 px-6">Business</a>
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'careers:list' %}" hx-get="{% url 'careers:list' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Careers</a>
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'features' %}" hx-get="{% url 'features' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Features</a>
+          </div>
+        </button>
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option3'" hx-get="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option3'}" class="hover:text-warning hover:font-bold duration-300 px-6">Cities</button>
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option7'" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option7'}" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</button>
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option4'" hx-get="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option4'}" class="hover:text-warning hover:font-bold duration-300 px-6">Support</button>
+      </nav>
+
+      <div hx-boost="true" class="flex items-center space-x-4 text-xs md:text-base">
+        {% if request.user.is_staff %}
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'staff:dashboard' %}" hx-target="body" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'staff:dashboard' %}" class="hidden bg-warning rounded-md py-2 px-5 text-black  font-medium hover:shadow-md duration-300 hover:scale-105 md:flex items-center space-x-3">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z" />
+          </svg>
+
+          <span class="hidden md:block">Dashboard</span>
+        </button>
+        {% endif %}
+
+        <a @click="window.scrollTo({top: 0, behavior: 'smooth'})" href="{% url 'account_logout' %}" class="bg-danger rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 hidden md:flex md:space-x-3">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+          </svg>
+
+          <span class="hidden md:block">Logout</span>
+        </a>
+
+        <button title="support" @click="window.scrollTo({top: 0, behavior: 'smooth'}); selected=null" hx-get="{% url 'support' %}" hx-target="body" hx-swap="outerHTML show:window:top" hx-push-url="{% url 'support' %}" class="bg-warning border-2 border-black md:hidden rounded-md py-2 px-5 text-white  font-medium hover:shadow-md duration-300 hover:scale-105 items-center space-x-3">
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+            <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+          </svg> -->
+          <img class="h-6" title="customer support" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAADJ0lEQVRoge3ZTahVVRQH8J+pQZKPPpwUhYFBb2IQReFADDERfBMTQaOaiIiDIB0VFpWJg3BYTRrZJJ4DnagE0SAh+tCKigr7ALFnqZnm08iP53sNtoe377nn3Hvuefve98D7hwWHe/57rf/aH2evvS999HFzY1ZCXw9iKZZhEHdFdgGjGMG3OIID+Cth/FqYg/U4iokObQwfYVXPVd/AU/ithcBO7HMs7qX4VzCeSHxml7G1F+J3JRaet93Srs0GbOiy+Mze6Ib4Bfi7Rwlcx1DqBN7qkfjMTuL2VOJvxfkeJzCBHakSeHIaxE/gl3bCbqmYwMqKvNSY345QNYElFXnHhAWYCodSOfpB++HeJ6yVQbyLMxXatLLDuDNVAq3EXMdrmkdzjlDcvYg9QrlwDKfwH67hHE7ga+zHp5Hfd1KJJxReReI/weMJ4yyPfH+V0G+D6It4XyjmUuPeKM6plI7jBOaldJzD7CjOWErHdRbhd0KPwgP4qYaPUWFtPDQV8TtqJpDSzuH+OuJXzwDxme2tk8DHkYODuDv3fmf0fnvBb0VWxNs+6bK03YUige124sei501COR3jYvT8KAZybV4QDicvteEVisthoAKnCadN9sB9Be8fETayoh67ZnLxVeUp4WTWMT6MGh8qSWJ3SbDXa/LKxP9TJ4GiMnoED+d4G4Uy4Qp+xLMl/qrwyhIYrpMAvKz5BuK9us4qoEj8WcWjXxkrhEuozOHxqWksRbwTZ1+eYVMUnyF/rBxM4TSHRZH/36s0qHqggasaDxjPd9C2Kp6Jno92wb+1JnvoT8yt0GYIX+Jf4WJ3bQnviRuczH8Zb0qYKxxAsiBb2vCHNC/I8UjcbGHavKpR/Gc6mx0dYVsU6LTWO+QRxV+VVvYHFnZJO8Jl00gUcE8L7mgbsXn7Qii9u441ucCbS3jtRmBMuIHbj3W6OG2KMJwTsrGAU7YG1vRIY0vM09jD43hb833mamFqXMI3Zoj4DPfge409fBJvCmXzHdMnrToGhA2ubJ7/KvwBOKMxC89p/DrFtm36pHWG2/A0PhCuI0fxs7BZ9dFHH13A/5rze8gHwTyRAAAAAElFTkSuQmCC">
+        </button>
+      </div>
+    </header>
+
+    <div class="py-4 w-full flex-none">
+
+    </div>
+    {% block inner %}{% endblock %}
+
+    <button title="smooth scroll to top" :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-black text-white hover:text-warning focus:animate-bounce-slow hover::animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+      </svg>
+    </button>
+    <button id="shareUrl" data-url="{{request.build_absolute_uri}}" title="share website" :class="{'flex' : showNav, 'hidden' : !showNav}" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-warning text-black animate-pulse duration-300 rounded-full fixed right-4 bottom-[176px] md:bottom-[200px]">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+        <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+      </svg>
+    </button>
+  </section>
+</section>
+{% endblock %}
+
+{% block nav %}
+{% endblock nav %}
+
+{% block floats %}
+{% endblock floats %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}
+
