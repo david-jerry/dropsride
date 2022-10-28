@@ -65,7 +65,7 @@ ratelim==0.1.6
 django-ipware==4.0.2
 geoip2==4.5.0
 django-user-agents==0.4.0
-ua-parser==0.10.0
+ua-parser==0.16.1
 user-agents==2.2.0
 
 # show map in django admin
