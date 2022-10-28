@@ -11,7 +11,7 @@ class Banks(TimeStampedModel):
     Args:
         TimeStampedModel (_type_): _description_
     """
-    name = CharField(max_length=500, unique=False)
+    name = CharField(max_length=500, unique=True)
     slug = SlugField()
     lcode = CharField(max_length=25)
     code = CharField(max_length=10)
@@ -58,7 +58,7 @@ class Currency(TimeStampedModel):
         (ZAR, "South African Rand"),
         (AED, "United Arab Emirates Dirham")
     )
-    code = CharField(max_length=3, choices=CODE, default=USD, blank=False, null=False, unique=False)
+    code = CharField(max_length=3, choices=CODE, default=USD, blank=False, null=False, unique=True)
     symbol = CharField(max_length=10, blank=False, null=False, unique=False)
     price = DecimalField(max_digits=20, decimal_places=2, blank=False, default=0.00, null=False)
 
