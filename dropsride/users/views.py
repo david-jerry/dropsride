@@ -627,10 +627,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context["title"] = "User's Profile"
         obj = self.request.user
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
         return context
 
 
