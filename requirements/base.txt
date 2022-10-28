@@ -85,7 +85,7 @@ django-tables2==2.4.1
 # push notification settings
 py-vapid==1.8.2
 django-push-notifications==3.0.0
-pywebpush==1.9.4
+pywebpush==1.14.0
 django-webpush==0.3.4
 
 # user notifications
