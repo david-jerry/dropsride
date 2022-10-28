@@ -962,10 +962,10 @@ class AddBankAccountDetails(LoginRequiredMixin, FormView):
         context['title'] = "Add Bank Account"
         context['description'] = "Save a bank account to easily transfer to. For drivers only."
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
         return context
 
 add_account_details = AddBankAccountDetails.as_view()
@@ -1021,10 +1021,10 @@ class AddCard(LoginRequiredMixin, CreateView):
         context['description'] = "Save a bank card to easily make transactions within the app"
         context['object'] = obj
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
         return context
 
 add_new_card = AddCard.as_view()
