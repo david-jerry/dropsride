@@ -677,10 +677,10 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         context['description'] = "Update your basic informations"
         obj = self.request.user
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
         return context
 
     def form_valid(self, form):
@@ -732,10 +732,11 @@ class UserUpdatePhoto(LoginRequiredMixin, UpdateView):
         context['object'] = self.get_object()
         obj = self.request.user
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
+
         return context
 
 
@@ -779,10 +780,10 @@ class UserUpdateAddress(LoginRequiredMixin, UpdateView):
         context['object'] = self.get_object()
         obj = self.request.user
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
         return context
 
 
@@ -821,10 +822,10 @@ class UserUpdateSocial(LoginRequiredMixin, UpdateView):
         context['object'] = self.get_object()
         obj = self.request.user
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
         return context
 
 
@@ -874,10 +875,10 @@ class AddNextOfKinView(LoginRequiredMixin, UpdateView):
         context['description'] = "This person will be contacted to ensure they are familiar with you. Submitting the form consents to us making a verification call on your behalf."
         context['object'] = obj
         context['email'] = EmailAddress.objects.get(user=obj, email=obj.email) if EmailAddress.objects.filter(user=obj, email=obj.email) else None
-        if not obj.is_driver:
-            context['addresses'] = obj.company.get_addresses()
-        elif obj.is_company:
+        if not obj.is_driver and not obj.is_company:
             context['addresses'] = obj.rider.get_addresses()
+        elif obj.is_company:
+            context['addresses'] = obj.company.get_addresses()
         return context
 
 
