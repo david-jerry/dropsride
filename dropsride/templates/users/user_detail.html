@@ -5,100 +5,151 @@
 
 {% block inner %}
 <section class="flex-none grid grid-cols-1 md:grid-cols-4 md:gap-4 space-y-4 md:space-y-0">
-  <div class="overflow-hidden w-full rounded-xl shadow-xl bg-black/10 col-span-1">
-    <div class="flex items-center justify-between">
-      <strong class="block font-b"></strong>
-      <div class="space-y-1 text-right rounded-xl p-2 bg-black/10">
-        <p class="text-gray-600 text-xs">Last Login: {{object.last_login}}</p>
-        <p class="text-gray-600 text-xs">Ref ID: {{object.ref_link}}</p>
-      </div>
-    </div>
-    <div class="w-full flex justify-center items-center py-4 object-cover relative">
-      <button hx-push-url="{% url 'users:update' %}" hx-get="{% url 'users:update' %}" hx-target="#edits" hx-swap="outerHTML" class="absolute bottom-0 right-auto h-8 flex justify-center items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-          <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-          <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-        </svg>
-        <span>Edit Profile</span>
-      </button>
-      <img src="{% if object.image.thumbnail  %}{{object.image.url}}{% else %}{% static 'vendors/images/blank-profile.webp' %}{% endif %}" alt="" class="object-cover w-44 h-44 rounded-full mx-auto">
-    </div>
-    <div class="py-3 px-3 space-y-3">
-
-      <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
-        <strong class="block font-bold">Name</strong>
-        <div class="space-y-1">
-          <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.first_name}} {{object.middle_name|truncatechars:1|upper}} {{object.last_name}}</p>
+  {% block main %}
+  <div hx-preserver="true" class="overflow-hidden w-full col-span-1 space-y-6 pb-14">
+    <div class="rounded-xl shadow-xl bg-black/10 overflow-hidden w-full">
+      <div class="flex items-center justify-between">
+        <strong class="block font-b"></strong>
+        <div class="space-y-1 text-right rounded-xl p-2 bg-black/10">
+          <p class="text-gray-600 text-xs">Last Login: {{object.last_login}}</p>
+          <p class="text-gray-600 text-xs">Ref ID: {{object.ref_link}}</p>
         </div>
       </div>
-
-      <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
-        <strong class="block font-bold">Email</strong>
-        <div class="space-y-1">
-          <p class="text-xs md:text-sm font-semibold">{{object.email}}</p>
+      <div class="w-full flex justify-center items-center py-4 object-cover relative">
+        <div class="w-44 h-44 mx-auto rounded-full overflow-hidden relative flex items-center justify-center">
+          <button hx-push-url="{% url 'users:update_image' %}" hx-get="{% url 'users:update_image' %}" hx-target="body" hx-swap="outerHTML" class="absolute top-20 left-auto h-min flex justify-center items-center z-20 bg-black/30 text-white font-bold py-2 px-3 rounded-xl shadow-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <img src="{% if object.image.thumbnail  %}{{object.image.url}}{% else %}{% static 'vendors/images/blank-profile.webp' %}{% endif %}" alt="" class="object-cover w-44 h-44 rounded-full mx-auto">
         </div>
+        <button hx-push-url="{% url 'users:update' %}" hx-get="{% url 'users:update' %}" hx-target="body" hx-swap="outerHTML" class="absolute -bottom-5 right-auto h-8 flex justify-center items-center z-20 bg-black text-white font-bold py-2 px-3 rounded-xl shadow-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+          </svg>
+          <span>Edit Profile</span>
+        </button>
       </div>
+      <div class="pt-8 pb-3 px-3 space-y-3">
 
-      <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
-        <strong class="block font-bold">Phone</strong>
-        <div class="space-y-1">
-          <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.phone_number}}</p>
+        <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
+          <strong class="block font-bold">Name</strong>
+          <div class="space-y-1">
+            <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.first_name}} {{object.middle_name|slice:1|upper}}. {{object.last_name}}</p>
+          </div>
         </div>
-      </div>
 
-      <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
-        <strong class="block font-bold">Gender</strong>
-        <div class="space-y-1">
-          <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.gender}}</p>
+        <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
+          <strong class="block font-bold">Email</strong>
+          <div class="space-y-1">
+            <p class="text-xs md:text-sm font-semibold">{{object.email}}</p>
+          </div>
         </div>
-      </div>
 
+        <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
+          <strong class="block font-bold">Phone</strong>
+          <div class="space-y-1">
+            <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.phone_number}}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between py-2 border-b-2 border-b-black/10">
+          <strong class="block font-bold">Gender</strong>
+          <div class="space-y-1">
+            <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.gender}}</p>
+          </div>
+        </div>
+
+        {% if object == request.user %}
+        <div class="flex items-start justify-between py-2 mb-8 py-2">
+          <strong class="block font-bold">Address</strong>
+          <div class="space-y-1 text-right">
+            <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.address}}</p>
+            <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.city}}, {{object.post_code}} {{object.state}}</p>
+            <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.country}}</p>
+          </div>
+        </div>
+        {% endif %}
+      </div>
       {% if object == request.user %}
-      <div class="flex items-start justify-between py-2 mb-8 py-2">
-        <strong class="block font-bold">Address</strong>
-        <div class="space-y-1 text-right">
-          <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.address}}</p>
-          <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.city}}, {{object.post_code}} {{object.state}}</p>
-          <p class="text-gray-600 text-xs md:text-sm font-semibold">{{object.country}}</p>
+      <div class="bg-black px-4 py-4 space-y-1">
+        <div class="flex text-xs items-start justify-between {% if object.verified_phone.verified %}text-success{% else %}text-danger{% endif %}">
+          <strong class="block font-bold">SMS Verification</strong>
+          <div class="space-y-1 text-right">
+            <p class="text-xs md:text-sm font-semibold flex items-center space-x-1">
+              {% if object.verified_phone.verified %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+              </svg>
+              <span>Verified</span>
+              {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 011.032 0 11.209 11.209 0 007.877 3.08.75.75 0 01.722.515 12.74 12.74 0 01.635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 01-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 01.722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zM12 15a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75v-.008a.75.75 0 00-.75-.75H12z" clip-rule="evenodd" />
+              </svg>
+              <span>Unverified</span>
+              {% endif %}</p>
+          </div>
+        </div>
+        <div class="flex text-xs items-start justify-between {% if email.verified %}text-success{% else %}text-danger{% endif %}">
+          <strong class="block font-bold">Email Verification</strong>
+          <div class="space-y-1 text-right">
+            <p class="text-xs md:text-sm font-semibold flex items-center space-x-1">
+              {% if email.verified %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+              </svg>
+              <span>Verified</span>
+              {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 011.032 0 11.209 11.209 0 007.877 3.08.75.75 0 01.722.515 12.74 12.74 0 01.635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 01-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 01.722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zM12 15a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75v-.008a.75.75 0 00-.75-.75H12z" clip-rule="evenodd" />
+              </svg>
+              <span>Unverified</span>
+              {% endif %}
+            </p>
+          </div>
         </div>
       </div>
       {% endif %}
     </div>
-    {% if object == request.user %}
-    <div class="bg-black px-4 py-4 space-y-1">
-      <div class="flex text-xs items-start justify-between {% if object.verified_phone.verified %}text-success{% else %}text-danger{% endif %}">
-        <strong class="block font-bold">SMS Verification</strong>
-        <div class="space-y-1 text-right">
-          <p class="text-xs md:text-sm font-semibold flex items-center space-x-1">
-            {% if object.verified_phone.verified %}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
-            </svg>
-            <span>Verified</span>
-            {% else %}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 011.032 0 11.209 11.209 0 007.877 3.08.75.75 0 01.722.515 12.74 12.74 0 01.635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 01-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 01.722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zM12 15a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75v-.008a.75.75 0 00-.75-.75H12z" clip-rule="evenodd" />
-            </svg>
-            <span>Unverified</span>
-            {% endif %}</p>
+    {% if object.next_of_kin and object == request.user or request.user.is_staff %}
+    <div class="w-full space-y-3 rounded-xl shadow-xl bg-black/10 overflow-hidden p-3">
+      <div class="flex items-start justify-between space-x-4">
+        <div class="w-3/4">
+          <h4 class="text-base font-bold">Next Of Kin</h4>
+          <p class="text-xs">A person to be notified incase of an emergency. It is mandatory to have one set up before you begin to use the application for rides.</p>
         </div>
+        {% if not object.next_of_kin.verified %}
+        <button hx-push-url="{% url 'users:add_next_of_kin' %}" hx-get="{% url 'users:add_next_of_kin' %}" hx-target="body" hx-swap="outerHTML" class="py-2 px-4 bg-black rounded-xl text-warning">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+          </svg>
+        </button>
+        {% endif %}
       </div>
-      <div class="flex text-xs items-start justify-between {% if email.verified %}text-success{% else %}text-danger{% endif %}">
-        <strong class="block font-bold">Email Verification</strong>
-        <div class="space-y-1 text-right">
-          <p class="text-xs md:text-sm font-semibold flex items-center space-x-1">
-            {% if email.verified %}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
-            </svg>
-            <span>Verified</span>
-            {% else %}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 011.032 0 11.209 11.209 0 007.877 3.08.75.75 0 01.722.515 12.74 12.74 0 01.635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 01-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 01.722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zM12 15a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75v-.008a.75.75 0 00-.75-.75H12z" clip-rule="evenodd" />
-            </svg>
-            <span>Unverified</span>
-            {% endif %}
-          </p>
+      <div class="w-full h-min rounded-xl shadow-xl bg-black text-warning overflow-hidden flex space-x-3 items-start p-3">
+        <div class="h-full space-y-3 flex-none flex flex-col items-center justify-center">
+          <img src="{% if object.next_of_kin.image %}{{object.next_of_kin.image.url}}{% else %}{% static 'vendors/images/blank-profile.webp' %}{% endif %}" alt="" class="w-16 aspect-1 object-cover rounded-xl flex-none">
+          <div class="w-1.5 bg-warning h-[216px_-_73.5px]"></div>
+        </div>
+        <div class="space-y-0">
+          <div class="flex border-b-[1px] pb-3 border-b-warning items-center text-sm space-x-3">
+            <strong class="text-white w-16">Name: </strong><span>{{object.next_of_kin.name}}</span>
+          </div>
+          <div class="flex border-b-[1px] pb-3 border-b-warning items-center text-sm space-x-3">
+            <strong class="text-white w-16">Phone: </strong><span>{{object.next_of_kin.phone_number}}</span>
+          </div>
+          <div class="flex border-b-[1px] pb-3 border-b-warning items-start text-sm space-x-3">
+            <strong class="text-white w-16">Address: </strong><span>{{object.next_of_kin.address}}</span>
+          </div>
+          <div class="flex border-b-[1px] pb-3 border-b-warning items-center text-sm space-x-3">
+            <strong class="text-white w-16">City: </strong><span>{{object.next_of_kin.city}}</span>
+          </div>
+          <div class="flex items-center text-sm space-x-3">
+            <strong class="text-white w-16">Country: </strong><span>{{object.next_of_kin.country}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -107,160 +158,234 @@
 
   <div class="w-full col-span-2 space-y-8" id="edits">
     {% if object == request.user %}
-    <div class="p-4 overflow-hidden rounded-xl shadow-xl bg-black/10 space-y-4">
-      <h3 class="text-base font-bold">Saved Cards</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {% for card in object.savedcards_set.all|slice:":2" %}
-        <div class="shadow-xl rounded-xl p-6 h-44 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden">
-          <div class="flex items-center justify-between relative z-10">
-            <div>
-              <span class="text-xs font-black block">Name</span>
-              <strong class="font-bold text-base">{{card.name_on_card|title}}</strong>
+      <div class="p-4 overflow-hidden rounded-xl shadow-xl bg-black/10 space-y-4">
+        <h3 class="text-base font-bold">Saved Cards</h3>
+        <p class="text-xs">Saved cards to make transactions with. Especially in cases of funding your wallet.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {% for card in object.get_user_cards|slice:":2" %}
+          <div class="shadow-xl rounded-xl p-6 h-48 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden group">
+            <button hx-push-url="{% url 'users:update_card' card.id %}" hx-get="{% url 'users:update_card' card.id %}" hx-target="body" hx-swap="outerHTML" class="absolute z-50 flex-none w-10 h-10 flex items-center justify-center rounded-full bg-black text-white shadow-md group-hover:block hidden duration-300 top-2 right-14">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto">
+                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+              </svg>
+            </button>
+            <button hx-push-url="{% url 'users:remove_card' card.id %}" hx-get="{% url 'users:remove_card' card.id %}" hx-target="body" hx-swap="outerHTML" class="absolute w-10 flex-none h-10 z-50 top-2 right-4 rounded-full group-hover:block hidden duration-300 shadow-md bg-danger text-white flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto">
+                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div class="flex items-center justify-between relative z-10">
+              <div>
+                <span class="text-xs font-black block">Name</span>
+                <strong class="font-medium text-base">{{card.name_on_card|title}}</strong>
+              </div>
+              <img src="{% if card.card_provider == 'Mastercard' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'Visa' %}{% static 'vendors/images/card/visa.svg' %}{% endif %}" alt="" class="h-8">
             </div>
-            <img src="{% static 'vendors/images/card/master.svg' %}{% if card.card_provider == 'master' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'visa' %}{% static 'vendors/images/card/visa.svg' %}{% endif %}" alt="" class="h-8">
-          </div>
-          <div class=" relative z-10">
-            <span class="text-xs font-black block">Card Number</span>
-            <strong class="font-bold text-base">{{card.formatted_no}}</strong>
-          </div>
-          <div class="flex items-center justify-between relative z-10">
-            <div>
-              <span class="text-xs font-black block">Expiry</span>
-              <strong class="font-bold text-base">{{card.exp_month|truncatechars:2}}{{card.exp_year|truncatechars:-2}}</strong>
+            <div class=" relative z-10">
+              <span class="text-xs font-black block">Card Number</span>
+              <strong class="font-medium text-base">{{card.formatted_no}}</strong>
             </div>
-            <div>
-              <span class="text-xs font-black block">CVV</span>
-              <strong class="font-bold text-base">{{card.cvv|truncatechars:3}}</strong>
+            <div class="flex items-center justify-between relative z-10">
+              <div>
+                <span class="text-xs font-black block">Expiry</span>
+                <strong class="font-medium text-base">{{card.card_exp_month}}/{{card.card_exp_year}}</strong>
+              </div>
+              <div>
+                <span class="text-xs font-black block">CVV</span>
+                <strong class="font-medium text-base">{{card.cvv|truncatechars:3}}</strong>
+              </div>
             </div>
-          </div>
 
-          <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
-        </div>
-        {% empty %}
-        <div class="shadow-xl rounded-xl p-6 h-44 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden">
-          <div class="flex items-center justify-between relative z-10">
-            <div class="text-left">
-              <span class="text-xs font-black block">Name</span>
-              <strong class="font-bold text-base">Your Name</strong>
-            </div>
-            <img src="{% static 'vendors/images/card/master.svg' %}{% if card.card_provider == 'master' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'visa' %}{% static 'vendors/images/card/visa.svg' %}{% endif %}" alt="" class="h-8">
+            <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
+            <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
+            <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
           </div>
-          <div class="text-left relative z-10">
-            <span class="text-xs font-black block">Card Number</span>
-            <strong class="font-bold text-base">0000 0000 0000 0000</strong>
-          </div>
-          <div class="flex items-center justify-between relative z-10">
-            <div>
-              <span class="text-xs font-black block">Expiry</span>
-              <strong class="font-bold text-base">01/22</strong>
+          {% empty %}
+          <div class="shadow-xl rounded-xl p-6 h-44 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden">
+            <div class="flex items-center justify-between relative z-10">
+              <div class="text-left">
+                <span class="text-xs font-black block">Name</span>
+                <strong class="font-medium text-base">Sample Card Name</strong>
+              </div>
+              <img src="{% static 'vendors/images/card/master.svg' %}{% if card.card_provider == 'master' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'visa' %}{% static 'vendors/images/card/visa.svg' %}{% endif %}" alt="" class="h-8">
             </div>
-            <div>
-              <span class="text-xs font-black block">CVV</span>
-              <strong class="font-bold text-base">123</strong>
+            <div class="text-left relative z-10">
+              <span class="text-xs font-black block">Card Number</span>
+              <strong class="font-medium text-base">0000 0000 0000 0000</strong>
             </div>
-          </div>
+            <div class="flex items-center justify-between relative z-10">
+              <div>
+                <span class="text-xs font-black block">Expiry</span>
+                <strong class="font-medium text-base">01/22</strong>
+              </div>
+              <div>
+                <span class="text-xs font-black block">CVV</span>
+                <strong class="font-medium text-base">123</strong>
+              </div>
+            </div>
 
-          <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
-        </div>
-        <div class="w-full rounded-xl h-44 border-2 border-black/30 bg-black/5 flex items-center justify-center">
-          <div class="flex space-x-2 items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15z" />
-              <path fill-rule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 003 3h15a3 3 0 003-3v-7.5zm-18 3.75a.75.75 0 01.75-.75h6a.75.75 0 010 1.5h-6a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" clip-rule="evenodd" />
-            </svg>
-            <span class="text-sm font-bold">Add New Card</span>
+            <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
+            <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
+            <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
           </div>
+          {% endfor %}
+
+          {% if object.get_user_cards|length < 2 %}
+          <button hx-push-url="{% url 'users:add_new_card' %}" hx-get="{% url 'users:add_new_card' %}" hx-target="body" hx-swap="outerHTML" class="w-full rounded-xl h-44 border-2 border-black/30 bg-black/5 flex items-center justify-center">
+            <div class="flex space-x-2 items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15z" />
+                <path fill-rule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 003 3h15a3 3 0 003-3v-7.5zm-18 3.75a.75.75 0 01.75-.75h6a.75.75 0 010 1.5h-6a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm font-bold">Add New Card</span>
+            </div>
+          </button>
+          {% endif %}
         </div>
-        {% endfor %}
       </div>
-    </div>
 
-    <!-- saved addresses -->
-    <div class="p-4 overflow-hidden rounded-xl shadow-xl bg-black/10 space-y-4">
-      <h3 class="text-base font-bold">Saved Addresses</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {% for card in object.savedcards_set.all|slice:":2" %}
-        <div class="shadow-xl rounded-xl p-6 h-44 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden">
-          <div class="flex items-center justify-between relative z-10">
-            <div>
-              <span class="text-xs font-black block">Name</span>
-              <strong class="font-bold text-base">{{card.name_on_card|title}}</strong>
-            </div>
-            <img src="{% static 'vendors/images/card/master.svg' %}{% if card.card_provider == 'master' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'visa' %}{% static 'vendors/images/card/visa.svg' %}{% endif %}" alt="" class="h-8">
-          </div>
-          <div class=" relative z-10">
-            <span class="text-xs font-black block">Card Number</span>
-            <strong class="font-bold text-base">{{card.formatted_no}}</strong>
-          </div>
-          <div class="flex items-center justify-between relative z-10">
-            <div>
-              <span class="text-xs font-black block">Expiry</span>
-              <strong class="font-bold text-base">{{card.exp_month|truncatechars:2}}{{card.exp_year|truncatechars:-2}}</strong>
-            </div>
-            <div>
-              <span class="text-xs font-black block">CVV</span>
-              <strong class="font-bold text-base">{{card.cvv|truncatechars:3}}</strong>
-            </div>
-          </div>
-
-          <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
-        </div>
-        {% empty %}
-        <div class="shadow-xl rounded-xl p-6 h-44 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden">
-          <div class="flex items-center justify-between relative z-10">
-            <div class="text-left">
-              <span class="text-xs font-black block">Name</span>
-              <strong class="font-bold text-base">Your Name</strong>
-            </div>
-            <img src="{% static 'vendors/images/card/master.svg' %}{% if card.card_provider == 'master' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'visa' %}{% static 'vendors/images/card/visa.svg' %}{% endif %}" alt="" class="h-8">
-          </div>
-          <div class="text-left relative z-10">
-            <span class="text-xs font-black block">Card Number</span>
-            <strong class="font-bold text-base">0000 0000 0000 0000</strong>
-          </div>
-          <div class="flex items-center justify-between relative z-10">
-            <div>
-              <span class="text-xs font-black block">Expiry</span>
-              <strong class="font-bold text-base">01/22</strong>
-            </div>
-            <div>
-              <span class="text-xs font-black block">CVV</span>
-              <strong class="font-bold text-base">123</strong>
-            </div>
-          </div>
-
-          <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
-          <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
-        </div>
-        <div class="w-full rounded-xl h-44 border-2 border-black/30 bg-black/5 flex items-center justify-center">
-          <div class="flex space-x-2 items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15z" />
-              <path fill-rule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 003 3h15a3 3 0 003-3v-7.5zm-18 3.75a.75.75 0 01.75-.75h6a.75.75 0 010 1.5h-6a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" clip-rule="evenodd" />
+      <!-- saved addresses -->
+      <div class="p-4 overflow-hidden rounded-xl shadow-xl bg-black/10 space-y-4">
+        <h3 class="text-base font-bold">Saved Addresses</h3>
+        <p class="text-xs">Easily set an address you frequently hail from.</p>
+        <div class="flex items-center space-x-6 flex-none overflow-x-auto scrollbar-thin">
+          {% for adr in addresses|slice:":4" %}
+          <div class="w-24 md:w-32 aspect-1 shadow-md rounded-xl bg-white flex-none flex flex-col  items-center justify-center">
+            {% if adr.address_type == 'HOME' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path d="M19.006 3.705a.75.75 0 00-.512-1.41L6 6.838V3a.75.75 0 00-.75-.75h-1.5A.75.75 0 003 3v4.93l-1.006.365a.75.75 0 00.512 1.41l16.5-6z" />
+              <path fill-rule="evenodd" d="M3.019 11.115L18 5.667V9.09l4.006 1.456a.75.75 0 11-.512 1.41l-.494-.18v8.475h.75a.75.75 0 010 1.5H2.25a.75.75 0 010-1.5H3v-9.129l.019-.006zM18 20.25v-9.565l1.5.545v9.02H18zm-9-6a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h3a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75H9z" clip-rule="evenodd" />
             </svg>
-            <span class="text-sm font-bold">Add New Card</span>
+            {% elif adr.address_type == 'OFFICE' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+              <path d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z" />
+            </svg>
+            {% elif adr.address_type == 'CHURCH' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path fill-rule="evenodd" d="M4.5 2.25a.75.75 0 000 1.5v16.5h-.75a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5h-.75V3.75a.75.75 0 000-1.5h-15zM9 6a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H9zm-.75 3.75A.75.75 0 019 9h1.5a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM9 12a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H9zm3.75-5.25A.75.75 0 0113.5 6H15a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM13.5 9a.75.75 0 000 1.5H15A.75.75 0 0015 9h-1.5zm-.75 3.75a.75.75 0 01.75-.75H15a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM9 19.5v-2.25a.75.75 0 01.75-.75h4.5a.75.75 0 01.75.75v2.25a.75.75 0 01-.75.75h-4.5A.75.75 0 019 19.5z" clip-rule="evenodd" />
+            </svg>
+            {% elif adr.address_type == 'SCHOOL' %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
+            </svg>
+            {% endif %}
+            <span class="text-sm font-semibold">{{adr.address|truncatechars:15}}</span>
           </div>
+          {% empty %}
+          <div class="w-24 md:w-32 aspect-1 shadow-md rounded-xl bg-white flex-none flex flex-col items-center justify-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path d="M19.006 3.705a.75.75 0 00-.512-1.41L6 6.838V3a.75.75 0 00-.75-.75h-1.5A.75.75 0 003 3v4.93l-1.006.365a.75.75 0 00.512 1.41l16.5-6z" />
+              <path fill-rule="evenodd" d="M3.019 11.115L18 5.667V9.09l4.006 1.456a.75.75 0 11-.512 1.41l-.494-.18v8.475h.75a.75.75 0 010 1.5H2.25a.75.75 0 010-1.5H3v-9.129l.019-.006zM18 20.25v-9.565l1.5.545v9.02H18zm-9-6a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h3a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75H9z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-sm font-semibold">Add Home</span>
+          </div>
+          <div class="w-24 md:w-32 aspect-1 shadow-md rounded-xl bg-white flex-none flex flex-col items-center justify-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+              <path d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z" />
+            </svg>
+            <span class="text-sm font-semibold">Add Office</span>
+          </div>
+          <div class="w-24 md:w-32 aspect-1 shadow-md rounded-xl bg-white flex-none flex flex-col items-center justify-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path fill-rule="evenodd" d="M4.5 2.25a.75.75 0 000 1.5v16.5h-.75a.75.75 0 000 1.5h16.5a.75.75 0 000-1.5h-.75V3.75a.75.75 0 000-1.5h-15zM9 6a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H9zm-.75 3.75A.75.75 0 019 9h1.5a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM9 12a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H9zm3.75-5.25A.75.75 0 0113.5 6H15a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM13.5 9a.75.75 0 000 1.5H15A.75.75 0 0015 9h-1.5zm-.75 3.75a.75.75 0 01.75-.75H15a.75.75 0 010 1.5h-1.5a.75.75 0 01-.75-.75zM9 19.5v-2.25a.75.75 0 01.75-.75h4.5a.75.75 0 01.75.75v2.25a.75.75 0 01-.75.75h-4.5A.75.75 0 019 19.5z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-sm font-semibold">Add Church</span>
+          </div>
+          <div class="w-24 md:w-32 aspect-1 shadow-md rounded-xl bg-white flex-none flex flex-col items-center justify-center text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+              <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
+            </svg>
+            <span class="text-sm font-semibold">Add School</span>
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
-    </div>
+
+
+      {% if user.is_driver %}
+      <!-- saved addresses -->
+      <div class="p-4 overflow-hidden rounded-xl shadow-xl bg-black/10 space-y-4">
+        <div class="flex items-center justify-between w-full space-x-4">
+          <div>
+            <h3 class="text-base font-bold">Verified Bank Account</h3>
+            <p class="text-xs">This is only visible to a driver to enable them get paid directly every weekend.</p>
+          </div>
+          <button hx-push-url="{% url 'users:add_bank_details' %}" hx-get="{% url 'users:add_bank_details' %}" hx-target="body" hx-swap="outerHTML" class="w-10 h-10 flex flex-none items-center justify-center bg-black text-warning rounded-xl hover:shadow-xl duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto">
+              <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+              <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+            </svg>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2">
+          {% for bank in object.get_user_banks|slice:2 %}
+          <div class="rounded-xl group h-min shadow-xl bg-black text-warning flex items-center space-x-3 w-full p-3 relative">
+            <div class="aspect-1 h-14 flex items-center justify-center p-2 bg-warning rounded-xl">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-black">
+                <path d="M11.584 2.376a.75.75 0 01.832 0l9 6a.75.75 0 11-.832 1.248L12 3.901 3.416 9.624a.75.75 0 01-.832-1.248l9-6z" />
+                <path fill-rule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 010 1.5H3a.75.75 0 010-1.5h.75v-9.918a.75.75 0 01.634-.74A49.109 49.109 0 0112 9c2.59 0 5.134.202 7.616.592a.75.75 0 01.634.74zm-7.5 2.418a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75zm3-.75a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0v-6.75a.75.75 0 01.75-.75zM9 12.75a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75z" clip-rule="evenodd" />
+                <path d="M12 7.875a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" />
+              </svg>
+            </div>
+            <div class="space-y-1">
+              <strong class="text-base font-bold">
+                {{bank.bank.name|upper}}
+              </strong>
+              <span class="block text-sm">
+                {{bank.acc_name}}
+              </span>
+              <span class="block text-sm">
+                {{bank.acc_no}}
+              </span>
+            </div>
+            <button hx-push-url="{% url 'users:remove_bank' bank.id %}" hx-get="{% url 'users:remove_bank' bank.id %}" hx-target="body" hx-swap="outerHTML" class="absolute w-10 flex-none h-10 z-50 bottom-4 right-4 rounded-full group-hover:block hidden duration-300 shadow-md bg-danger text-white flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto">
+                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div class="w-3 h-3 absolute top-5 right-5 rounded-full animate-pulse {% if bank.verified %}bg-success{% else %}bg-danger{% endif %}"></div>
+          </div>
+          {% empty %}
+          <div class="rounded-xl shadow-xl h-min bg-black text-warning flex items-center space-x-3 w-full p-3 relative">
+            <div class="aspect-1 h-14 flex-none flex items-center justify-center p-2 bg-warning rounded-xl">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-black">
+                <path d="M11.584 2.376a.75.75 0 01.832 0l9 6a.75.75 0 11-.832 1.248L12 3.901 3.416 9.624a.75.75 0 01-.832-1.248l9-6z" />
+                <path fill-rule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 010 1.5H3a.75.75 0 010-1.5h.75v-9.918a.75.75 0 01.634-.74A49.109 49.109 0 0112 9c2.59 0 5.134.202 7.616.592a.75.75 0 01.634.74zm-7.5 2.418a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75zm3-.75a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0v-6.75a.75.75 0 01.75-.75zM9 12.75a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75z" clip-rule="evenodd" />
+                <path d="M12 7.875a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" />
+              </svg>
+            </div>
+            <div class="space-y-1">
+              <strong class="text-xl font-bold">
+                Bank Name
+              </strong>
+              <span class="block">
+                Account Name
+              </span>
+              <span class="block">
+                Account Number
+              </span>
+            </div>
+            <div class="w-3 h-3 absolute top-5 right-5 rounded-full animate-pulse {% if obj.verified %}bg-success{% else %}bg-danger{% endif %}"></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
     {% endif %}
   </div>
+  {% endblock main %}
 
-  <div class="w-full flex-none overflow-hidden rounded-xl space-y-3 items-center col-span-1">
+  <div hx-preserver="true" class="w-full flex-none overflow-hidden rounded-xl space-y-3 items-center col-span-1">
     {% if not object.is_driver %}
     <div class="rounded-xl bg-warning/40 text-black w-full p-4 shadow-xl space-y-2">
       <div class="flex items-center justify-between">
         <h3 class="text-3xl">₦</h3>
         <h4 class="font-bold text-base text-right">Wallet</h4>
       </div>
+      <p class="text-xs">Hold finance to pay for rides when having difficulty making payments via transfers</p>
       <strong class="block text-left text-2xl font-bold rounded-xl bg-black/10 py-2 px-2">
         {% if object.rider.rider_wallet.balance %}
         {{object.rider.rider_wallet.balance|floatformat:2}}
@@ -275,13 +400,13 @@
         </button>
       </div>
     </div>
-
     {% if object.is_company %}
     <div class="rounded-xl bg-primary/40 text-black w-full p-4 shadow-xl space-y-2">
       <div class="flex items-center justify-between">
         <h3 class="text-3xl">₦</h3>
         <h4 class="font-bold text-base text-right">Wallet</h4>
       </div>
+      <p class="text-xs">This wallet is to hold funds specifically for the company you manage. Payments of rides for each staffs is done directly from the wallet. So priortize funding the wallet monthly to ensure continued service.</p>
       <strong class="block text-left text-2xl font-bold rounded-xl bg-black/10 py-2 px-2">
         {% if object.company.company_wallet.balance %}
         {{object.company.company_wallet.balance|floatformat:2}}
@@ -297,45 +422,13 @@
       </div>
     </div>
     {% endif %}
-
-    <div class="w-full p-4 shadow-xl space-y-2 rounded-xl bg-warning text-black">
-      <h4 class="font-bold text-base">Transaction History</h4>
-      {% for tx in object.rider.ridertransactionhistory_set.all|slice:":5" %}
-      {% if forloop.last %}
-      <div class="bg-black p-2 rounded-md shadow-xl space-y-2">
-        <strong class="font-bold text-xl">{{tx.amount|floatformat:2}}</strong>
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold">{{tx.transaction_id|truncatechars:6}}...{{tx.transaction_id|truncatechars:-6}}</span>
-          <span class="py-1 5 px-1 5 rounded-full {% if tx.status == 'SUCCESS' %}bg-success/20 text-success{% else %}bg-danger/20 text-danger{% endif %}">
-            {{tx.status|upper}}
-          </span>
-        </div>
-      </div>
-      {% endif %}
-      <div class="bg-black p-2 rounded-md shadow-xl space-y-2">
-        <div class="flex items-center justify-between">
-          <div>
-            <strong class="font-bold text-base">{{tx.amount|floatformat:2}}</strong>
-            <span class="text-xs font-bold">{{tx.transaction_id|truncatechars:6}}...{{tx.transaction_id|truncatechars:-6}}</span>
-          </div>
-          <span class="py-1 5 px-1 5 rounded-full {% if tx.status == 'SUCCESS' %}bg-success/20 text-success{% else %}bg-danger/20 text-danger{% endif %}">
-            {{tx.status|upper}}
-          </span>
-        </div>
-      </div>
-      {% empty %}
-      <div class="bg-black text-white p-2 rounded-md shadow-xl space-y-2 text-center text-sm">
-        You have not made any transaction so far. <br>Try making one today.
-      </div>
-
-      {% endfor %}
-    </div>
-    {% else %}
-    <div class="rounded-xl bg-success/30 text-black w-full p-4 shadow-xl">
+    {% elif object.is_driver %}
+    <div class="rounded-xl bg-warning/40 text-black w-full p-4 shadow-xl space-y-2">
       <div class="flex items-center justify-between">
         <h3 class="text-3xl">₦</h3>
-        <h4 class="font-bold text-base text-right">Wallet</h4>
+        <h4 class="font-bold text-base text-right">Driver Wallet</h4>
       </div>
+      <p class="text-xs">The funds held in your wallet can be used to purchase tickets, book a ride or enter our care centers for car repairs.</p>
       <strong class="block text-left text-2xl font-bold rounded-xl bg-black/10 py-2 px-2">
         {% if object.driver.driver_wallet.balance %}
         {{object.driver.driver_wallet.balance|floatformat:2}}
@@ -350,11 +443,16 @@
         </button>
       </div>
     </div>
+    {% endif %}
+
+
+    {% if not object.is_driver %}
     <div class="w-full p-4 shadow-xl space-y-2 rounded-xl bg-warning text-black">
-      <h4 class="font-bold text-base">Transaction History</h4>
-      {% for tx in object.driver.drivertransactionhistory_set.all|slice:":5" %}
-      {% if forloop.last %}
-      <div class="bg-black p-2 rounded-md shadow-xl space-y-2">
+      <h4 class="font-bold text-base">Recent Transaction History</h4>
+      <p class="text-xs">Transaction done when switched to rider mode</p>
+      {% for tx in object.rider.get_rider_transaction|slice:":5" %}
+      {% if forloop.first %}
+      <div class="bg-black p-2 rounded-xl shadow-xl space-y-2">
         <strong class="font-bold text-xl">{{tx.amount|floatformat:2}}</strong>
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold">{{tx.transaction_id|truncatechars:6}}...{{tx.transaction_id|truncatechars:-6}}</span>
@@ -363,8 +461,8 @@
           </span>
         </div>
       </div>
-      {% endif %}
-      <div class="bg-black p-2 rounded-md shadow-xl space-y-2">
+      {% else %}
+      <div class="bg-black p-2 rounded-xl shadow-xl space-y-2">
         <div class="flex items-center justify-between">
           <div>
             <strong class="font-bold text-base">{{tx.amount|floatformat:2}}</strong>
@@ -375,8 +473,43 @@
           </span>
         </div>
       </div>
+      {% endif %}
       {% empty %}
-      <div class="bg-black text-white p-2 rounded-md shadow-xl space-y-2 text-center text-sm">
+      <div class="bg-black text-white p-2 rounded-xl shadow-xl space-y-2 text-center text-sm">
+        You have not made any transaction so far. <br>Try making one today.
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="w-full p-4 shadow-xl space-y-2 rounded-xl bg-warning text-black">
+      <h4 class="font-bold text-base">Recent Transaction History</h4>
+      <p class="text-xs">Transaction done when switched to driver mode</p>
+      {% for tx in object.driver.get_driver_transactions|slice:":5" %}
+      {% if forloop.first %}
+      <div class="bg-black p-2 rounded-xl shadow-xl space-y-2">
+        <strong class="font-bold text-xl">{{tx.amount|floatformat:2}}</strong>
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold">{{tx.transaction_id|truncatechars:6}}...{{tx.transaction_id|truncatechars:-6}}</span>
+          <span class="py-1 5 px-1 5 rounded-full {% if tx.status == 'SUCCESS' %}bg-success/20 text-success{% else %}bg-danger/20 text-danger{% endif %}">
+            {{tx.status|upper}}
+          </span>
+        </div>
+      </div>
+      {% else %}
+      <div class="bg-black p-2 rounded-xl shadow-xl space-y-2">
+        <div class="flex items-center justify-between w-full">
+          <div>
+            <strong class="font-bold text-base">{{tx.amount|floatformat:2}}</strong>
+            <span class="text-xs font-bold">{{tx.transaction_id|truncatechars:6}}...{{tx.transaction_id|truncatechars:-6}}</span>
+          </div>
+          <span class="py-1 5 px-1 5 rounded-full {% if tx.status == 'SUCCESS' %}bg-success/20 text-success{% else %}bg-danger/20 text-danger{% endif %}">
+            {{tx.status|upper}}
+          </span>
+        </div>
+      </div>
+      {% endif %}
+      {% empty %}
+      <div class="bg-black text-white p-2 rounded-xl shadow-xl space-y-2 text-center text-sm">
         You have not made any transaction so far. <br>Try making one today.
       </div>
       {% endfor %}

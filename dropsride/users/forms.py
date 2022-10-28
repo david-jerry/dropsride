@@ -62,7 +62,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["first_name", "middle_name", "last_name", "country", "date_of_birth"]
+        fields = ["first_name", "middle_name", "last_name", "country", "date_of_birth", 'gender', 'address']
 
 class UserUpdateImageForm(forms.ModelForm):
 
@@ -75,34 +75,50 @@ class AddNextOfKin(forms.ModelForm):
         model = UserNextOfKin
         fields = [
             'name',
+            'phone_number',
             'address',
             'city',
             'state',
             'country',
-            'latitude',
-            'longitude',
             'image'
         ]
 
 class AddBankAccountForm(forms.ModelForm):
     class Meta:
-      model = BankAccount
-      fields = [
-            'bank',
-            'acc_no',
-            'acc_name',
-            'bvn',
-      ]
+        model = BankAccount
+        fields = [
+                'bank',
+                'acc_no',
+                'acc_name',
+        ]
 
-    def clean_bvn(self):
-        acc_no = self.cleaned_data["acc_no"]
-        data = self.cleaned_data["bvn"]
+    def clean_acc_name(self):
+        data = self.cleaned_data['acc_name']
         bank = self.cleaned_data['bank']
+        num = self.cleaned_data['acc_no']
+
+
         b_code = get_object_or_404(Banks, name=bank.name).code
-        response = Verification.verify_bvn_match(account_number=acc_no, bvn=data, bank_code=b_code)
-        if response.data.verified == False:
-            return ValidationError("This account number is not valid")
+
+        response = Verification.verify_account(account_number=num, bank_code=b_code)
+        LOGGER.info(data.upper())
+        LOGGER.info(response['data']['account_name'])
+
+        if response['data']['account_name'] != data.upper() and data.upper() not in response['data']['account_name']:
+            raise ValidationError(f"This account number does not match your name or possibly does not belong to you. this account belongs to {response['data']['account_name']}")
         return data
+
+    # def clean_bvn(self):
+    #     acc_no = self.cleaned_data["acc_no"]
+    #     data = self.cleaned_data["bvn"]
+    #     bank = self.cleaned_data['bank']
+    #     b_code = get_object_or_404(Banks, name=bank.name).code
+    #     LOGGER.info(f"{b_code}, {int(acc_no)}, {int(data)}")
+    #     response = Verification.verify_account(bvn=data, account_number=acc_no, bank_code=b_code)
+    #     LOGGER.info(response)
+    #     if response['data']['verified'] == False:
+    #         return ValidationError("This account number is not valid")
+    #     return data
 
 
 class AddCardForm(forms.ModelForm):
@@ -113,34 +129,63 @@ class AddCardForm(forms.ModelForm):
             'card_no',
             'card_exp_month',
             'card_exp_year',
+            'card_provider',
         ]
-    def clean_card_no(self):
-        data = self.cleaned_data["card_no"]
-        url = f"https://api.paystack.co/decision/bin/{data[:6]}"
-        if not settings.PRODUCTION:
-            headers = {
-                'Authorization': str(settings.PAYSTACK_TEST_SK),
-            }
-        else:
-            headers = {
-                'Authorization': str(settings.PAYSTACK_LIVE_SK),
-            }
 
-        response = requests.request("GET", url, headers=headers)
-        response = response.json()
-        LOGGER.info(response)
-        if response['status'] == False:
-            return ValidationError("This card number is not valid")
-        return data
+class UpdateCardForm(forms.ModelForm):
+    class Meta:
+        model = SavedCards
+        fields = [
+            'name_on_card',
+            'card_no',
+            'card_exp_month',
+            'card_exp_year',
+            'card_provider',
+            'active'
+        ]
 
-    def clean_card_exp_year(self):
-        data = self.cleaned_data['card_exp_year']
-        month = self.cleaned_data['card_exp_month']
-        if int(timezone.now().year) > int(data):
-            return ValidationError("This card has already expired and cannot be used")
-        elif int(timezone.now()) < int(month) and int(timezone.now().year) == int(data):
-            return ValidationError("This card will be expiring soon")
-        return data
+    # def save(self):
+    #     form  = super(AddCardForm, self).save()
+    #     form.instance.user = self.request.user
+    #     form.card_provider = self.cleaned_data['card_provider']
+    #     form.save()
+    #     return form
+
+    # def clean_card_no(self):
+    #     data = self.cleaned_data.get("card_no")
+    #     url = f"https://api.paystack.co/decision/bin/{data[:6]}"
+    #     if not settings.PRODUCTION:
+    #         headers = {
+    #             'Authorization': str(settings.PAYSTACK_TEST_SK),
+    #         }
+    #     else:
+    #         headers = {
+    #             'Authorization': str(settings.PAYSTACK_LIVE_SK),
+    #         }
+
+    #     response = requests.request("GET", url, headers=headers)
+    #     response = response.json()
+    #     LOGGER.info(response)
+    #     if response['status'] == False:
+    #         return ValidationError("This card number is not valid")
+    #     return data
+
+    # def clean_card_exp_year(self):
+    #     data = self.cleaned_data.get('card_exp_year')
+    #     if datetime.now().year > data:
+    #         return ValidationError("This card has already expired and cannot be used")
+    #     return data
+
+    # def clean_card_exp_month(self):
+    #     dt = datetime.now().month
+    #     dty = datetime.now().year
+    #     data = self.cleaned_data.get('card_exp_year')
+    #     month = self.cleaned_data.get('card_exp_month')
+    #     LOGGER.info(month)
+    #     if month != "":
+    #         if dt < month and dty <= data:
+    #             return ValidationError("This card will be expiring soon")
+    #         return month
 
 
 class UserUpdateSocialAccounts(forms.ModelForm):

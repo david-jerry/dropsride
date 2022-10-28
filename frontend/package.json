@@ -80,6 +80,7 @@
     "alpinejs": "^3.10.2",
     "axios": "^0.27.2",
     "core-js": "^3.16.1",
+    "creditcard.js": "^3.0.20",
     "daisyui": "^2.31.0",
     "detect-browser": "^5.2.0",
     "ethers": "^5.7.1",

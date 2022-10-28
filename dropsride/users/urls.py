@@ -11,7 +11,11 @@ from dropsride.users.views import (
     add_next_of_kin,
     add_account_details,
     add_new_card,
+    update_card,
+    remove_card,
+    remove_bank,
     driver_switch,
+
 )
 
 app_name = "users"
@@ -22,6 +26,9 @@ urlpatterns = [
     path("add/nok/", view=add_next_of_kin, name="add_next_of_kin"),
     path("add/bank-account/", view=add_account_details, name="add_bank_details"),
     path("add/card/", view=add_new_card, name="add_new_card"),
+    path("update/card/<int:pk>/", view=update_card, name="update_card"),
+    path("remove/card/<int:pk>/", view=remove_card, name="remove_card"),
+    path("remove/bank/<int:pk>/", view=remove_bank, name="remove_bank"),
     path("~update/", view=user_update_view, name="update"),
     path("~update/address/", view=user_update_address, name="update_address"),
     path("~update/dp/", view=user_update_photo, name="update_image"),

@@ -11,14 +11,14 @@ class Banks(TimeStampedModel):
     Args:
         TimeStampedModel (_type_): _description_
     """
-    name = CharField(max_length=500)
+    name = CharField(max_length=500, unique=True)
     slug = SlugField()
     lcode = CharField(max_length=25)
     code = CharField(max_length=10)
     country_iso = CharField(max_length=10)
 
     def __str__(self):
-        return self.name.title()
+        return self.name
 
     class Meta:
         verbose_name = _("Bank")

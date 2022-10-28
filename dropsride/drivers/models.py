@@ -65,14 +65,14 @@ class Drivers(TimeStampedModel):
 
     objects = DriversManager()
 
-    def get_drivers_documents(self):
-        if self.document_set.approved_documents():
-            return self.document_set.approved_documents()
+    def get_driver_documents(self):
+        if self.drivers_licence.approved_documents():
+            return self.drivers_licence.approved_documents()
         return None
 
     @property
     def approved(self):
-        if len(self.document_set.approved_documents()) >= 6:
+        if len(self.drivers_licence.approved_documents()) >= 6:
             return True
         return False
 
@@ -99,6 +99,11 @@ class Drivers(TimeStampedModel):
             return prev[0]
         except IndexError:
             return None
+
+    def get_driver_transactions(self):
+        if self.driver_transactions:
+            return self.driver_transactions.all()
+        return None
 
     class Meta:
         managed = True

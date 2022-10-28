@@ -38,6 +38,16 @@ class Company(TimeStampedModel):
     approved = BooleanField(default=False)
     objects = CompanyManager()
 
+    def get_addresses(self):
+        if self.company_address:
+            return self.company_address.all()
+        return None
+
+    def get_company_transactions(self):
+        if self.company_transactions:
+            return self.company_transactions.all()
+        return None
+
     def get_absolute_url(self):
         return reverse("companies:detail", kwargs={"id": self.id})
 
@@ -60,8 +70,8 @@ class Company(TimeStampedModel):
 
     class Meta:
         managed = True
-        verbose_name = "Rider"
-        verbose_name_plural = "Riders"
+        verbose_name = "Company"
+        verbose_name_plural = "Companies"
         ordering = ["-created"]
 
 
@@ -115,7 +125,7 @@ class CompanyWallet(TimeStampedModel):
     Args:
         TimeStampedModel (_type_): _description_
     """
-    company = ForeignKey(Company, on_delete=CASCADE, related_name="company_wallet")
+    company = OneToOneField(Company, on_delete=CASCADE, related_name="company_wallet")
     balance = DecimalField(decimal_places=2, max_digits=20, default=0.00)
     unlocked = BooleanField(default=False)
 

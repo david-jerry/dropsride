@@ -111,6 +111,11 @@ class Careers(TimeStampedModel):
     def related_careers(self):
         return self.__class__.objects.filter(team=self.team)
 
+    def get_applicants(self):
+        if self.job_position:
+            return self.job_position.all()
+        return None
+
     def get_next(self):
         next = self.__class__.objects.filter(draft=False, published_date__gt=self.published_date)
         try:

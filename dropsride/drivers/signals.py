@@ -15,6 +15,7 @@ from .models import DriverWallet, Drivers
 def unlock_wallet(instance, created, **kwargs):
     if not DriverWallet.objects.filter(driver=instance).exists():
         DriverWallet.objects.create(driver=instance)
+        LOGGER.info("[DRIVER] Creating wallet relationshio")
 
 @receiver(post_save, sender=DriverWallet)
 def unlock_wallet(instance, created, **kwargs):
@@ -31,3 +32,4 @@ def unlock_wallet(instance, created, **kwargs):
             'url': f"{domain}{link}",
         }
         send_user_notification(user=instance.driver.user, payload=payload, ttl=1000)
+        LOGGER.info("[DRIVER WALLET] Unlocking wallet")

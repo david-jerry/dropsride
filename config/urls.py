@@ -13,8 +13,27 @@ from rest_framework.authtoken.views import obtain_auth_token
 from webpush.views import save_info
 
 from dropsride.sitesettings.views import cities_view
-from dropsride.users.views import sms_verification_link, verify_phone_number, account_login, account_singup as account_signup, driver_singup as driver_signup, company_singup as company_signup, confirm_email, password_set, password_reset, password_reset_from_key, password_change
-from .views import offline_view, send_notification, service_worker, service_worker_map, support
+from dropsride.users.views import (
+    sms_verification_link,
+    request_new_code,
+    verify_phone_number,
+    account_login,
+    account_singup as account_signup,
+    driver_singup as driver_signup,
+    company_singup as company_signup,
+    confirm_email,
+    password_set,
+    password_reset,
+    password_reset_from_key,
+    password_change,
+)
+from .views import (
+    offline_view,
+    send_notification,
+    service_worker,
+    service_worker_map,
+    support,
+)
 from config.sitemaps import StaticViewSitemap
 
 sitemaps = {
@@ -23,37 +42,50 @@ sitemaps = {
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path("business/", TemplateView.as_view(template_name="pages/business.html"), name="business"),
+    path(
+        "business/",
+        TemplateView.as_view(template_name="pages/business.html"),
+        name="business",
+    ),
     path("cities/", view=cities_view, name="cities"),
-    path("features/", TemplateView.as_view(template_name="pages/features.html"), name="features"),
+    path(
+        "features/",
+        TemplateView.as_view(template_name="pages/features.html"),
+        name="features",
+    ),
     path("support/", support, name="support"),
     path("offline/", offline_view, name="offline"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
-
     # PWA Urls
     path("sw.js", service_worker, name="service_worker"),
     path("sw.js.map", service_worker_map, name="service_worker_map"),
     # path('webpush/save_information/', view=save_info, name="save_webpush_info"),
-
-
-
     # Django Admin, use {% url 'admin:index' %}
-    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
-    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
-    path('admin/', include('admin_honeypot.urls', 'admin_honeypot')),
+    path("jet/", include("jet.urls", "jet")),  # Django JET URLS
+    path(
+        "jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")
+    ),  # Django JET dashboard URLS
+    path("admin/", include("admin_honeypot.urls", "admin_honeypot")),
     path(settings.ADMIN_URL, admin.site.urls),
     # path(settings.ADMIN_DOC_URL, include("django.contrib.admindocs.urls")),
-
     # User management
     path("users/", include("dropsride.users.urls", namespace="users")),
-    path("admins/UcR9JPT074regleE15Xsb0gSZol4lDff/", include("dropsride.admins.urls", namespace="staff")),
+    path(
+        "admins/UcR9JPT074regleE15Xsb0gSZol4lDff/",
+        include("dropsride.admins.urls", namespace="staff"),
+    ),
     path("accounts/login/", account_login, name="account_login"),
     path("accounts/rider/signup/", account_signup, name="rider_signup"),
     path("accounts/driver/signup/", driver_signup, name="driver_signup"),
     path("accounts/company/signup/", company_signup, name="company_signup"),
-    path('accounts/verify-phone/<code>/<user>', sms_verification_link, name="sms_verify"),
+    path(
+        "accounts/verify-phone/<code>/<user>", sms_verification_link, name="sms_verify"
+    ),
+    path(
+        "accounts/request-new-code/", request_new_code, name="request_new_code"
+    ),
     re_path(
         r"^accounts/confirm-email/(?P<key>[-:\w]+)/$",
         confirm_email,
@@ -61,22 +93,27 @@ urlpatterns = [
     ),
     path("accounts/password/set/", password_set, name="account_set_password"),
     path("accounts/password/reset/", password_reset, name="account_reset_password"),
-    path("password/change/", password_change, name="account_change_password",),
-    re_path(r"^accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",password_reset_from_key,name="account_reset_password_from_key",),
+    path(
+        "password/change/",
+        password_change,
+        name="account_change_password",
+    ),
+    re_path(
+        r"^accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$",
+        password_reset_from_key,
+        name="account_reset_password_from_key",
+    ),
     path("accounts/", include("allauth.urls")),
-
     # Your stuff: custom urls includes go here
     path("coupons/", include("dropsride.promocodes.urls", namespace="coupons")),
     path("news/", include("dropsride.blog.urls", namespace="news")),
     path("careers/", include("dropsride.careers.urls", namespace="careers")),
-
     # push notification links
     path("send-notification/", send_notification, name="send_notification"),
     # path('create-wp-subscription', AnonymousWebPushDeviceViewSet.as_view({'post': 'create'}),
     #      name='create-wp-subscription'),
-    path('webpush/save_information/', view=save_info, name="save_webpush_info"),
-    path('webpush/', include('webpush.urls')),
-
+    path("webpush/save_information/", view=save_info, name="save_webpush_info"),
+    path("webpush/", include("webpush.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development
@@ -84,10 +121,14 @@ if settings.DEBUG:
 
 # MISC URLS
 urlpatterns += [
-    path('tinymce/', include('tinymce.urls')),
-    path('i18n/', include('django.conf.urls.i18n')),
+    path("tinymce/", include("tinymce.urls")),
+    path("i18n/", include("django.conf.urls.i18n")),
     path("sitemap.xml/", sitemap, kwargs={"sitemaps": sitemaps}, name="sitemap"),
-    path("robots.txt/", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots"),
+    path(
+        "robots.txt/",
+        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+        name="robots",
+    ),
 ]
 
 # API URLS

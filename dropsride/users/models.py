@@ -1,4 +1,5 @@
 from datetime import date
+import datetime
 from enum import unique
 
 from django.utils import timezone
@@ -88,6 +89,16 @@ class User(AbstractUser):
         age = today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
         return age
 
+    def get_user_banks(self):
+        if self.bank_account:
+            return self.bank_account.filter(verified=True)
+        return None
+
+    def get_user_cards(self):
+        if self.saved_card:
+            return self.saved_card.all()
+        return None
+
     def get_absolute_url(self):
         """Get url for user's detail view.
 
@@ -149,12 +160,15 @@ class UserNextOfKin(TimeStampedModel):
 
     user = OneToOneField(User, related_name='next_of_kin', on_delete=CASCADE)
     name = CharField(max_length=500, help_text="ensure the name 'corresponds/is exactly' the same with their registered BVN")
+    phone_number = CharField(max_length=15, blank=True, null=True)
     address = CharField(max_length=500)
     city = CharField(max_length=500)
     state = CharField(max_length=500)
     country = CharField(max_length=500)
     latitude = CharField(max_length=500)
     longitude = CharField(max_length=500)
+
+    verified = BooleanField(default=False)
 
     image = StdImageField(_("Passport"), upload_to="user/nok/passport", blank=True, delete_orphans=True, variations={'thumbnail': {"width": 100, "height": 100, "crop": True}})
 
@@ -177,24 +191,22 @@ class SavedCards(TimeStampedModel):
 
     user = ForeignKey(User, on_delete=CASCADE, related_name="saved_card")
     name_on_card = CharField(max_length=255)
-    card_no = CharField(max_length=18)
+    card_no = CharField(max_length=18, unique=True)
     cvv = CharField(max_length=18, blank=True, null=True)
-    card_exp_month = PositiveSmallIntegerField()
-    card_exp_year = PositiveSmallIntegerField()
+    card_exp_month = CharField(max_length=2, blank=True)
+    card_exp_year = CharField(max_length=4, blank=True)
     card_provider = CharField(max_length=40, default="master")
 
     active = BooleanField(default=False)
 
-    # expired = BooleanField(default=False)
-
     @property
     def formatted_no(self):
-        formatted = f"{self.card_no[:4]}-{self.card_no[4:8]-{self.card_no[8:12]}-{self.card_no[12:]}}"
+        formatted = f"{self.card_no[:4]}-{self.card_no[4:8]}-{self.card_no[8:12]}-{self.card_no[12:]}"
         return formatted
 
     @property
     def expired(self):
-        if int(timezone.now().month) > self.card_exp_month and int(timezone.now().year) >= self.card_exp_year:
+        if datetime.datetime.now().month > int(self.card_exp_month) and datetime.datetime.now().year >= int(self.card_exp_year):
             return True
         return False
 
@@ -206,21 +218,18 @@ class SavedCards(TimeStampedModel):
         managed = True
         verbose_name = "User Saved Card"
         verbose_name_plural = "User Saved Cards"
-        ordering = ["-card_no"]
+        ordering = ["-created", 'active']
+
 
 
 class BankAccount(TimeStampedModel):
     user = ForeignKey(User, on_delete=CASCADE, related_name="bank_account")
     bank = ForeignKey(Banks, on_delete=DO_NOTHING, related_name="bank_account")
-    acc_no = CharField(max_length=17)
+    acc_no = CharField(max_length=17, unique=True)
     acc_name = CharField(max_length=255)
     bvn = CharField(max_length=11)
 
     verified = BooleanField(default=False)
-
-    def clean(self):
-        if not len(self.account) > 17:
-            raise ValidationError({'title': "Not a valid account number"})
 
     def __str__(self):
         return f"{self.user.username.upper()} Saved Bank Account: {self.acc_no}"
@@ -229,7 +238,7 @@ class BankAccount(TimeStampedModel):
         managed = True
         verbose_name = "User Saved Bank"
         verbose_name_plural = "User Saved Banks"
-        ordering = ["-acc_name", "verified"]
+        ordering = ["-modified", "verified"]
 
 
 

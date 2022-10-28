@@ -15,6 +15,7 @@ from .models import CompanyWallet, Company
 def create_wallet_with_company_instance(instance, created, **kwargs):
     if not CompanyWallet.objects.filter(company=instance).exists():
         CompanyWallet.objects.create(company=instance)
+        LOGGER.info("[COMPANY] Creating wallet relationshio")
 
 @receiver(post_save, sender=CompanyWallet)
 def unlock_wallet(instance, created, **kwargs):
@@ -42,3 +43,4 @@ def unlock_wallet(instance, created, **kwargs):
             'url': f"{domain}{link}",
         }
         send_user_notification(user=instance.company.user, payload=payload, ttl=1000)
+        LOGGER.info("[COMPANY WALLET] Unlocking wallet")

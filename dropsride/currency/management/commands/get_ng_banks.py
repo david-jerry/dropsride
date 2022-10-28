@@ -43,13 +43,16 @@ class Command(BaseCommand):
 
         if res['status']:
             for response in res['data']:
-                Banks.objects.create(
-                    name=response['name'],
-                    slug=response['slug'],
-                    lcode=response['longcode'],
-                    code=response['code'],
-                    country_iso=response['country']
-                )
+                try:
+                    Banks.objects.create(
+                        name=response['name'],
+                        slug=response['slug'],
+                        lcode=response['longcode'],
+                        code=response['code'],
+                        country_iso=response['country']
+                    )
+                except Exception as e:
+                    LOGGER.info(e)
                 # LOGGER.info(f"Created Bank: {response['name']}")
             if 'meta' in res:
                 params = {
@@ -64,14 +67,17 @@ class Command(BaseCommand):
 
                 if res['status']:
                     for response in res['data']:
-                        Banks.objects.create(
-                            name=response['name'],
-                            slug=response['slug'],
-                            lcode=response['longcode'],
-                            code=response['code'],
-                            country_iso=response['country']
-                        )
-                        LOGGER.info(f"Created Bank: {response['name']}")
+                        try:
+                            Banks.objects.create(
+                                name=response['name'],
+                                slug=response['slug'],
+                                lcode=response['longcode'],
+                                code=response['code'],
+                                country_iso=response['country']
+                            )
+                            LOGGER.info(f"Created Bank: {response['name']}")
+                        except:
+                            LOGGER.info('Already Exists')
                         if "meta" in res:
                             params = {
                                 "perPage":100,
@@ -85,14 +91,17 @@ class Command(BaseCommand):
 
                             if res['status']:
                                 for response in res['data']:
-                                    Banks.objects.create(
-                                        name=response['name'],
-                                        slug=response['slug'],
-                                        lcode=response['longcode'],
-                                        code=response['code'],
-                                        country_iso=response['country']
-                                    )
-                                    LOGGER.info(f"Created Bank: {response['name']}")
+                                    try:
+                                        Banks.objects.create(
+                                            name=response['name'],
+                                            slug=response['slug'],
+                                            lcode=response['longcode'],
+                                            code=response['code'],
+                                            country_iso=response['country']
+                                        )
+                                        LOGGER.info(f"Created Bank: {response['name']}")
+                                    except:
+                                        LOGGER.info('Already Exists')
         else:
             LOGGER.error(f"NGN rate not updated")
 

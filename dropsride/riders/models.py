@@ -54,7 +54,15 @@ class Riders(TimeStampedModel):
         except IndexError:
             return None
 
+    def get_addresses(self):
+        if self.rider_address:
+            return self.rider_address.all()
+        return None
 
+    def get_rider_transactions(self):
+        if self.rider_transactions:
+            return self.rider_transactions.all()
+        return None
 
     def __str__(self):
         return self.user.username

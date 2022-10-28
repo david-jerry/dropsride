@@ -15,6 +15,7 @@ from webpush import send_user_notification, send_group_notification
 def create_wallet_with_rider_instance(instance, created, **kwargs):
     if not RiderWallet.objects.filter(rider=instance).exists():
         RiderWallet.objects.create(rider=instance)
+        LOGGER.info("[RIDER] Creating wallet relationshio")
 
 @receiver(post_save, sender=RiderWallet)
 def unlock_wallet(instance, created, **kwargs):
@@ -31,4 +32,5 @@ def unlock_wallet(instance, created, **kwargs):
             'url': f"{domain}{link}",
         }
         send_user_notification(user=instance.rider.user, payload=payload, ttl=1000)
+        LOGGER.info("[RIDER WALLET] Unlocking wallet")
 

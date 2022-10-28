@@ -13,7 +13,7 @@
 
 {% block content %}
 <section class="w-screen relative">
-  <nav class="z-50 fixed hidden flex-none md:block md:w-96 bg-black h-screen space-y-3 text-white top-0 left-0">
+  <nav hx-preserver="true" class="z-50 fixed hidden flex-none md:block md:w-96 bg-black h-screen space-y-3 text-white top-0 left-0">
     <div class="rounded-b-xl shadow-md flex items-center justify-between py-7 bg-white/20 px-4">
       <img @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'home' %}" src="{% if request.sitesettings %}{{request.sitesettings.logo.url}}{% else %}{% static 'vendors/images/logo-yellow.png' %}{% endif %}" alt="dropsride logo" class="h-6 md:h-10 cursor-pointer">
       <div class="form-control">
@@ -25,12 +25,13 @@
     </div>
 
     <div class="w-full px-4 py-14 space-y-3">
-      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+      <button hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'users:detail' user.username %}" hx-get="{% url 'users:detail' user.username %}" class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
           <path fill-rule="evenodd" d="M1.5 7.125c0-1.036.84-1.875 1.875-1.875h6c1.036 0 1.875.84 1.875 1.875v3.75c0 1.036-.84 1.875-1.875 1.875h-6A1.875 1.875 0 011.5 10.875v-3.75zm12 1.5c0-1.036.84-1.875 1.875-1.875h5.25c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875h-5.25a1.875 1.875 0 01-1.875-1.875v-8.25zM3 16.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875v2.25c0 1.035-.84 1.875-1.875 1.875h-5.25A1.875 1.875 0 013 18.375v-2.25z" clip-rule="evenodd" />
         </svg>
         <span class="text-base font-bold">My Profile</span>
       </button>
+
       <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
           <path fill-rule="evenodd" d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.04 16.5l.5-1.5h6.42l.5 1.5H8.29zm7.46-12a.75.75 0 00-1.5 0v6a.75.75 0 001.5 0v-6zm-3 2.25a.75.75 0 00-1.5 0v3.75a.75.75 0 001.5 0V9zm-3 2.25a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5z" clip-rule="evenodd" />
@@ -38,6 +39,26 @@
 
         <span class="text-base font-bold">Transactions</span>
       </button>
+
+      {% if request.user.is_driver %}
+      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625zM7.5 15a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 017.5 15zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
+          <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
+        </svg>
+        <span class="text-base font-bold">KYC Documents</span>
+      </button>
+
+      <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
+          <path fill-rule="evenodd" d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 14.625v-9.75zM8.25 9.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM18.75 9a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75V9.75a.75.75 0 00-.75-.75h-.008zM4.5 9.75A.75.75 0 015.25 9h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H5.25a.75.75 0 01-.75-.75V9.75z" clip-rule="evenodd" />
+          <path d="M2.25 18a.75.75 0 000 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 00-.75-.75H2.25z" />
+        </svg>
+
+        <span class="text-base font-bold">Earnings</span>
+      </button>
+      {% endif %}
 
       <button class="flex items-center space-x-3 hover:bg-white/20 duration-300 rounded-xl p-3 w-full">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -76,17 +97,17 @@
 
       <nav class="space-x-4 items-center hidden md:flex">
         <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option1'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option1'}" class="hover:text-warning hover:font-bold duration-300 px-6">Home</button>
-        <button class="relative group px-6 h-14" :class="{'text-warning':selected === 'option2'}">Company
+        <button class="relative group px-6 h-14">Company
           <div class="shadow-xl text-white group-hover:flex group-hover:flex-col group-hover:p-4 rounded-b-xl space-y-3 bg-black absolute z-50 top-14 w-44 flex-none -left-6 hidden">
-            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'about' %}" hx-get="{% url 'about' %}" class="hover:text-warning hover:font-bold duration-300 px-6">About</a>
-            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'business' %}" hx-get="{% url 'business' %}" class="hover:text-warning hover:font-bold duration-300 px-6">Business</a>
-            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'careers:list' %}" hx-get="{% url 'careers:list' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Careers</a>
-            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'features' %}" hx-get="{% url 'features' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Features</a>
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'about' %}" hx-get="{% url 'about' %}" class="hover:text-warning hover:font-bold duration-300 px-6">About</a>
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'business' %}" hx-get="{% url 'business' %}" class="hover:text-warning hover:font-bold duration-300 px-6">Business</a>
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'careers:list' %}" hx-get="{% url 'careers:list' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Careers</a>
+            <a href="javascript:;" @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-target="body" hx-swap="outerHTML" hx-push-url="{% url 'features' %}" hx-get="{% url 'features' %}" class="hover:text-warning hover:font-bold duration-300 px-6" >Features</a>
           </div>
         </button>
-        <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option3'" hx-get="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option3'}" class="hover:text-warning hover:font-bold duration-300 px-6">Cities</button>
-        <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option7'" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option7'}" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</button>
-        <button @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option4'" hx-get="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="body" hx-swap="outerHTML" :class="{'text-warning':selected === 'option4'}" class="hover:text-warning hover:font-bold duration-300 px-6">Support</button>
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'cities' %}" hx-push-url="{% url 'cities' %}" hx-target="body" hx-swap="outerHTML" class="hover:text-warning hover:font-bold duration-300 px-6">Cities</button>
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'news:list' %}" hx-push-url="{% url 'news:list' %}" hx-target="body" hx-swap="outerHTML" class="hover:text-warning hover:font-bold duration-300 px-6">Blog</button>
+        <button @click="window.scrollTo({top: 0, behavior: 'smooth'})" hx-get="{% url 'support' %}" hx-push-url="{% url 'support' %}" hx-target="body" hx-swap="outerHTML" class="hover:text-warning hover:font-bold duration-300 px-6">Support</button>
       </nav>
 
       <div hx-boost="true" class="flex items-center space-x-4 text-xs md:text-base">
@@ -118,16 +139,27 @@
       </div>
     </header>
 
-    <div class="py-4 w-full flex-none px-4">
+    <div class="py-4 w-full flex-none px-4 space-y-4">
+      {% if not request.user.verified_phone.verified %}
+      <div id="code" class="w-full rounded-xl shadow-xl bg-danger/10 md:space-y-0 space-y-3 text-justify px-4 md:space-x-3 text-danger text-sm py-2 items-center md:flex justify-center">
+        <span class="block">You have not verified your phone number. If you have forgotten your code, please click the button to request a new verification code.</span>
+        <form x-data="AccountForm" x-ref="form" data-redirect="{% url 'users:verify_phone' %}" action="{% url 'request_new_code' %}" method="get" data-csrf="{{csrf_token}}" @submit.prevent="submitCodeForm">
+          {% csrf_token %}
+          <button type="submit" class="bg-primary/10 text-primary flex-none font-bold py-2 px-3 rounded-xl hover:shadow-xl duration-300 hover:scale-105">
+            Request New Code
+          </button>
+        </form>
+      </div>
+      {% endif %}
       {% block inner %}{% endblock %}
     </div>
 
-    <button title="smooth scroll to top" :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-black text-white hover:text-warning focus:animate-bounce-slow hover::animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
+    <button hx-preserver="true" title="smooth scroll to top" :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-black text-white hover:text-warning focus:animate-bounce-slow hover::animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
       </svg>
     </button>
-    <button id="shareUrl" data-url="{{request.build_absolute_uri}}" title="share website" :class="{'flex' : showNav, 'hidden' : !showNav}" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-warning text-black animate-pulse duration-300 rounded-full fixed right-4 bottom-[176px] md:bottom-[200px]">
+    <button hx-preserver="true" id="shareUrl" data-url="{{request.build_absolute_uri}}" title="share website" :class="{'flex' : showNav, 'hidden' : !showNav}" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-warning text-black animate-pulse duration-300 rounded-full fixed right-4 bottom-[176px] md:bottom-[200px]">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
         <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
       </svg>
