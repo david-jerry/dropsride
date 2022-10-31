@@ -75,7 +75,7 @@ setuptools==59.1.1
 # schedule files to run under the hood with django-crontab
 django-crontab==0.7.1
 schedule==1.1.0
-gevent==21.12.0
+gevent==22.10.2
 
 # integrate htmx with django requests
 django-htmx==1.9.0
