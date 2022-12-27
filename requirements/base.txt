@@ -70,7 +70,7 @@ user-agents==2.2.0
 
 # show map in django admin
 django-leaflet==0.28.2
-setuptools==59.1.1
+setuptools==65.5.1
 
 # schedule files to run under the hood with django-crontab
 django-crontab==0.7.1
