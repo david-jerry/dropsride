@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.db import models
 from django.db.models import Count, Q
-from django.apps import apps
+
 
 class CareersQueryset(models.QuerySet):
     def published(self):
@@ -43,7 +43,7 @@ class CareersManager(models.Manager):
         queryset = cache.get(cache_key)
         if queryset is None:
             queryset = self.published_careers()
-            # cache.set(cache_key, queryset)
+            cache.set(cache_key, queryset)
         return queryset
 
     def get_recent_careers(self, num_posts=10):
@@ -63,7 +63,7 @@ class CareersManager(models.Manager):
         queryset = cache.get(cache_key)
         if queryset is None:
             queryset = self.get_queryset().all()
-            # cache.set(cache_key, queryset)
+            cache.set(cache_key, queryset)
         return queryset
 
     def search_careers(self, query):

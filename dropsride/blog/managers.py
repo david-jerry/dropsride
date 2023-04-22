@@ -1,8 +1,7 @@
 from django.core.cache import cache
 from django.db.models import Avg, Count, Manager, Max, Q
 from django.db.models.query import QuerySet
-from django.apps import apps
-from django.db import connection
+
 
 class NewsQueryset(QuerySet):
     def published(self):
@@ -78,7 +77,7 @@ class NewsManager(Manager):
         queryset = cache.get(cache_key)
         if queryset is None:
             queryset = self.get_queryset().published()
-            # cache.set(cache_key, queryset)
+            cache.set(cache_key, queryset)
         return queryset
 
     def get_recent_posts(self, num_posts=10):
@@ -110,14 +109,12 @@ class NewsManager(Manager):
         """
         Returns a queryset of all published News objects.
         """
-        model = apps.get_model('blog', 'News')
-        if model is not None:
-            cache_key = "all_admin_news"
-            queryset = cache.get(cache_key)
-            if queryset is None:
-                queryset = self.get_queryset()
-                # cache.set(cache_key, queryset)
-            return queryset
+        cache_key = "all_admin_news"
+        queryset = cache.get(cache_key)
+        if queryset is None:
+            queryset = self.get_queryset()
+            cache.set(cache_key, queryset)
+        return queryset
 
     def get_recent_admin_posts(self, num_posts=10):
         """
