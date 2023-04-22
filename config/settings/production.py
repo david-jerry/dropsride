@@ -117,7 +117,7 @@ DEFAULT_FROM_EMAIL = env(
     default="Dropsride <noreply@dropsride.com>",
 )
 # Set the "from" email address for password reset emails
-EMAIL_FROM = "MyApp <noreply@myapp.com>"
+EMAIL_FROM = "Drop Technology <noreply@dropsride.com>"
 
 # Set the subject line for password reset emails
 EMAIL_RESET_PASSWORD_SUBJECT = "Password Reset Requested"
