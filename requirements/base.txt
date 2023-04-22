@@ -86,3 +86,4 @@ async-googlemaps==0.0.10
 
 
 django-htmlmin==0.11.0
+django-stdimage==6.0.1
