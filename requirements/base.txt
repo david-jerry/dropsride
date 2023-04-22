@@ -89,3 +89,4 @@ django-htmlmin==0.11.0
 django-stdimage==6.0.1
 python-magic==0.4.27
 humanfriendly==10.0
+django-ipware==5.0.0
