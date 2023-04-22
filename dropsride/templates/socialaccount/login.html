@@ -1,0 +1,53 @@
+{% extends "socialaccount/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ block.super }}{% if provider.name == "Google" %}{% translate "Google Login" %}{% else %}{% endif %}{% translate "Facebook Login" %}{% endblock %}
+
+
+{% block inner %}
+<div class="px-8 w-full md:absolute md:right-0 md:h-full md:top-0 flex items-center justify-center md:w-1/2">
+  <div class="md:float-right w-full md:max-w-2xl bg-white btn-rounded shadow-md block overflow-hidden p-6">
+    <div class="items-center flex justify-center">
+      {% if provider.name == "Google" %}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-14" viewBox="0 0 488 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
+      {% else %}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="h-14" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
+      {% endif %}
+    </div>
+
+    {% if process == "connect" %}
+    <div class="space-y-6">
+      <h2 class="font-bold text-xl text-center uppercase">Connect {{provider.name}}/h2>
+      <p class="text-sm text-center">{% blocktrans with provider.name as provider %}You are about to connect a new third party account from {{ provider }}.{% endblocktrans %}</p>
+    </div>
+    {% else %}
+    <div class="space-y-6">
+      <h2 class="font-bold text-xl text-center uppercase">{% trans "Sign in with" %} {{provider.name}}</h2>
+      <p class="text-sm text-center">{% blocktrans with provider.name as provider %}You are about to sign in using a third party account from {{ provider }}.{% endblocktrans %}</p>
+    </div>
+    {% endif %}
+    <div id="form">
+      <form method="post">
+        {% csrf_token %}
+
+        <div>
+          <button type="submit" class="flex items-center space-x-3 text-center justify-center mt-4 w-full rounded-xl bg-black text-white hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl">
+              <!-- Heroicon name: solid/lock-closed -->
+            <!-- <svg class="h-5 w-5 text-white dark:text-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg> -->
+            {% trans "Continue" %}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <p class="font-bold uppercase text-xl mx-auto py-4 w-full text-center">
+      Or
+    </p>
+    <a href="{% url 'account_signup' %}" class="flex items-center space-x-3 text-center justify-center mt-4 w-full rounded-xl bg-warning text-black hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl"> {% blocktrans with provider.name as provider %} Signup with a new {{provider}} account {% endblocktrans %}</a>
+
+  </div>
+</div>
+{% endblock %}

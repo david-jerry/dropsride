@@ -1,0 +1,134 @@
+{% load static %}
+
+<div x-data="UserDetail" class="grid grid-cols-1 md:grid-cols-3 gap-5 p-3 flex-none">
+  {% for card in object.get_all_cards|slice:":2" %}
+  <div class="shadow-xl rounded-xl p-6 h-56 max-w-sm bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden group">
+
+    {% comment %}
+    <!-- update card button -->
+    <button @click="activateCard({{card.id}}, '{{request.user.token}}')" class="absolute z-50 flex-none w-10 h-10 items-center justify-center rounded-full bg-black text-white shadow-md group-hover:block hidden duration-300 top-2 right-14">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+      </svg>
+    </button>
+    <!-- end update card button -->
+
+
+    <!-- remove card button -->
+    <button @click="deleteCard({{card.id}}, '{{request.user.token}}')" class="absolute w-10 flex-none h-10 z-50 top-2 right-4 rounded-full group-hover:block hidden duration-300 shadow-md bg-danger text-white items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto">
+        <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    <!-- end remove card button -->
+    {% endcomment %}
+
+
+
+    <div class="flex items-center justify-between relative z-10">
+      <div>
+        <span class="text-xs font-black block">Name</span>
+        <strong class="font-medium text-base">{{card.name_on_card|title}}</strong>
+      </div>
+      <img src="{% if card.card_provider == 'Mastercard' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'Visa' %}{% static 'vendors/images/card/visa.svg' %}{% elif card.card_provider == 'Verve' %}{% static 'vendors/images/card/verve.svg' %}{% endif %}" alt="" class="h-5">
+    </div>
+    <div class=" relative z-10">
+      <span class="text-xs font-black block">Card Number</span>
+      <strong class="font-medium text-base">{{card.card_no}}</strong>
+    </div>
+    <div class="flex items-center justify-between relative z-10">
+      <div>
+        <span class="text-xs font-black block">Expiry</span>
+        <strong class="font-medium text-base">{{card.card_exp_month}}/{{card.card_exp_year}}</strong>
+      </div>
+      <div>
+        <span class="text-xs font-black block">CVV</span>
+        <strong class="font-medium text-base">{{card.cvv|truncatechars:3}}</strong>
+      </div>
+    </div>
+
+    <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
+    <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
+    <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
+  </div>
+  {% empty %}
+  <div x-show.transition="editCard" x-cloak class="shadow-xl rounded-xl p-6 h-56 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden">
+    <div class="flex items-center justify-between relative z-10">
+      <div class="text-left">
+        <span class="text-xs font-black block">Name</span>
+        <strong class="font-medium text-base" x-html="cardForm.name">Sample Card Name</strong>
+      </div>
+      <!-- <img src="{% if card.card_provider == 'master' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'visa' %}{% static 'vendors/images/card/visa.svg' %}{% else %}{% static 'vendors/images/card/master.svg' %}{% endif %}" alt="" class="h-8"> -->
+      <div id="cardType"></div>
+    </div>
+    <div class="text-left relative z-10">
+      <span class="text-xs font-black block">Card Number</span>
+      <strong class="font-medium text-base" id="card_no" x-html="cardForm.digit">0000 0000 0000 0000</strong>
+    </div>
+    <div class="flex items-center justify-between relative z-10">
+      <div>
+        <span class="text-xs font-black block">Expiry</span>
+        <strong class="font-medium text-base"><span x-html="cardForm.month"></span>/<span x-html="cardForm.year"></span></strong>
+      </div>
+      <div>
+        <span class="text-xs font-black block">CVV</span>
+        <strong class="font-medium text-base" x-html="cardForm.cvv">123</strong>
+      </div>
+    </div>
+
+    <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
+    <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
+    <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
+  </div>
+
+
+  {% if object.get_all_cards|length < 2 %}
+  <button @click="editCard=!editCard" x-show.transition="!editCard" x-cloak class="w-full rounded-xl h-56 border-2 border-black/30 bg-black/5 flex items-center justify-center">
+    <div class="flex space-x-2 items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+        <path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15z" />
+        <path fill-rule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 003 3h15a3 3 0 003-3v-7.5zm-18 3.75a.75.75 0 01.75-.75h6a.75.75 0 010 1.5h-6a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" clip-rule="evenodd" />
+      </svg>
+      <span class="text-sm font-bold">Add New Card</span>
+    </div>
+  </button>
+  {% endif %}
+
+  <form action="/api/financials/cards/" x-cloak x-show.transition="editCard" class="post space-y-5 w-full" data-token="{{request.user.token}}" x-ref="cardForm" @submit.prevent="cardSubmitForm">
+    <input type="hidden" name="email" id="card_email" value="{{request.user.email}}">
+    <input type="text" maxlength="19" name="card_no" id="id_card_no" x-init="creditCardMask" x-model="cardForm.digit" placeholder="Card Number" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
+    <input type="text" name="name_on_card" id="id_name_on_card" x-model="cardForm.name" placeholder="Card Name" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
+    <input type="text" maxlength="3" name="cvv" id="id_cvv" x-model="cardForm.cvv" placeholder="Card CVV" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
+    <div class="flex items-center space-x-3">
+      <input type="text" maxlength="2" name="card_exp_month" id="id_card_exp_month" x-model="cardForm.month" placeholder="31" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning h-6">
+      <input type="text" maxlength="2" name="card_exp_year" id="id_card_exp_year" x-model="cardForm.year" placeholder="12" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning h-6">
+    </div>
+    <div class="flex items-center justify-between space-x-3">
+      <button :disabled="loading" class="w-1/2 group btn-rounded px-6 py-3 shadow-sm hover:shadow-xl flex items-center space-x-3 bg-warning duration-500 hover:space-x-5" type="submit" >
+
+        <strong class="block text-sm font-bold uppercase" x-text="addCardText"></strong>
+
+        <svg x-show.transition="!loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 group-hover:animate-pulse duration-500 block">
+          <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+        </svg>
+
+        <div role="status" x-show.transition="loading">
+          <svg aria-hidden="true" class="w-4 h-4 text-white animate-spin dark:text-gray-600 fill-warning"
+            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor" />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill" />
+          </svg>
+          <span class="sr-only">Loading...</span>
+        </div>
+      </button>
+      <button type="button" class="bg-black text-white btn-rounded px-6 py-3 shadow-sm w-1/2" @click="editCard=false">
+        Cancle
+      </button>
+    </div>
+  </form>
+  {% endfor %}
+</div>

@@ -1,0 +1,15 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ block.super }}{% translate "Sign Up Closed" %}{% endblock %}
+
+{% block inner %}
+<div class="px-8 w-full md:absolute md:right-0 md:h-full md:top-0 flex items-center justify-center md:w-1/2">
+  <div class="md:float-right w-full md:max-w-2xl bg-success/20 text-success btn-rounded shadow-md block overflow-hidden">
+    <h1 class="font-semibold text-xl md:text-2xl">{% translate "Sign Up Closed" %}</h1>
+
+    <p class="text-sm text-success/50">{% blocktranslate %}We are sorry, but the sign up is currently closed.{% endblocktranslate %}</p>
+  </div>
+</div>
+{% endblock %}

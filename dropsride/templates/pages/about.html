@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} About Dropsride{% endblock %}
+
+{% block content %}
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <div class="space-y-6 w-full bg-warning px-4 md:px-44 xl:px-64 min-h-[40vh] flex flex-col justify-center rounded-xl"
+    style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom; background-repeat:no-repeat; background-size:contain">
+    <h1 class="text-6xl font-semibold text-center">About Us</h1>
+    <p class="text-center text-base md:text-xl md:w-3/5 mx-auto">
+      Drops Ride is a technology company that provides E-Ride hailing taxi services via the Drops App. Our vision is to create safe, convenient and affordable rides.
+    </p>
+  </div>
+</section>
+
+<section class="px-4 md:px-44 xl:px-64 py-14 space-y-14 bg-white">
+  <!-- <h3 class="text-2xl md:text-4xl font-semibold text-center">
+    Why Dropsride?
+  </h3> -->
+  <div class="py-6">
+    <img src="{% static 'vendors/images/about/nigeria-map.png' %}" alt="nigeria map" class="mx-auto">
+  </div>
+
+  <div>
+
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-14 text-sm">
+    <div class="space-y-4 text-center">
+      <img src="{% static 'vendors/images/about/growth.svg' %}" alt="growth and expansion icon" class="h-14 mx-auto">
+      <h4 class="text-xl md:text-3xl font-semibold">Revolutionary Transportation</h4>
+      <p>
+        We are not only building a service for convenience, we are taking ride hailing a step further.
+      </p>
+    </div>
+    <div class="space-y-4 text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="block mx-auto w-14 h-14">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+      </svg>
+
+      <h4 class="text-xl md:text-3xl font-semibold">Quick & Easy Set-up</h4>
+      <p>
+        Get operational in minutes with our support team available always to help guide you every step of the way.
+      </p>
+    </div>
+    <div class="space-y-4 text-center">
+      <img src="{% static 'vendors/images/about/accessibility.svg' %}" alt="accessibility icon" class="h-14 mx-auto">
+      <h4 class="text-xl md:text-3xl font-semibold">Accessibility for All</h4>
+      <p>
+        We leave no man behind, there is a support for all. We have you in mind.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<section class="bg-black w-screen px-4 md:px-44 xl:px-64 py-14 space-y-8 text-white">
+  <div id="countTrigger" class="grid md:grid-cols-4 grid-cols-2 gap-5">
+    <div class="space-y-3 text-center">
+      <div class="text-3xl font-bold">2022</div>
+      <span class="block text-base">Drops Launched</span>
+    </div>
+    <div class="space-y-3 text-center">
+      <div class="counter text-3xl font-bold" data-count="{{riders}}"></div>
+      <span class="block text-base">Verified Riders</span>
+    </div>
+    <div class="space-y-3 text-center">
+      <div class="counter text-3xl font-bold" data-count="{{drivers}}"></div>
+      <span class="block text-base">Verified Drivers</span>
+    </div>
+    <div class="space-y-3 text-center">
+      <div class="counter text-3xl font-bold" data-count="{% if states <= 0 %}25{% else %}{{states}}{% endif %}"></div>
+      <span class="block text-base">Operational States</span>
+    </div>
+  </div>
+</section>
+
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 space-y-8 flex flex-col justify-center text-center">
+  <h3 class="text-2xl md:text-4xl font-semibold text-center">
+    The Future of Ride Sharing
+  </h3>
+  <div class="rounded-xl border-warning border-4 mx-auto md:w-3/5">
+    <iframe width="100%" height="373" src="https://www.youtube.com/embed/B8_cBTmXfYk"
+      title="Does ride-hailing business model have potential?" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+  <h3 class="text-2xl md:text-4xl font-semibold text-center">Ready to Ride?</h3>
+  <div class="flex items-center space-x-3 mx-auto">
+    <img src="{% static 'vendors/images/apple-store.svg' %}" loading="lazy" alt="apple store icon"
+      class="h-9 md:h-12 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+    <img src="{% static 'vendors/images/play-store.svg' %}" loading="lazy" alt="play store icon"
+      class="h-9 md:h-12 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+  </div>
+  <p class="block font-bold">
+    Or <a href="{% url 'account_signup' %}" class="py-2 px-4 font-black hover:font-semibold duration-300">Signup to Drive</a>
+  </p>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 bg-gray-100 md:flex items-center md:justify-between">
+  <div class="space-y-4 md:w-2/5">
+    <h4 class="text-2xl md:text-4xl font-bold">Become a Revolutionist</h4>
+    <a href="{% url 'careers:list' %}"  class="block w-fit py-3 px-4 bg-black text-white rounded-xl hover:shadow-xl hover:scale-105 duration-300">Seek a Career
+      Role</a>
+  </div>
+
+  <div class="md:w-2/5 aspect-1">
+    <lottie-player autoplay loop mode="normal" src="{% static 'vendors/images/lottie/career.json' %}"
+      style="width:100%"></lottie-player>
+  </div>
+</section>
+
+{% endblock content %}

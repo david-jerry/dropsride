@@ -1,0 +1,157 @@
+{% extends "dashboard.html" %}
+{% load static humanize i18n widget_tweaks %}
+
+{% block title %}{{ block.super }} News{% endblock %}
+
+{% block breadcrumbs %}News{% endblock %}
+{% block alt_right %}
+<button x-data="Blog" @click="openCreateNews=!openCreateNews" class="ml-auto flex items-center space-x-3 text-sm rounded-xl py-2 px-4 bg-gray-700 text-white">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+  </svg>
+  <span class="block text-sm">
+    Create News
+  </span>
+</button>
+{% endblock alt_right %}
+
+{% block content %}
+<section x-data="Blog" class="z-0 relative w-full md:flex md:items-start gap-5 h-full space-y-5 md:space-y-0">
+  <div class="w-full md:w-3/6 md:max-h-[80vh] space-y-6 flex-none flex flex-col rounded-xl">
+    <div @click.outside="showFilter = false" x-data="{showFilter:false}" class="w-full p-3 rounded-xl bg-gray-100 relative mb-5 shadow-xl">
+      <div class="flex items-center justify-between">
+        <div for="id_search" class="w-full flex items-center space-x-3 bg-gray-200 p-1 md:p-2 rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 flex-none">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <input hx-get="{% url 'news:list' %}" hx-swap="innerHTML" hx-target="#userList" hx-trigger="keyup changed delay:50" type="search" name="search" placeholder="Search by title, summary, keywords" class="bg-gray-200 text-gray-600 text-sm font-semibold placeholder:text-gray-400 w-full border-0 focus:border-0 ring-0 focus:ring-0 outline-none focus:outline-none">
+        </div>
+      </div>
+    </div>
+
+    <div id="blogList" class="p-3 bg-gray-100 overflow-y-auto scrollbar-thin md:max-h-full rounded-xl shadow-xl grid grid-cols-1 md:grid-cols-2 gap-3">
+      {% include "admin/news/snippets/list.html" with objects=objects %}
+    </div>
+  </div>
+
+
+  <!-- transaction detail for destop view -->
+  <div @mousedown.outside="blogDetails = false" x-cloak x-show.transition.in="blogDetails" id="uDetail" class="h-2/3 border-t-warning border-t-4 md:max-h-[80vh] w-full md:flex-grow space-y-4 md:space-y-6 p-3 text-gray-700 bg-gray-100 rounded-t-xl md:rounded-xl fixed md:relative z-30 right-0 bottom-0 overflow-y-auto scrollbar-thin">
+  </div>
+</section>
+{% endblock content %}
+
+{% block modal %}
+<section x-data="Blog" id="userModal" x-show.transition="openCreateNews" x-cloak class="w-screen h-screen bg-black/40 backdrop-blur-sm fixed z-50 flex flex-col items-center justify-center top-0 left-0 right-0 bottom-0">
+  <form enctype="multipart/form-data" @mousedown.outside="openCreateNews=false" x-ref="postForm"  class="overflow-y-auto max-h-[520px] md:float-right w-full md:max-w-2xl bg-white btn-rounded shadow-md block overflow-hidden" method="post" action="{% url 'home' %}api/news/" data-token="{{request.user.token}}" @submit.prevent="createPost">
+    <div class="w-full p-6 border border-b-gray-200 space-y-2">
+      <h1 class="font-semibold text-xl md:text-2xl">{% translate "Add New Post" %}</h1>
+    </div>
+
+
+    {% csrf_token %}
+    {{ form.media }}
+    <input type="hidden" name="author" value="{{request.user.id}}">
+    <input type="hidden" name="publisher" value="Dropsride">
+
+    <div class="w-full p-6 rounded-b-xl space-y-5">
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+
+      <div class="relative">
+        <template x-if="post_img" class="border border-gray-200 w-full aspect-h-3 object-cover duration-500 rounded-md cursor-pointer">
+          <img :src="{% if object.image %}{{object.image.url}}{% else %}post_img{% endif %}"
+              class="border border-gray-200 w-full aspect-2 object-cover duration-500 rounded-md cursor-pointer"
+          >
+        </template>
+
+        <template x-if="!post_img" class="border border-gray-200 w-32 aspect-1 object-cover duration-500 rounded-md cursor-pointer">
+          <img src="{% if object.image %}{{object.image.url}}{% else %}post_img{% endif %}"
+              class="border border-gray-200 w-full aspect-2 object-cover duration-500 rounded-md cursor-pointer"
+          >
+        </template>
+
+        <label for="id_image" class="duration-300 transition:ease-in-out hover:shadow-md bg-warning text-gray-700 rounded-md p-3 absolute left-0 bottom-0 cursor-pointer hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+          </svg>
+          <input type="file" name="image" id="id_image" class="hidden" accept="image/*" :value="{% if object.image %}{{object.image.url}}{% else %}post_img{% endif %}" @change="postChosen">
+        </label>
+      </div>
+
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div>
+        <label for="id_title" class="text-s font-bold text-gray-500">Title</label>
+        {% render_field form.title required="true" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" placeholder=form.title.label %}
+      </div>
+      <div>
+        <label for="id_keywords" class="text-s font-bold text-gray-500">Keywords</label>
+        <div class="border-2 border-gray-200 text-gray-500 rounded-xl">
+          {% render_field form.keywords required="true" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" placeholder=form.keywords.label %}
+        </div>
+      </div>
+    </div>
+
+
+      <div>
+        <label for="id_content" class="text-s font-bold text-gray-500">Content</label>
+        <div class="border-2 border-gray-200 text-gray-500 rounded-xl">
+          {% render_field form.content required="true" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 aspect-4" placeholder=form.content.label %}
+        </div>
+      </div>
+      <div>
+        <label for="id_tags" class="text-s font-bold text-gray-500">Tags</label>
+        <div class="border-2 border-gray-200 text-gray-500 rounded-xl">
+          <input name="tags" id="id_tags" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" type="text" placeholder="post tags">
+          <!-- {% render_field form.tags required="true" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 aspect-3" placeholder=form.tags.label %} -->
+        </div>
+      </div>
+
+      <div>
+        <label for="id_summary" class="text-s font-bold text-gray-500">Summary</label>
+        <div class="border-2 border-gray-200 text-gray-500 rounded-xl">
+          <!-- <input name="summary" id="id_summary" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" type="text" placeholder="post summary"> -->
+          {% render_field form.summary required="true" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 aspect-3" placeholder=form.summary.label %}
+        </div>
+      </div>
+
+
+      <div class="flex items-center space-x-4 pz-2 py-3">
+        <div>
+          <label for="id_draft" class="flex items-center space-x-2">
+            {% render_field form.draft type='checkbox' class="block rounded-x" placeholder=form.draft.label %}
+            <!-- <input type="checkbox" name="draft" id="id_draft" {% if object.draft %}checked{% endif %} class="block rounded-xl"> -->
+            <span class="block">Draft?</span>
+          </label>
+        </div>
+        <div>
+          <label for="id_featured" class="flex items-center space-x-2">
+            {% render_field form.featured type='checkbox' class="block rounded-x" placeholder=form.featured.label %}
+            <!-- <input type="checkbox" name="featured" id="id_featured" {% if object.featured %}checked{% endif %} class="block rounded-xl"> -->
+            <span class="block">Featured?</span>
+          </label>
+        </div>
+      </div>
+
+      <button class="btn-rounded px-6 py-3 bg-black text-white shadow-sm hover:shadow-xl flex items-center space-x-4 duration-500 w-full" type="submit">
+        <strong class="block text-sm font-bold uppercase" x-text="postCreateText"></strong>
+        <div role="status" x-show.transition="updating">
+          <svg aria-hidden="true" class="w-4 h-4 text-white animate-spin fill-warning"
+            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor" />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill" />
+          </svg>
+          <span class="sr-only">Loading...</span>
+        </div>
+      </button>
+
+    </div>
+  </form>
+</section>
+{% endblock modal %}

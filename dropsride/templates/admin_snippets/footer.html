@@ -1,0 +1,75 @@
+{% load static i18n %}
+
+<footer hx-preserver="true" hx-boost="true" style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom center; background-size:contain; background-repeat:no-repeat" class="w-screen px-4 md:px-44 xl:px-64 py-8 bg-black text-white mb-16 md:mb-0">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-24">
+    <div class="space-y-4">
+      <img hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" src="{% static 'vendors/images/logo-yellow.png' %}" class="h-8 md:h-14" alt="alternate logo">
+      <div class="flex items-center space-x-4">
+        <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+          <img src="{% static 'vendors/images/icons/instagram.svg' %}" alt="instagram" class="h-6">
+        </a>
+        <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+          <img src="{% static 'vendors/images/icons/twitter.svg' %}" alt="twitter" class="h-6">
+        </a>
+        <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+          <img src="{% static 'vendors/images/icons/facebook.svg' %}" alt="facebook" class="h-6">
+        </a>
+        <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+          <img src="{% static 'vendors/images/icons/linkedin.svg' %}" alt="linkedin" class="h-6">
+        </a>
+        <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+          <img src="{% static 'vendors/images/icons/youtube.svg' %}" alt="youtube" class="h-6">
+        </a>
+      </div>
+      <span class="block text-sm">Subscribe to our newsletter</span>
+      <div class="relative flex items-center flex-none bg-white rounded-xl overflow-hidden">
+        <input type="email" placeholder="Email Here" class="focus:ring-0 focus:border-0 text-black placeholder:text-black text-sm border-0 ring-0 rounded-xl">
+        <div class="h-full w-14 border-white border-[1px] rounded-r-xl bg-black text-warning absolute right-0 top-0 aspect-1 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z" />
+          </svg>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <img src="{% static 'vendors/images/apple-store.svg' %}" loading="lazy" alt="apple store icon"
+          class="h-9 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+        <img src="{% static 'vendors/images/play-store.svg' %}" loading="lazy" alt="play store icon"
+          class="h-9 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <h4 class="font-semibold text-base md:text-xl text-warning">Quick Links</h4>
+      <hr class="text-warning">
+      <div class="space-y-6 text-xs md:text-sm">
+        <a href="{% url 'home' %}" class="hover:pl-4 duration-300 font-semibold block">Home</a>
+        <a href="{% url 'about' %}" class="hover:pl-4 duration-300 font-semibold block">About</a>
+        <a href="{% url 'news:pages_list' %}" class="hover:pl-4 duration-300 font-semibold block">Blog</a>
+        <a href="{% url 'account_signup' %}" class="hover:pl-4 duration-300 font-semibold block">Create Account</a>
+      </div>
+    </div>
+    <div class="space-y-4 text-xs md:text-sm">
+      <h4 class="font-semibold text-base md:text-xl text-warning">Company Links</h4>
+      <hr class="text-warning">
+      <div class="space-y-6">
+        <a  href="{% url 'features' %}" class="hover:pl-4 duration-300 font-semibold block">Features</a>
+        <a  @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Privacy Policy</a>
+        <a  @click="window.scrollTo({top: 0, behavior: 'smooth'}), selected='option2'" hx-get="{% url 'home' %}" hx-push-url="{% url 'home' %}" hx-target="body" hx-swap="outerHTML" class="hover:pl-4 duration-300 font-semibold block">Terms and Condition</a>
+      </div>
+    </div>
+    <div class="space-y-4 text-xs md:text-sm">
+      <h4 class="font-semibold text-base md:text-xl text-warning">Developers</h4>
+      <hr class="text-warning">
+      <div class="space-y-6">
+        <a href="/api/" class="hover:pl-4 duration-300 font-semibold block">Rest API</a>
+        <a href="{% url 'support' %}" class="hover:pl-4 duration-300 font-semibold block">Support</a>
+
+        <button hx-preserver="true" class="hidden w-full py-2 px-3 bg-warning text-black font-bold rounded-md" role="button" id="installButton">{% trans "PWA Install" %}</button>
+        {% if request.user.is_authenticated %}
+        <!-- <button hx-preserver="true" class="hidden w-full py-3 px-3 bg-black text-white font-bold rounded-md" role="button" id="triggerNotificationButton">{% trans "Test Pushnotification" %}</button> -->
+        <button hx-preserver="true" class="hidden w-full py-3 px-3 bg-black text-white font-bold rounded-md" role="button" id="subscribeNotificationButton">{% trans "Subscribe" %}</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,25 @@
+{% load humanize currency %}
+
+{% for u in objects %}
+{% if forloop.last and page_obj.has_next %}
+<button @click="openUserDetail('{{u.username}}')" class="group cursor-pointer border-2 border-gray-300 p-3 rounded-xl hover:shadow-md hover:bg-gray-200 duration-500 ease-in-out text-gray-800 md:flex md:items-center text-sm md:space-x-6 justify-between" hx-get="{% url 'users:list' %}?page={{ page_obj.number|add:1 }}" hx-swap="afterend" hx-trigger="revealed" hx-target="this" x-show.transition.in="filter == {% if u.is_driver %}1{% elif not u.is_driver %}2{% endif %} || filter == 0">
+{% else %}
+<button @click="openUserDetail('{{u.username}}')" class="group cursor-pointer border-2 border-gray-300 p-3 rounded-xl hover:shadow-md hover:bg-gray-200 duration-500 ease-in-out text-gray-800 md:flex md:items-center text-sm md:space-x-6 justify-between" x-show.transition.in="filter == {% if u.is_driver %}1{% elif not u.is_driver %}2{% endif %} || filter == 0 ">
+{% endif %}
+  <div class="flex items-center space-x-3">
+    <img src='{% if u.profile.image %}{{u.profile.image.url}}{% else %}https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png{% endif %}' alt="{{u.username}} photo" class="w-14 aspect-1 rounded-full object-cover block">
+    <div class="flex flex-col items-start space-y-2">
+      <strong class="text-base font-bold sn">{{u.short_name|title}}</strong>
+      <span class="text-sm text-primary un">@{{u.username}}</span>
+    </div>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden md:hidden md:group-focus:block md:group-hover:block">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+  </svg>
+
+</button>
+{% empty %}
+<div class="text-gray-400 border-2 border-gray-300 p-3 rounded-xl w-full text-center">
+  No Registered User to show yet 🥪
+</div>
+{% endfor %}

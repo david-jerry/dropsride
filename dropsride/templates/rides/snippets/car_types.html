@@ -1,0 +1,117 @@
+{% load widget_tweaks currency %}
+
+<form x-data="Google" x-init="initializeMap" action="/api/trips/{{object.uuid}}/assign/" x-ref="mapForm" method="post" @submit.prevent="assignDriver" id="uDetail" @mousedown.outside="proDetails=false" data-token="{{request.user.token}}" :class="{'h-[84vh]':proDetails, 'h-1/6':!proDetails}" class="h-1/6 transition-all duration-500 border-t-warning border-t-4 md:h-[80vh] w-full md:flex-grow space-y-4 md:space-y-6 p-3 text-gray-700 bg-gray-100 rounded-t-xl md:rounded-xl fixed md:relative z-30 right-0 bottom-0">
+  <div class="h-fit flex-none flex flex-row items-center space-x-4 px-4 py-2 w-full cursor-pointer pb-1 justify-between">
+    <span x-show="formStep === 1" x-cloak class="block text-lg md:text-2xl font-bold">Book Ride </span>
+    <div  x-show="formStep > 1" x-cloak class="flex items-center space-x-2" @click="formStep --">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9.75L14.25 12m0 0l2.25 2.25M14.25 12l2.25-2.25M14.25 12L12 14.25m-2.58 4.92l-6.375-6.375a1.125 1.125 0 010-1.59L9.42 4.83c.211-.211.498-.33.796-.33H19.5a2.25 2.25 0 012.25 2.25v10.5a2.25 2.25 0 01-2.25 2.25h-9.284c-.298 0-.585-.119-.796-.33z" />
+      </svg>
+      <span class="block text-sm font-bold">Back</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <button :disabled="waypoint === 2" type=button @click="waypoint ++" x-show="waypoint < 2" x-cloak class="py-2 px-3 text-white bg-gray-900 flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex w-4 h-4 float-right">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        <span class="flex text-s font-bold">Add Waypoints</span>
+      </button>
+      <button :disabled="waypoint === 0" type=button @click="waypoint = 0" x-show="waypoint === 2" x-cloak class="py-2 px-3 text-white bg-gray-900 flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex w-4 h-4 float-right">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg>
+        <span class="flex text-s font-bold">Reset Waypoints</span>
+      </button>
+      <svg @click="proDetails = !proDetails" xmlns="http://www.w3.org/2000/svg" x-cloak x-show.transition.in="!proDetails" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 md:hidden">
+        <path fill-rule="evenodd" d="M15 3.75a.75.75 0 01.75-.75h4.5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0V5.56l-3.97 3.97a.75.75 0 11-1.06-1.06l3.97-3.97h-2.69a.75.75 0 01-.75-.75zm-12 0A.75.75 0 013.75 3h4.5a.75.75 0 010 1.5H5.56l3.97 3.97a.75.75 0 01-1.06 1.06L4.5 5.56v2.69a.75.75 0 01-1.5 0v-4.5zm11.47 11.78a.75.75 0 111.06-1.06l3.97 3.97v-2.69a.75.75 0 011.5 0v4.5a.75.75 0 01-.75.75h-4.5a.75.75 0 010-1.5h2.69l-3.97-3.97zm-4.94-1.06a.75.75 0 010 1.06L5.56 19.5h2.69a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75v-4.5a.75.75 0 011.5 0v2.69l3.97-3.97a.75.75 0 011.06 0z" clip-rule="evenodd" />
+      </svg>
+
+      <svg @click="proDetails = !proDetails" xmlns="http://www.w3.org/2000/svg" x-cloak x-show.transition.in="proDetails" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 md:hidden">
+        <path fill-rule="evenodd" d="M3.22 3.22a.75.75 0 011.06 0l3.97 3.97V4.5a.75.75 0 011.5 0V9a.75.75 0 01-.75.75H4.5a.75.75 0 010-1.5h2.69L3.22 4.28a.75.75 0 010-1.06zm17.56 0a.75.75 0 010 1.06l-3.97 3.97h2.69a.75.75 0 010 1.5H15a.75.75 0 01-.75-.75V4.5a.75.75 0 011.5 0v2.69l3.97-3.97a.75.75 0 011.06 0zM3.75 15a.75.75 0 01.75-.75H9a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-2.69l-3.97 3.97a.75.75 0 01-1.06-1.06l3.97-3.97H4.5a.75.75 0 01-.75-.75zm10.5 0a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-2.69l3.97 3.97a.75.75 0 11-1.06 1.06l-3.97-3.97v2.69a.75.75 0 01-1.5 0V15z" clip-rule="evenodd" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="overflow-y-auto scrollbar-thin grow space-y-3">
+
+      <div x-show="formStep === 1" x-cloak  class="flex flex-col">
+        {% render_field form.state x-model="tripData.state" type="hidden" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder=form.state.label %}
+        <!-- <input type="hidden" name="distance_km" id="id_distance_km" x-model="tripData.distance_km"> -->
+        <div class="w-full grid grid-cols-1 gap-2 md:gap-5 py-4 px-2 bg-gray-100">
+          <div class="flex items-center space-x-2 flex-row">
+            {% render_field form.pickup x-model="riderAddress" x-ref="pickUp" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder=form.pickup.label %}
+            <!-- <input type="text" name="pickup" id="id_address" x-model="riderAddress" x-ref="pickUp" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Pickup Address"> -->
+            <input type="hidden" name="p_point_latitude" id="id_p_point_latitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Pickup Address">
+            <input type="hidden" name="p_point_longitude" id="id_p_point_longitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Pickup Address">
+          </div>
+          <div class="flex items-center space-x-2 flex-row" x-cloak x-show.transition.in="waypoint > 0 && waypoint <= 2">
+            {% render_field form.waypoint1_address x-model="tripData.waypoint1_address" x-ref="waypoint_1" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder=form.waypoint1_address.label %}
+            <!-- <input type="text" name="waypoint_1" id="id_waypoint_1" x-model="tripData.waypoint1_address" x-ref="waypoint_1" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Waypoint 1 Address"> -->
+            <input type="hidden" name="waypoint1_point_latitude" id="id_waypoint1_point_latitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Waypoint 1 Address">
+            <input type="hidden" name="waypoint1_point_longitude" id="id_waypoint1_point_longitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Waypoint 1 Address">
+          </div>
+          <div class="flex items-center space-x-2 flex-row" x-cloak x-show.transition.in="waypoint === 2">
+            {% render_field form.waypoint2_address x-model="tripData.waypoint2_address" x-ref="waypoint_2" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder=form.waypoint2_address.label %}
+            <!-- <input type="text" name="waypoint_2" id="id_waypoint_2" x-model="tripData.waypoint2_address" x-ref="waypoint_2" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Waypoint 2 Address"> -->
+            <input type="hidden" name="waypoint2_point_latitude" id="id_waypoint2_point_latitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Waypoint 2 Address">
+            <input type="hidden" name="waypoint2_point_longitude" id="id_waypoint2_point_longitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Waypoint 2 Address">
+          </div>
+          <div class="flex items-center space-x-2 flex-row">
+            {% render_field form.dropoff x-model="dropOffAddress" x-ref="dropOff" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder=form.dropoff.label %}
+            <!-- <input type="text" name="dropoff" id="id_address2" x-model="dropOffAddress" x-ref="dropOff" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Drop-Off Address"> -->
+            <input type="hidden" name="d_point_latitude" id="id_d_point_latitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Drop-Off Address">
+            <input type="hidden" name="d_point_longitude" id="id_d_point_longitude" class="w-full block border-gray-500 border-2 rounded-lg  placeholder:text-gray-400 text-sm bg-gray-200 focus:border-warning focus:ring-0 focus:outline-none" placeholder="Drop-Off Address">
+          </div>
+        </div>
+
+        <div class="px-2">
+          <button type="button" @click="formStep ++" class="w-full py-3 text-center btn-rounded bg-gray-900 text-white font-bold text-sm">
+            Select Car Type
+          </button>
+        </div>
+      </div>
+
+      <div x-show="formStep === 2" x-cloak  class="flex flex-col">
+        <div class="pb-8">
+          <strong class="text-s block pb-2 font-semibold">Select A Car Type</strong>
+          <div class="w-full flex-none overflow-x-auto scrollbar-thin py-2 flex flex-row items-center space-x-3 md:justify-between">
+            {% for c in cars %}
+            <label
+            class="cursor-pointer hover:bg-warning/40 flex-none px-7 w-fit flex justify-start items-center text-truncate rounded-lg bg-white pl-4 pr-6 py-3 hover:shadow-md duration-300">
+            <div class="text-teal-600 mr-3">
+              <input type="radio" id="car_type_{{c.id}}" name="car_type" value="{{c.id}}" x-model="tripData.car_type"
+                class="form-radio focus:outline-none focus:shadow-outline" />
+            </div>
+            <div class="flex items-center space-x-2" x-data="{'car_{{c.id}}':0}">
+              <img src="{{c.image.url}}" alt="{{c.title}} car photo" class="block rounded-full object-cover h-8 w-8">
+              <div class="select-none text-gray-700 md:text-sm text-s">{{c.title|upper}}</div>
+              <span class="font-bold text-s block text-success" >+ {{request.user.wallet.currency.symbol}} <span x-text="car_{{c.id}}" x-model="car_{{c.id}} = {{c.amount|floatformat:2|exchange:request}} + {{object.amount|floatformat:2|exchange:request}}"></span></span>
+            </div>
+          </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="rounded-xl border-2 border-warning p-2 bg-warning/20">
+          <div class="">
+            <span class="text-s font-bold">Duration:</span>
+            <strong class="font-bold text-sm">{{object.fmt_sec}}</strong>
+          </div>
+          <div class="">
+            <span class="text-s font-bold">Distance:</span>
+            <strong class="font-bold text-sm">{{object.fmt_dist}}</strong>
+          </div>
+          <div class="">
+            <span class="text-s font-bold">You should arrive around:</span>
+            <strong class="font-bold text-sm">{{object.arrival_time|date:'H:m'}}</strong>
+          </div>
+        </div>
+
+        <div class="px-2 pt-4">
+          <button type="submit" class="w-full py-3 text-center btn-rounded bg-gray-900 text-white font-bold text-sm">
+            Book Your Ride
+          </button>
+        </div>
+      </div>
+  </div>
+</form>

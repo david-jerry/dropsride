@@ -1,0 +1,147 @@
+{% load static notifications_tags %}
+<section class="w-screen flex items-center bg-black/80" id="navbar">
+  <a href="{% url 'home' %}" class="px-3 md:px-9 flex items-center justify-center py-5 space-x-2 bg-warning">
+    <img src="{% static 'vendors/images/logo-dark.png' %}" class="h-8" alt="dropsride Logo">
+    <!-- <span class="md:block font-semibold text-base md:text-xl text-gray-800 uppercase hidden">Dropsride</span> -->
+    <span class="sr-only block">Click Logo</span>
+  </a>
+  <div class="w-full px-4 md:px-8 py-3 text-white flex items-center justify-between text-sm">
+    <nav class="hidden md:flex items-center space-x-6">
+      <a href="{% url 'home' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">Home</a>
+      <a href="{% url 'about' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">About</a>
+      <!-- <a href="{% url 'home' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">Business</a> -->
+      <a href="{% url 'careers:list' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">Careers</a>
+      <a href="{% url 'features' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">Features</a>
+      <!-- <a href="{% url 'home' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">Cities</a> -->
+      <a href="{% url 'news:pages_list' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">Blog</a>
+      <a href="{% url 'support' %}" class="font-semibold hover:text-warning duration-500 transition:ease-in-out uppercase">Support</a>
+    </nav>
+
+    <div class="md:hidden"></div>
+
+    <div class="flex items-center space-x-6">
+      <div @click.outside="search = false">
+        <div :class="{'hidden':!search, 'block':search}" class="hidden relative w-full rounded-xl bg-black/50 text-white border-white border-2 overflow-hidden pr-6">
+          <input placeholder="Search trips, addresses, drivers" title="search" type="search" class="bg-transparent w-full border-0 focus:border-0 ring-0 focus:ring-0 outline-0 focus:outline-0 placeholder:text-sm font-semibold overflow-hidden">
+          <div class="space-y-2 absolute right-2 top-2 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+              <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd" />
+            </svg>
+            <span class="sr-only block">Click to Search</span>
+          </div>
+        </div>
+        <div @click="showSearchBar" :class="{'hidden':search, 'block':!search}" class="flex-none hidden cursor-pointer space-y-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd" />
+          </svg>
+          <span class="sr-only block">Click to Search</span>
+        </div>
+      </div>
+
+
+      <svg :class="{'hidden':search, 'block':!search}" x-transition:enter.duration.300ms x-transition:leave.duration.100ms xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="flex-none w-6 md:w-6 h-6 md:h-6 hover:text-warning duration-300 transition:ease-in-out cursor-pointer">
+        <path fill-rule="evenodd" d="M9 2.25a.75.75 0 01.75.75v1.506a49.38 49.38 0 015.343.371.75.75 0 11-.186 1.489c-.66-.083-1.323-.151-1.99-.206a18.67 18.67 0 01-2.969 6.323c.317.384.65.753.998 1.107a.75.75 0 11-1.07 1.052A18.902 18.902 0 019 13.687a18.823 18.823 0 01-5.656 4.482.75.75 0 11-.688-1.333 17.323 17.323 0 005.396-4.353A18.72 18.72 0 015.89 8.598a.75.75 0 011.388-.568A17.21 17.21 0 009 11.224a17.17 17.17 0 002.391-5.165 48.038 48.038 0 00-8.298.307.75.75 0 01-.186-1.489 49.159 49.159 0 015.343-.371V3A.75.75 0 019 2.25zM15.75 9a.75.75 0 01.68.433l5.25 11.25a.75.75 0 01-1.36.634l-1.198-2.567h-6.744l-1.198 2.567a.75.75 0 01-1.36-.634l5.25-11.25A.75.75 0 0115.75 9zm-2.672 8.25h5.344l-2.672-5.726-2.672 5.726z" clip-rule="evenodd" />
+      </svg>
+
+
+      {% if request.user.is_authenticated %}
+      <!-- <div @click="notif=!notif" @click.outside="notif = false" x-transition:enter.duration.300ms x-transition:leave.duration.100ms x-show.transition="!search" :class="{'text-warning':hasUnreadNotifications, '':!hasUnreadNotifications}" class="group relative items-center text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" :class="{'animate-wiggle':hasUnreadNotifications, '':!hasUnreadNotifications}" class="flex-none w-6 md:w-6 h-6 md:h-6 hover:text-warning duration-300 transition:ease-in-out cursor-pointer">
+          <path d="M5.85 3.5a.75.75 0 00-1.117-1 9.719 9.719 0 00-2.348 4.876.75.75 0 001.479.248A8.219 8.219 0 015.85 3.5zM19.267 2.5a.75.75 0 10-1.118 1 8.22 8.22 0 011.987 4.124.75.75 0 001.48-.248A9.72 9.72 0 0019.266 2.5z" />
+          <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 005.25 9v.75a8.217 8.217 0 01-2.119 5.52.75.75 0 00.298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 107.48 0 24.583 24.583 0 004.83-1.244.75.75 0 00.298-1.205 8.217 8.217 0 01-2.118-5.52V9A6.75 6.75 0 0012 2.25zM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 004.496 0l.002.1a2.25 2.25 0 11-4.5 0z" clip-rule="evenodd" />
+        </svg>
+
+        <div x-show="hasUnreadNotifications" x-cloak class="text-s inline-flex absolute bottom-0.5 right-2 w-3 h-3 flex items-center justify-center bg-red-500 rounded-full border-[1px] border-white text-white">
+          <span class="block"></span>
+        </div>
+
+      </div> -->
+
+      <div @click="openUserMenu" x-data="UserDetail"  @click.outside="uMenu = false" id="id_user_menu" :class="{'hidden':search, 'block':!search}" x-transition:enter.duration.300ms x-transition:leave.duration.10ms class="md:float-none float-right cursor-pointer duration-500 transition:ease-in-out flex items-center bg-black/40 p-2 rounded-xl hover:bg-black duration text-white space-x-2">
+        <span class="text-s flex items-center">Hi, <span class="hidden md:flex pl-1">{% if hour >= 12 and hour < 16 %}Good Afternoon{% elif hour >= 16 and hour < 21 %}Good Evening{% elif hour >= 21 and hour < 24 %}Good Night{% elif hour >= 0 and hour < 12 %}Good Morning{% elif hour %}{{hour}}{% endif %}</span></span>
+        <span class="text-sm font-semibold hidden md:flex">{% if request.user.short_name %}{{request.user.short_name}}{% else %}{{request.user.username}}{% endif %}</span>
+        <span class="text-sm font-semibold md:hidden flex">{% if request.user.name_initials %}{{request.user.name_initials}}{% else %}{{request.user.username}}{% endif %}</span>
+        <img :src="profile_img" x-init="dp('{% if request.user.profile.image %}{{request.user.profile.image.url}}{% else %}https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png{% endif %}')" alt="profile image" class="flex-none md:w-8 w-6 md:h-8 h-6 rounded-full overflow-hidden object-cover">
+      </div>
+
+      <div x-transition:enter.duration.500ms x-transition:leave.duration.400ms id="userMenu" :class="{'h-fit p-2 duration-500 transition:ease-in-out':uMenu, 'h-0 duration-500 transition:ease-in-out':!uMenu}" class="overflow-hidden h-0 fixed z-30 right-2 md:right-6 w-44 rounded-b-xl bg-black/80 backdrop-blur-sm text-white text-sm font-semibold space-y-2">
+        <a href="{% url 'users:detail' request.user.username %}" class="px-3 py-2 hover:bg-black flex items-center space-x-2 hover:text-warning duration-300 transition:ease-in-out cursor-pointer rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="flex -none w-6 h-6">
+            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+          </svg>
+          <span class="sr-only">User Profile</span>
+          <span class="block text-sm">Profile</span>
+        </a>
+
+
+        {% comment %}
+        {% url 'users:detail' request.user.username as profile %}
+        {% if request.path == profile %}
+        <button hx-get="{% url 'users:update' %}" hx-target="#details" hx-swap="outerHTML" class="px-3 py-2 hover:bg-black flex items-center space-x-2 hover:text-warning duration-300 transition:ease-in-out cursor-pointer rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="flex -none w-6 h-6 animate-spin-slow">
+            <path fill-rule="evenodd" d="M11.828 2.25c-.916 0-1.699.663-1.85 1.567l-.091.549a.798.798 0 01-.517.608 7.45 7.45 0 00-.478.198.798.798 0 01-.796-.064l-.453-.324a1.875 1.875 0 00-2.416.2l-.243.243a1.875 1.875 0 00-.2 2.416l.324.453a.798.798 0 01.064.796 7.448 7.448 0 00-.198.478.798.798 0 01-.608.517l-.55.092a1.875 1.875 0 00-1.566 1.849v.344c0 .916.663 1.699 1.567 1.85l.549.091c.281.047.508.25.608.517.06.162.127.321.198.478a.798.798 0 01-.064.796l-.324.453a1.875 1.875 0 00.2 2.416l.243.243c.648.648 1.67.733 2.416.2l.453-.324a.798.798 0 01.796-.064c.157.071.316.137.478.198.267.1.47.327.517.608l.092.55c.15.903.932 1.566 1.849 1.566h.344c.916 0 1.699-.663 1.85-1.567l.091-.549a.798.798 0 01.517-.608 7.52 7.52 0 00.478-.198.798.798 0 01.796.064l.453.324a1.875 1.875 0 002.416-.2l.243-.243c.648-.648.733-1.67.2-2.416l-.324-.453a.798.798 0 01-.064-.796c.071-.157.137-.316.198-.478.1-.267.327-.47.608-.517l.55-.091a1.875 1.875 0 001.566-1.85v-.344c0-.916-.663-1.699-1.567-1.85l-.549-.091a.798.798 0 01-.608-.517 7.507 7.507 0 00-.198-.478.798.798 0 01.064-.796l.324-.453a1.875 1.875 0 00-.2-2.416l-.243-.243a1.875 1.875 0 00-2.416-.2l-.453.324a.798.798 0 01-.796.064 7.462 7.462 0 00-.478-.198.798.798 0 01-.517-.608l-.091-.55a1.875 1.875 0 00-1.85-1.566h-.344zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" clip-rule="evenodd" />
+          </svg>
+          <span class="sr-only">Settings</span>
+          <span class="block text-sm">Settings</span>
+        </button>
+        {% endif %}
+        {% endcomment %}
+
+        <!-- <div class="divider text-s font-normal">Staff Only</div> -->
+
+        {% if request.user.is_staff %}
+        <a href="{% url 'admin:index' %}" class="px-3 py-2 hover:bg-black flex items-center space-x-2 hover:text-warning duration-300 transition:ease-in-out cursor-pointer rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="flex-none w-6 h-6">
+            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm9.75 0a3 3 0 013-3H18a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25a3 3 0 01-3-3V6zM3 15.75a3 3 0 013-3h2.25a3 3 0 013 3V18a3 3 0 01-3 3H6a3 3 0 01-3-3v-2.25zm9.75 0a3 3 0 013-3H18a3 3 0 013 3V18a3 3 0 01-3 3h-2.25a3 3 0 01-3-3v-2.25z" clip-rule="evenodd" />
+          </svg>
+          <span class="sr-only">Dashboard</span>
+          <span class="block text-sm">Dashboard</span>
+        </a>
+        {% else %}
+        <a href="" class="px-3 py-2 hover:bg-black flex items-center space-x-2 hover:text-warning duration-300 transition:ease-in-out cursor-pointer rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="flex-none w-6 h-6">
+            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm9.75 0a3 3 0 013-3H18a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25a3 3 0 01-3-3V6zM3 15.75a3 3 0 013-3h2.25a3 3 0 013 3V18a3 3 0 01-3 3H6a3 3 0 01-3-3v-2.25zm9.75 0a3 3 0 013-3H18a3 3 0 013 3V18a3 3 0 01-3 3h-2.25a3 3 0 01-3-3v-2.25z" clip-rule="evenodd" />
+          </svg>
+          <span class="sr-only">Dashboard</span>
+          <span class="block text-sm">Dashboard</span>
+        </a>
+        {% endif %}
+
+        <div class="w-full h-[1.4px] bg-white/50"></div>
+        <button x-cloak x-show.transition="buyTicket === true && isVerified && switch_to_driver === true" class="w-full px-3 py-2 hover:bg-primary text-white flex items-center space-x-2 hover:text-white duration-300 transition:ease-in-out cursor-pointer rounded-xl" @click="showTicketModal = true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M1.5 6.375c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v3.026a.75.75 0 01-.375.65 2.249 2.249 0 000 3.898.75.75 0 01.375.65v3.026c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 17.625v-3.026a.75.75 0 01.374-.65 2.249 2.249 0 000-3.898.75.75 0 01-.374-.65V6.375zm15-1.125a.75.75 0 01.75.75v.75a.75.75 0 01-1.5 0V6a.75.75 0 01.75-.75zm.75 4.5a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zm-.75 3a.75.75 0 01.75.75v.75a.75.75 0 01-1.5 0v-.75a.75.75 0 01.75-.75zm.75 4.5a.75.75 0 00-1.5 0V18a.75.75 0 001.5 0v-.75zM6 12a.75.75 0 01.75-.75H12a.75.75 0 010 1.5H6.75A.75.75 0 016 12zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" clip-rule="evenodd" />
+          </svg>
+          <span class="flex text-sm">Buy Ticket</span>
+        </button>
+        <button x-cloak x-show.transition="!isVerified && isVerified !== null && switch_to_driver === true" class="w-full px-3 py-2 hover:bg-primary text-white flex items-center space-x-2 hover:text-white duration-300 transition:ease-in-out cursor-pointer rounded-xl" @click="alertCompleteVerification">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M1.5 6.375c0-1.036.84-1.875 1.875-1.875h17.25c1.035 0 1.875.84 1.875 1.875v3.026a.75.75 0 01-.375.65 2.249 2.249 0 000 3.898.75.75 0 01.375.65v3.026c0 1.035-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 011.5 17.625v-3.026a.75.75 0 01.374-.65 2.249 2.249 0 000-3.898.75.75 0 01-.374-.65V6.375zm15-1.125a.75.75 0 01.75.75v.75a.75.75 0 01-1.5 0V6a.75.75 0 01.75-.75zm.75 4.5a.75.75 0 00-1.5 0v.75a.75.75 0 001.5 0v-.75zm-.75 3a.75.75 0 01.75.75v.75a.75.75 0 01-1.5 0v-.75a.75.75 0 01.75-.75zm.75 4.5a.75.75 0 00-1.5 0V18a.75.75 0 001.5 0v-.75zM6 12a.75.75 0 01.75-.75H12a.75.75 0 010 1.5H6.75A.75.75 0 016 12zm.75 2.25a.75.75 0 000 1.5h3a.75.75 0 000-1.5h-3z" clip-rule="evenodd" />
+          </svg>
+          <span class="flex text-sm">Buy Ticket</span>
+        </button>
+
+        <a href="{% url 'account_logout' %}" id="logoutBtn" class="px-3 py-2 hover:bg-danger text-danger flex items-center space-x-2 hover:text-white duration-300 transition:ease-in-out cursor-pointer rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06l-3.22-3.22V16.5a.75.75 0 01-1.5 0V4.81L8.03 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zM3 15.75a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+          </svg>
+          <span class="sr-only">Logout</span>
+          <span class="block text-sm">Logout</span>
+        </a>
+      </div>
+      {% else %}
+      <a href="{% url 'account_login' %}" id="id_user_menu" :class="{'hidden':search, 'block':!search}" x-transition:enter.duration.300ms x-transition:leave.duration.10ms class="md:float-none float-right cursor-pointer duration-500 transition:ease-in-out flex items-center bg-warning py-2 px-4 rounded-xl hover:bg-black text-gray-700 duration hover:text-white space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+        </svg>
+        <span class="font-bold flex">Login</span>
+      </a>
+      {% endif %}
+
+      <svg @click="showSearchBar"  x-transition:enter.duration.300ms x-transition:leave.duration.100ms :class="{'hidden':!search, 'block':search}"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden cursor-pointer w-6 h-6 float-right text-danger flex-none">
+        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+      </svg>
+
+    </div>
+  </div>
+</section>

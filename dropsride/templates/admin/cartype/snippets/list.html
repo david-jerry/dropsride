@@ -1,0 +1,23 @@
+{% load humanize currency %}
+
+{% for l in objects %}
+<div class="swiper-slide aspect-1 w-fit flex flex-col items-center justify-center mx-auto">
+  <center>
+    <img src="{{l.image.url}}" alt="{{l.title}} image" class="w-32 md:w-52 mx-auto object-cover aspect-1 rounded-full">
+  </center>
+
+  <center class="space-y-1 text-left pt-6">
+    <strong class="block text-gray-700 text-lg line-clamp-1 text-center">{{l.title|title}}</strong>
+    <div class="flex flex-col items-center divide-y-2 space-y-2">
+      <span class="text-sm font-semibold block">{{l.drivers.count|default:0}} Drivers</span>
+      <span class="text-sm font-semibold block pt-2">{{l.seats}} Seater</span>
+    </div>
+  </center>
+</div>
+{% empty %}
+<div class="swiper-slide items-center flex flex-col justify-center col-span-2 text-gray-400 border-2 border-gray-300 p-3 rounded-xl w-full text-center">
+  <div class="w-full h-fit">
+    <p>No Registered car type at the moment 🙋</p>
+  </div>
+</div>
+{% endfor %}

@@ -1,0 +1,159 @@
+{% load static humanize currency %}
+
+<div @mousedown.outside="proDetails=false" class="space-y-5 p-3 max-h-full overflow-y-auto scrollbar-thin flex flex-col">
+  <div class="hidden md:block md:absolute md:top-4 md:right-4 cursor-pointer" @click="proDetails = false">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </div>
+  <div class="md:hidden block w-2/3 mx-auto bg-gray-300 rounded-xl cursor-pointer py-1" @click="proDetails = false">
+  </div>
+
+  <div class="h-full w-full overflow-y-scroll scrollbar-hide pb-8 md:pb-0">
+    <div class="flex items-center justify-between">
+      <div x-data="UserDetail" class=" w-2/3 flex items-center space-x-3">
+        <img src='{% if object.profile.image %}{{object.profile.image.url}}{% else %}https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png{% endif %}' alt="{{object.username}} photo" class="w-14 aspect-1 rounded-full object-cover block">
+        <div class="flex flex-col items-start space-y-0">
+          <strong class="text-base font-bold">{{object.short_name|title}}</strong>
+          <span class="text-sm text-primary">@{{object.username}}</span>
+          <!-- data info -->
+          <div class="flex items-center space-x-3 text-s">
+            <div>
+              <span class="block font-bold">Total Rides</span>
+              <span class="block">12</span>
+            </div>
+            <div class="divider-vertical"></div>
+            <div>
+              <span class="block font-bold">Rating</span>
+              <span class="block">4.3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-1/3 flex items-center space-x-3 text-white">
+        <a href="mailto://{{object.email}}" class="ml-auto btn-rounded hover:shadow-xl duration-3000 py-2 px-3 text-sm bg-gray-700 flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+          </svg>
+          <span class="hidden md:block">Mail</span>
+        </a>
+        {% if object.profile.phone %}
+        <a href="tel://{{object.profile.phone}}" class="btn-rounded hover:shadow-xl duration-3000 py-2 px-3 text-sm bg-warning text-gray-700 flex items-center space-x-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+          <span class="hidden md:block">Call</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- users address -->
+    <div class="divider"></div>
+    <div class="w-full flex items-center space-x-3">
+      <div class="rounded-full p-3 bg-gray-200">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path d="M19.006 3.705a.75.75 0 00-.512-1.41L6 6.838V3a.75.75 0 00-.75-.75h-1.5A.75.75 0 003 3v4.93l-1.006.365a.75.75 0 00.512 1.41l16.5-6z" />
+          <path fill-rule="evenodd" d="M3.019 11.115L18 5.667V9.09l4.006 1.456a.75.75 0 11-.512 1.41l-.494-.18v8.475h.75a.75.75 0 010 1.5H2.25a.75.75 0 010-1.5H3v-9.129l.019-.006zM18 20.25v-9.565l1.5.545v9.02H18zm-9-6a.75.75 0 00-.75.75v4.5c0 .414.336.75.75.75h3a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75H9z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <p class="block text-s md:text-sm font-semibold">
+        {{object.profile.home_address|title|default:"None"}}
+      </p>
+    </div>
+
+    <!-- verification buttons to confirm the users details are authentica -->
+    <div class="divider"></div>
+    <div class="py-3 flex items-center space-x-4 overflow-x-auto scrollbar-thin">
+      <button class="w-fit flex-none bg-gray-700 text-white text-sm font-semibold py-2 hover:scale-105 duration-500 ease-in-out px-5 rounded-lg">Verify Profile</button>
+      <button class="w-fit flex-none bg-gray-700 text-white text-sm font-semibold py-2 hover:scale-105 duration-500 ease-in-out px-5 rounded-lg">Verify Next of kin</button>
+      <button class="w-fit flex-none bg-gray-700 text-white text-sm font-semibold py-2 hover:scale-105 duration-500 ease-in-out px-5 rounded-lg">Verify Vehicle</button>
+      <button class="w-fit flex-none bg-gray-700 text-white text-sm font-semibold py-2 hover:scale-105 duration-500 ease-in-out px-5 rounded-lg">Verify Documents</button>
+    </div>
+
+    <div class="divider"></div>
+    <!-- send push notification to this user -->
+    <form method="post" action="{% url 'send_user_push_notification' %}" @submit.prevent="sendPushNotification" x-ref="pushForm" data-csrf="{{csrf_token}}" class="w-full rounded-xl space-y-2">
+      <strong class="block text-s font-semibold">Send a Push Notification</strong>
+      {% csrf_token %}
+      <input type="hidden" name="username" value="{{object.username}}">
+      <textarea name="message" id="id_message" class="w-full border-gray-300 border-[0.75px] bg-gray-200 text-gray-600 rounded-xl h-24"></textarea>
+      <button type="submit" class="flex items-center space-x-3 btn-rounded btn-warning py-2 px-3 text-sm font-bold hover:shadow-md duration-300">
+        <div role="status" x-show.transition="pushLoading">
+          <svg aria-hidden="true" class="w-4 h-4 text-white animate-spin fill-warning"
+            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor" />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill" />
+          </svg>
+          <span class="sr-only">Loading...</span>
+        </div>
+        <span class="block" x-text="pushText"></span>
+      </button>
+    </form>
+    <div class="divider"></div>
+    <!-- next of kin information -->
+    <strong class="py-3 block text-s font-semibold">Next of Kin</strong>
+    <div class="w-2/3 flex items-center space-x-3">
+      <div class="rounded-full p-3 bg-gray-200">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-6 h-6" fill="currentColor">
+          <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"/>
+        </svg>
+      </div>
+      <div class="flex flex-col items-start space-y-0 {% if not object.nok.first_name %}text-gray-300{% endif %}">
+        <strong class="text-base font-bold flex-none w-fit">{{object.nok.first_name|title|default:"None"}} {{object.nok.middle_name|title|default:"None"}} {{object.nok.last_name|title|default:"None"}}</strong>
+        <div class="flex items-center space-x-2">
+          <a href="mailto://{{object.nok.email}}" class="text-sm {% if object.nok.email %}text-primary{% endif %} block">{{object.nok.email|default:"None"}}</a>
+          <a href="tel://{{object.nok.phone}}" class="text-sm {% if object.nok.phone %}text-primary{% endif %} block">{{object.nok.phone|default:"None"}}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <!-- vehicle details -->
+    <strong class="py-3 block text-s font-semibold">Registered Vehicle</strong>
+    <div class="w-2/3 flex items-center space-x-3">
+      <div class="rounded-full p-3 bg-gray-300">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="w-6 h-6">
+          <path d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/>
+        </svg>
+      </div>
+      <div class="flex flex-col items-start space-y-0 {% if not object.vehicle.vehicle_manufacturer %}text-gray-200{% endif %}">
+        <strong class="text-base font-bold flex-none w-fit">{{object.vehicle.vehicle_manufacturer|default:"manufacturer"|upper}}</strong>
+        <span class="block text-sm {% if object.vehicle.vehicle_manufacturer %}text-gray-400{% endif %} font-bold">{{object.vehicle.vehicle_plate_no|default:"0000000"}}</span>
+        <div class="flex items-center space-x-2">
+          <span class="uppercase font-bold text-s {% if object.vehicle.vehicle_manufacturer %}text-primary block{% endif %}">{{object.vehicle.vehicle_color|default:"color"|title}}</span>
+          <span class="uppercase font-bold text-s {% if object.vehicle.vehicle_manufacturer %}text-primary block{% endif %}">{{object.vehicle.vehicle_type.title|upper|default:"car type"}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- documents submited -->
+    <strong class="py-3 block text-s font-semibold">Verified Documents</strong>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+      <div class="overflow-hidden text-center">
+        <img src="{% if object.documents.proof_of_ownership %}{{object.documents.proof_of_ownership.url}}{% else %}https://www.svgrepo.com/show/5908/text-document.svg{% endif %}" alt="" class="object-cover w-full hover:scale-105 duration-300 opacity-30 hover:opacity-100">
+        <span class="text-sm font-semibold">Proof of Ownership</span>
+      </div>
+      <div class="overflow-hidden text-center">
+        <img src="{% if object.documents.vehicle_license %}{{object.documents.vehicle_license.url}}{% else %}https://www.svgrepo.com/show/5908/text-document.svg{% endif %}" alt="" class="object-cover w-full hover:scale-105 duration-300 opacity-30 hover:opacity-100">
+        <span class="text-sm font-semibold">Vehicle License</span>
+      </div>
+      <div class="overflow-hidden text-center">
+        <img src="{% if object.documents.autocheck_certificate %}{{object.documents.autocheck_certificate.url}}{% else %}https://www.svgrepo.com/show/5908/text-document.svg{% endif %}" alt="" class="object-cover w-full hover:scale-105 duration-300 opacity-30 hover:opacity-100">
+        <span class="text-sm font-semibold">Autocheck Certificate</span>
+      </div>
+      <div class="overflow-hidden text-center">
+        <img src="{% if object.documents.insurance %}{{object.documents.insurance.url}}{% else %}https://www.svgrepo.com/show/5908/text-document.svg{% endif %}" alt="" class="object-cover w-full hover:scale-105 duration-300 opacity-30 hover:opacity-100">
+        <span class="text-sm font-semibold">Insurance Document</span>
+      </div>
+    </div>
+  </div>
+</div>

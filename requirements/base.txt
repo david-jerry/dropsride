@@ -1,0 +1,88 @@
+pytz==2023.3  # https://github.com/stub42/pytz
+python-slugify==8.0.1  # https://github.com/un33k/python-slugify
+Pillow==9.5.0  # https://github.com/python-pillow/Pillow
+argon2-cffi==21.3.0  # https://github.com/hynek/argon2_cffi
+whitenoise==6.4.0  # https://github.com/evansd/whitenoise
+redis==4.5.4  # https://github.com/redis/redis-py
+hiredis==2.2.2  # https://github.com/redis/hiredis-py
+celery==5.2.7  # pyup: < 6.0  # https://github.com/celery/celery
+django-celery-beat==2.5.0  # https://github.com/celery/django-celery-beat
+uvicorn[standard]==0.21.1  # https://github.com/encode/uvicorn
+
+# Django
+# ------------------------------------------------------------------------------
+django==4.0.10  # pyup: < 4.1  # https://www.djangoproject.com/
+django-environ==0.10.0  # https://github.com/joke2k/django-environ
+django-model-utils==4.3.1  # https://github.com/jazzband/django-model-utils
+django-allauth==0.52.0  # https://github.com/pennersr/django-allauth
+django-crispy-forms==2.0  # https://github.com/django-crispy-forms/django-crispy-forms
+crispy-bootstrap5==0.7  # https://github.com/django-crispy-forms/crispy-bootstrap5
+django-redis==5.2.0  # https://github.com/jazzband/django-redis
+
+# Django REST Framework
+djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
+djangorestframework-simplejwt==5.2.2
+dj-rest-auth[with_social]==3.0.0
+django-cors-headers==3.14.0  # https://github.com/adamchainz/django-cors-headers
+# DRF-spectacular for api documentation
+drf-spectacular==0.26.1  # https://github.com/tfranzel/drf-spectacular
+django-webpack-loader==1.8.1  # https://github.com/django-webpack/django-webpack-loader
+
+channels-redis==4.0.0
+
+# Time to read a content
+readtime==2.0.0 # https://pypi.org/project/readtime/
+
+# RECAPTCHA SECURITY
+django-recaptcha==3.0.0
+
+# Djngo tinymce for admin and frontend
+django-admin-honeypot==1.1.0 # https://pypi.org/project/django-admin-honeypot/
+django-4-jet==1.0.9
+django-tinymce==3.5.0
+feedparser==6.0.10
+google-api-python-client==1.4.1
+
+# list of countries and few iso data
+django-countries-plus==2.1.0
+django-user-sessions==2.0.0 # https://django-user-sessions.readthedocs.io/en/stable/installation.html
+django-taggit==3.1.0
+
+# custom logger
+loguru==0.5.3
+
+# integrate htmx with django requests
+django-htmx==1.9.0
+django-filter==22.1
+django-tables2==2.4.1
+
+# push notification settings
+py-vapid==1.9.0
+django-push-notifications==3.0.0
+pywebpush==1.9.4
+django-webpush==0.3.4
+
+# user notifications
+django-notifications-hq==1.7.0
+
+# tailwind support for django
+crispy-tailwind==0.5.0
+
+# paystack api support
+paystackapi==2.1.0  # https://github.com/andela-sjames/paystack-python
+
+# widget tweaks
+django-widget-tweaks==1.4.12
+
+#Generate PDF
+fpdf2==2.6.0  # https://pyfpdf.github.io/fpdf2/
+django-weasyprint==2.2.0
+
+django-select2==8.1.1 # https://django-easy-select2.readthedocs.io/en/latest/installation.html
+
+thefuzz[speedup]==0.19.0
+googlemaps==4.10.0
+async-googlemaps==0.0.10
+
+
+django-htmlmin==0.11.0

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} Dropsride Features for your convenience{% endblock %}
+
+{% block content %}
+<section class="w-screen flex flex-col justify-center px-4 md:px-44 xl:px-64 py-14 h-screen bg-warning">
+  <div class="md:w-3/5 md:mx-auto text-3xl md:text-6xl text-center font-black">
+    <lottie-player autoplay loop mode="normal" src="{% static 'vendors/images/lottie/under-construction.json' %}" style="width:100%"></lottie-player>
+    <p class="text-center">Under Construction</p>
+  </div>
+</section>
+{% endblock content %}

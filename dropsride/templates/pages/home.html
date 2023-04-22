@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} The Most Affordable Friendly Ride Hailing Solution in Nigeria{% endblock %}
+
+{% block content %}
+<section class="w-screen h-[60vh] md:h-screen px-4 md:px-44 xl:px-64 flex flex-col items-start justify-center"
+  style="background-image:url({% static 'vendors/images/home/hero-image.jpg' %}); background-size:cover;">
+  <div class="w-full space-y-4">
+    <h1 class="ml-14 intro text-3xl md:text-8xl font-semibold">Convinience</h1>
+   <div class="flex items-center space-x-2"> <h1 class="ml-14 intro text-3xl md:text-8xl font-semibold">Always</h1> <img src="{% static 'vendors/images/dropsridepin.png' %}" alt="drops pin" class="h-14"></div>
+    <strong class="ml-14 intro block text-base font-medium">Download the Drops App</strong>
+    <div class="ml-14 intro flex items-center space-x-3">
+      <img src="{% static 'vendors/images/apple-store.svg' %}" alt="apple store icon"
+        class="h-9 md:h-12 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+      <img src="{% static 'vendors/images/play-store.svg' %}" alt="play store icon"
+        class="h-9 md:h-12 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+    </div>
+  </div>
+</section>
+
+<section
+  class="overflow-x-hidden -mt-10 px-4 md:px-44 xl:px-64 w-screen h-64 flex flex-col items-center justify-center bg-black text-white space-y-6 relative"
+  style="background-image:url({% static 'vendors/images/home/hero-2.png' %}); background-position:bottom; background-size:cover; background-repeat:no-repeat;">
+  <div class="sm:2/4 md:w-3/5 mx-auto md:flex-row flex items-center flex-col md:space-x-4 md:space-y-0 space-y-4 px-8 md:px-0">
+    <div class="space-y-2 text-center md:text-right">
+      <h2 class="text-2xl md:text-4xl font-medium md:text-left">Earn as you Drive</h2>
+      <p class="block text-sm md:text-base md:text-left">Drive at your conveniene. Make money your own way.</p>
+    </div>
+    <a href="{% url 'account_signup' %}"
+      class="hover:shadow-md hover:scale-105 flex uppercase bg-warning text-base text-black font-bold py-3 px-5 rounded-xl duration-300">Signup to Drive</a>
+  </div>
+  <!-- <div class="w-screen absolute bottom-0 left-0 overflow-x-hidden" id="track">
+    <div class="w-screen flex-none relative h-8">
+      <img loading="lazy" class="h-5 md:h-8 absolute right-0 bottom-0 car-move" src="{% static 'vendors/images/home/car.svg' %}"
+      alt="moving car svg" id="car">
+    </div>
+  </div> -->
+</section>
+
+<section class="bg-gray-50 w-screen px-4 md:px-44 xl:px-64 py-14 md:py-24 space-y-6 items-center flex flex-col justify-center">
+  <!-- <h3 class="text-2xl md:text-4xl font-semibold text-center">How it works</h3> -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+    <div class="space-y-3 text-center">
+      <img loading="lazy" src="{% static 'vendors/images/home/works1.gif' %}" alt="set destination gif"
+        class="h-24 mx-auto">
+      <h4 class="font-medium text-xl">Set a Destination</h4>
+      <p class="text-sm">Drops offers you a ride in minutes</p>
+    </div>
+    <div class="space-y-3 text-center">
+      <img loading="lazy" src="{% static 'vendors/images/home/works2.gif' %}" alt="wait a driver gif"
+        class="h-24 mx-auto">
+      <h4 class="font-medium text-xl">Wait for a Driver</h4>
+      <p class="text-sm">Our aim is to offer the best, most convenient, affordable rides in every city.</p>
+    </div>
+    <div class="space-y-3 text-center">
+      <img loading="lazy" src="{% static 'vendors/images/home/works3.gif' %}" alt="track trip gif" class="h-24 mx-auto">
+      <h4 class="font-medium text-xl">Track Your Trip</h4>
+      <p class="text-sm">Get to wherever you need to be as quickly as possible</p>
+    </div>
+    <div class="space-y-3 text-center">
+      <img loading="lazy" src="{% static 'vendors/images/home/works4.gif' %}" alt="payments gif" class="h-24 mx-auto">
+      <h4 class="font-medium text-xl">Make Payments</h4>
+      <p class="text-sm">Select from our seamless payment options</p>
+    </div>
+  </div>
+</section>
+
+<section class="w-screen overflow-hidden grid grid-cols-1 md:grid-cols-2">
+  <div class="bg-warning px-4 md:pl-44 xl:pl-64 py-24 aspect-2 space-y-4"
+    style="background-image:url({% static 'vendors/images/home/yellow-streets.png' %}); background-size:cover; background-position:bottom; background-repeat:no-repeat">
+    <h4 class="font-medium text-2xl">Get a Ride in Minutes</h4>
+    <p id="hows" class="text-sm">
+    <div class="how flex items-center space-x-3">
+      <span class="h-2 w-2 block rounded-full bg-black"></span> <span>Download our Mobile App</span><br>
+    </div>
+    <div class="how flex items-center space-x-3">
+      <span class="h-2 w-2 block rounded-full bg-black"></span> <span>Choose a Destination</span><br>
+    </div>
+    <div class="how flex items-center space-x-3">
+      <span class="h-2 w-2 block rounded-full bg-black"></span> <span>Request a Ride</span><br>
+    </div>
+    <div class="how flex items-center space-x-3">
+      <span class="h-2 w-2 block rounded-full bg-black"></span> <span>Meet your Driver</span><br>
+    </div>
+    <div class="how flex items-center space-x-3">
+      <span class="h-2 w-2 block rounded-full bg-black"></span> <span>Enjoy your Journey</span><br>
+    </div>
+    </p>
+  </div>
+  <div class="aspect-1 md:aspect-2 " style="background-image:url({% static 'vendors/images/home/mockup.jpg' %}); background-size:cover; background-position:bottom; background-repeat:no-repeat">
+  </div>
+</section>
+
+<section class="w-screen flex items-center flex-col justify-center space-y-6 px-4 py-24 bg-black text-white">
+  <h3 class="text-2xl md:text-4xl font-semibold text-center">Benefits of Using Dropsride</h3>
+  <img src="{% static 'vendors/images/home/ride-info.png' %}" alt="features" class="block mx-auto">
+  <h3 class="text-2xl md:text-4xl font-semibold text-center">Ready to Ride?</h3>
+  <div class="flex items-center space-x-3">
+    <img src="{% static 'vendors/images/apple-store.svg' %}" loading="lazy" alt="apple store icon"
+      class="h-9 md:h-12 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+    <img src="{% static 'vendors/images/play-store.svg' %}" loading="lazy" alt="play store icon"
+      class="h-9 md:h-12 cursor-pointer hover:scale-105 hover:shadow-xl duration-300">
+  </div>
+  <p class="block">
+    Or <a href="{% url 'account_signup' %}" class="py-2 px-4 text-warning hover:font-semibold duration-300">Signup to Drive</a>
+  </p>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 md:py-44 flex-none space-y-14 bg-gray-200">
+  <h3 class="text-2xl md:text-4xl font-semibold text-center">Our Policies</h3>
+  <!-- <p class="text-center pb-14 md:pb-24 md:w-2/5 mx-auto">We have enforced policies to ensure both our drivers and riders get the best services, enjoy affordable rates and benefits from our leasure rides.</p> -->
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white rounded-xl py-6 group flex-none space-y-3 flex flex-col justify-center text-center px-8 md:px-0">
+      <img src="{% static 'vendors/images/home/shield.svg' %}" loading="lazy" alt="safe and convenient" class="group-hover:animate-bounce-slow block h-16">
+      <h4 class="font-semibold text-xl">Safe and Convenient</h4>
+      <p>Moving with drops is easy, convenient and fast</p>
+    </div>
+    <div class="bg-white rounded-xl py-6 group flex-none space-y-3 flex flex-col justify-center text-center px-8 md:px-0">
+      <img src="{% static 'vendors/images/home/smiley.svg' %}" loading="lazy" alt="Happy" class="group-hover:animate-bounce-slow block h-16">
+      <h4 class="font-semibold text-xl">Happy Driver, Happy Rider</h4>
+      <p>Our drivers earn more thanks to zero commission.</p>
+    </div>
+    <div class="bg-white rounded-xl py-6 group flex-none space-y-3 flex flex-col justify-center text-center px-8 md:px-0">
+      <img src="{% static 'vendors/images/home/support.svg' %}" loading="lazy" alt="safe and convenient" class="group-hover:animate-bounce-slow block h-16">
+      <h4 class="font-semibold text-xl">Active Support</h4>
+      <p>Get fast support, whenever you need it. <br>We are always here for you.</p>
+    </div>
+  </div>
+</section>
+{% endblock content %}

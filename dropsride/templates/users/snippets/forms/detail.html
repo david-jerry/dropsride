@@ -1,0 +1,154 @@
+<form x-data="Google" x-init="initializeAutoComplete" data-token="{{request.user.token}}" action="/api/users/{{request.user.username}}/" @submit.prevent="updateUserForm" method="POST" x-ref="uform" x-show.transition="edit" x-cloak class="py-4 px-4 md:px-8 space-y-5">
+  {% csrf_token %}
+
+  <!-- Authorization token n username -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+    <div class="hidden md:block">
+      <strong class="text-gray-300 text-sm block">Username</strong>
+      <input disabled type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" value="@{{request.user.username|title|default:'-'}}" />
+    </div>
+    {% if object == request.user %}
+    <!-- token information -->
+    <div @click.transition="reveal=!reveal" class="cursor-pointer">
+      <strong class="text-gray-300 text-sm block">Authorization Token</strong>
+      <input disabled type="text" title="auth token" :class="{'block':reveal,'hidden':!reveal}" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 font-bold" value="{{request.user.token|default:'-'}}" />
+      <input disabled type="password" title="auth token" :class="{'hidden':reveal,'block':!reveal}" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" value="******************************" />
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- full names -->
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
+    <div>
+      <label for="id_first_name" class="text-gray-300 text-sm block">First Name</label>
+      <input name="first_name" id="id_first_name" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.first_name|title|default:'-'}}" >
+    </div>
+    <div class="hidden md:block">
+      <label for="id_middle_name"  class="text-gray-300 text-sm block">Middle Name</label>
+      <input name="middle_name" id="id_middle_name" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.middle_name|title|default:'-'}}" >
+    </div>
+    <div>
+      <label for="id_last_name"  class="text-gray-300 text-sm block">Last Name</label>
+      <input name="last_name" id="id_last_name" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.last_name|title|default:'-'}}" >
+    </div>
+  </div>
+
+  <!-- date of birth -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+    <div>
+      <label for="id_date_of_birth"  class="text-gray-300 text-sm block">Date of Birth</label>
+      <input name="profile.date_of_birth" id="id_date_of_birth" type="date" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.date_of_birth|default:'-'}}" >
+    </div>
+    <div class="block">
+      <strong class="text-gray-300 text-sm block">Age</strong>
+      <input disabled readonly type="number" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" value="{{request.user.profile.age|default:'-'}}" />
+    </div>
+  </div>
+
+  <!-- user specific booleans -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+    <div>
+      <label for="id_gender" class="text-gray-300 text-sm block">Gender</label>
+      <select name="profile.gender" id="id_gender" class="form-select cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 bg-white block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
+        <option value="" {% if request.user.gender == '' %}selected{% endif %}>Gender</option>
+        <option value="M" {% if request.user.gender == 'M' %}selected{% endif %}>Male</option>
+        <option value="F" {% if request.user.gender == 'F' %}selected{% endif %}>Female</option>
+        <option value="LGBQ" {% if request.user.gender == 'LGBQ' %}selected{% endif %}>LGBQ</option>
+      </select>
+    </div>
+    <div>
+      <strong class="text-gray-300 text-sm block">Referral Number</strong>
+      <a type="email" href="{{request.user.ref_link|default:'-'}}" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl overflow-hidden ring-0 border border-gray-200 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 font-bold duration-500 transition:ease-in-out hover:text-warning text-primary p-2">{{request.user.ref_number|default:'-'}}</a>
+    </div>
+    <div>
+      <strong class="text-gray-300 text-sm block">Referrer</strong>
+      <input type="text" disabled class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" value="{{request.user.recommended_by.short_name|default:'None'|title}}" />
+    </div>
+  </div>
+
+
+
+  <!-- divider -->
+  <div class="divider text-sm font-bold text-gray-400 pt-14 pb-3">Address & Contact Information</div>
+
+  <!-- user contact -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+    <div>
+      <strong class="text-gray-300 text-sm block">Email</strong>
+      <a href="mailto://{{request.user.email|default:'-'}}" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl overflow-hidden ring-0 border border-gray-200 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 font-bold duration-500 transition:ease-in-out hover:text-warning text-primary p-2">{{request.user.email|default:'-'}}</a>
+    </div>
+    <div>
+      <strong class="text-gray-300 text-sm block">Mobile Number</strong>
+      <input name="profile.phone" id="id_phone" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.phone|default:''}}" >
+    </div>
+    <div>
+      <label for="id_bvn" class="text-gray-300 text-sm block">BVN</label>
+      <input name="profile.bvn" id="id_bvn" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.bvn|default:''}}" >
+    </div>
+  </div>
+
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+    <div>
+      <label for="id_post_code" class="text-gray-300 text-sm block">Postal Code / ZIP Code</label>
+      <input disabled readonly x-model="userFormData.post_code" name="profile.post_code" id="id_post_code" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.post_code|default:''}}" >
+    </div>
+
+    <div>
+      <label for="id_town" class="text-gray-300 text-sm block">Town</label>
+      <input disabled readonly x-model="userFormData.town" name="profile.town" id="id_town" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.town|default:''}}" >
+    </div>
+
+    <div>
+      <label for="id_state" class="text-gray-300 text-sm block">State</label>
+      <input disabled readonly x-model="userFormData.state" name="profile.state" id="id_state" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.state|default:''}}" >
+    </div>
+
+    <div>
+      <label for="id_county" class="text-gray-300 text-sm block">County</label>
+      <input disabled readonly x-model="userFormData.county" name="profile.county" id="id_county" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.county|default:''}}" >
+    </div>
+
+    <div>
+      <label for="id_country" class="text-gray-300 text-sm block">Country</label>
+      <input disabled readonly x-model="userFormData.country" name="profile.country" id="id_country" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.country|default:''}}" >
+    </div>
+
+    <div>
+      <label for="id_longitude" class="hidden text-gray-300 text-sm">Longitude</label>
+      <input disabled readonly value="{{request.user.longitude}}" name="longitude" id="id_longitude" type="hidden" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" >
+    </div>
+
+    <div>
+      <label for="id_latitude" class="hidden text-gray-300 text-sm">Latitude</label>
+      <input disabled readonly value="{{request.user.latitude}}" name="latitude" id="id_latitude" type="hidden" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" >
+    </div>
+  </div>
+
+  <div class="w-full">
+    <label for="id_address" class="text-gray-300 text-sm block">Address</label>
+    <input x-model="userFormData.address" x-ref="userAddress" name="profile.address" id="id_address" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{request.user.profile.address}}" >
+  </div>
+
+  <button :disabled="loading" id="submitForm" class="w-full group btn-rounded px-6 py-3 shadow-sm hover:shadow-xl flex items-center space-x-3 bg-warning duration-500 hover:space-x-5" type="submit" >
+
+    <strong class="block text-sm font-bold uppercase" x-text="updateUserText"></strong>
+
+    <svg x-show.transition="!loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 group-hover:animate-pulse duration-500 block">
+      <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+    </svg>
+
+    <div role="status" x-show.transition="loading">
+      <svg aria-hidden="true" class="w-4 h-4 text-white animate-spin dark:text-gray-600 fill-warning"
+        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+          fill="currentColor" />
+        <path
+          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+          fill="currentFill" />
+      </svg>
+      <span class="sr-only">Loading...</span>
+    </div>
+  </button>
+</form>

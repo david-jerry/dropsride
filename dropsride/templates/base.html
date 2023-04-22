@@ -1,0 +1,192 @@
+{% load static i18n %}{% load render_bundle from webpack_loader %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Dropsride — {% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %} Drops Ride is a technology company that provides E-Ride hailing taxi services via the Drops App. Our vision is to create safe, convenient and affordable rides.{% endblock description %}">
+    <meta name="keywords" content="{% block keywords %}ride hailing, cab, taxify, dropsride{% endblock keywords %}">
+    <meta name="author" content="Jeremiah E. David (https://jeremiahedavid.space)">
+
+    <!-- Facebook OG Shared Link Information -->
+    <meta property="og:title" content="{% block og_title %}DropsRide{% endblock og_title %}">
+    <meta property="og:site_name" content="{% block og_sitename %}DropsRide{% endblock og_sitename %}">
+    <meta property="og:description" content="{% block og_description %} Drops Ride is a technology company that provides E-Ride hailing taxi services via the Drops App. Our vision is to create safe, convenient and affordable rides.{% endblock og_description %}">
+    <meta property="og:image" content="{% block og_favicon %}{% static 'vendors/images/favicons/favicon.png' %}{% endblock og_favicon %}">
+    <meta property="og:url" content="{{ request.path }}">
+    <meta property="og:image:alt" content="Dropsride LTD">
+    <meta property="og:type" content="information technology, services" />
+
+    <meta name="htmx-config" content='{"historyCacheSize": 15}'>
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="csrf-token" content="{{csrf_token}}">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="Classification" content="Service">
+    <meta name="category" content="Ride Hailing, Transportation, Logistics, Information Technology">
+    <meta name="coverage" content="Worldwide">
+    <meta name="distribution" content="Global">
+
+    <!-- Twitter TWITTER Shared Link Information -->
+    <meta property="twitter:card" content="summary_large_image" />
+
+    <meta name="htmx-config" content='{"historyCacheSize": 15}'>
+
+    <link rel="shortcut icon" href="{% static 'assets/favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{% static 'assets/favicon-48x48.png' %}">
+    <link rel="manifest" href="{% static 'assets/manifest.json' %}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#fff">
+    <meta name="application-name" content="Dropsride">
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'assets/apple-touch-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'assets/apple-touch-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'assets/apple-touch-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/apple-touch-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'assets/apple-touch-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'assets/apple-touch-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'assets/apple-touch-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'assets/apple-touch-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="167x167" href="{% static 'assets/apple-touch-icon-167x167.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon-180x180.png' %}">
+    <link rel="apple-touch-icon" sizes="1024x1024" href="{% static 'assets/apple-touch-icon-1024x1024.png' %}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dropsride">
+    <meta name="msapplication-TileColor" content="#ddd">
+    <meta name="msapplication-TileImage" content="{% static 'assets/mstile-144x144.png' %}">
+    <meta name="msapplication-config" content="{% static 'assets/browserconfig.xml' %}">
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&&family=DynaPuff:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&family=Poiret+One&family=Raleway:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;0,800;1,100;1,200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0&display=swap" rel="stylesheet">
+
+    {% block css %}
+    <!-- Your stuff: Third-party CSS libraries go here -->
+
+    <!-- This file stores project-specific CSS -->
+    {% render_bundle 'project' 'css' %}
+    {% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    {# Placed at the top of the document so pages load faster with defer #}
+    {% block javascript %}
+
+    {% comment %}
+    <!-- Vendor dependencies bundled as one file
+      {% render_bundle 'vendors' 'js' attrs='defer' %} -->
+    {% endcomment %}
+
+      <!-- place project specific Javascript in this file -->
+      {% render_bundle 'project' 'js' attrs='defer' %}
+
+    {% endblock javascript %}
+
+    {{form.media}}
+
+  </head>
+
+  <body id="body" hx-ext="debug, event-header" @scroll.window="scrollNav" x-data="Default" style="min-height: 100vh; background-image: url(https://www.toptal.com/designers/subtlepatterns/uploads/funky-lines.png); background-repeat: repeat; background-attachment: fixed; background-position: center; background-size: fit;">
+
+    <!-- navigation header -->
+    <header :class="{'fixed top-0 left-0 right-0 z-50 duration-500 transition:ease-in-out':!showNav, 'relative':showNav}" class="w-screen" id="header">
+      {% include "admin_snippets/stat_nav.html" %}
+    </header>
+
+    <!-- main content -->
+    <div id="main" :class="{'pt-5':showNav, 'pt-[70px] md:pt-[74px]':!showNav}" class="mx-auto z-0 relative min-h-screen">
+
+      {% block content %}
+        <p>Use this document as a way to quick start any new project.</p>
+      {% endblock content %}
+
+      {% include "admin_snippets/footer.html" %}
+    </div> <!-- /container -->
+
+
+    {% block modal %}{% endblock modal %}
+
+    {% block floats %}
+    <button title="smooth scroll to top" :class="{'flex' : showNav, 'hidden' : !showNav}" @click="window.scrollTo({top: 0, behavior: 'smooth'})" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-black text-white hover:text-warning focus:animate-bounce-slow hover::animate-bounce-slow duration-300 rounded-full fixed right-4 bottom-32">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+      </svg>
+    </button>
+    <button id="shareUrl" data-url="{{request.build_absolute_uri}}" title="share website" :class="{'flex' : showNav, 'hidden' : !showNav}" class="z-50 h-10 md:h-16 w-10 md:w-16 justify-center hidden items-center bg-warning text-black animate-pulse duration-300 rounded-full fixed right-4 bottom-[176px] md:bottom-[200px]">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+        <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    {% endblock floats %}
+
+    <section class="justify-between flex py-2 items-center space-x-3 fixed bottom-0 w-screen md:hidden left-0 bg-black text-white">
+      <a href="{% url 'home' %}" class="items-center flex-col flex p-2 rounded-lg focus:bg-black text-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+        </svg>
+        <span class="text-s">Home</span>
+      </a>
+      <a href="{% url 'about' %}" class="items-center flex-col flex p-2 rounded-lg focus:bg-black text-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" />
+        </svg>
+        <span class="text-s">About</span>
+      </a>
+      <a href="{% url 'careers:list' %}" class="items-center flex-col flex p-2 rounded-lg focus:bg-black text-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+        </svg>
+        <span class="text-s">Careers</span>
+      </a>
+      <a href="{% url 'features' %}" class="items-center flex-col flex p-2 rounded-lg focus:bg-black text-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
+        </svg>
+        <span class="text-s">Features</span>
+      </a>
+      <a href="{% url 'news:pages_list' %}" class="items-center flex-col flex p-2 rounded-lg focus:bg-black text-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+        </svg>
+        <span class="text-s">Blog</span>
+      </a>
+      <a href="{% url 'support' %}" class="items-center flex-col flex p-2 rounded-lg focus:bg-black text-warning">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+        </svg>
+        <span class="text-s">Contact</span>
+      </a>
+    </section>
+
+    <section x-cloak x-show.transition.in="readDetail" @click="readDetail = false" class="h-[80px] w-screen fixed z-[200] top-0 left-0 bg-warning text-black pt-8 pr-4">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 flex float-right">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </section>
+
+    <section id="pagesDetail" :class="{'h-[calc(100vh_-_80px)] pt-17 pb-8':readDetail, 'h-0':!readDetail}" class="text-gray-400 z-[200] rounded-t-xl w-screen h-0 overflow-y-auto scrollbar-thin fixed left-0 bottom-0 right-0 bg-gray-100">
+
+    </section>
+
+    <!-- webpush variables -->
+    <script>
+      window.WEB_PUSH_CFG = {
+          APPLICATION_SERVER_KEY: "{{APPLICATION_SERVER_KEY}}",
+          SEND_NOTIFICATION: "{% url 'send_notification' %}",
+          CREATE_WP_DEVICE: "{% url 'save_webpush_info' %}",
+      };
+    </script>
+
+
+    {% block inline_javascript %}
+    {% comment %}
+    Script tags with only code, no src (defer by default). To run
+    with a "defer" so that you run inline code:
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
+    </script>
+    {% endcomment %}
+    {% endblock inline_javascript %}
+  </body>
+</html>

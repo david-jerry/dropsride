@@ -1,0 +1,96 @@
+
+{% extends "dashboard.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% translate "Account" %}{% endblock %}
+{% block breadcrumbs %}Emails{% endblock %}
+{% block alt_right %}
+{{ block.super }}
+<button @click="addEmail = !addEmail" type="button" class="flex-none font-normal text-gray-700 hover:font-bold text-sm bg-gray-300 hover:shadow-xl duration-500 transition:ease-in-out py-2 px-4 rounded-lg">Add Email</button>
+{% endblock alt_right %}
+
+{% block content %}
+{% if request.user == user %}
+<section class="z-0 relative w-full md:flex md:items-start gap-5 min-h-full space-y-5 md:space-y-0">
+  <!-- User profile photo and username -->
+  <div class="w-full md:w-1/5 md:h-full space-y-6 flex-none">
+    {% include "users/snippets/profile_card.html" with object=user %}
+    {% include "users/snippets/need_help.html" %}
+  </div>
+
+  <div class="w-full md:flex-grow h-full flex py-8 space-y-6 text-gray-700 justify-center items-center bg-gray-100 rounded-xl">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14">
+      <div class="space-y-4">
+        <div class="space-y-1">
+          <h1 class="text-gray-700 font-bold text-xl md:text-2xl">{% translate "E-mail Addresses" %}</h1>
+          {% if user.emailaddress_set.all %}
+          <p class="text-gray-400 text-sm font-normal">{% translate 'The following e-mail addresses are associated with your account:' %}</p>
+          {% endif %}
+        </div>
+
+        {% if user.emailaddress_set.all %}
+          <form action="{% url 'account_email' %}" class="email_list space-y-4" method="post">
+            {% csrf_token %}
+
+            <fieldset class="block Labels space-y-4">
+              {% for emailaddress in user.emailaddress_set.all %}
+              <label for="email_radio_{{forloop.counter}}" class="{% if emailaddress.primary %}text-success{% else %}text-danger{%endif%} flex items-center space-x-3">
+
+                <div class="border-gray-300 rounded-xl py-4 px-2">
+                  <div class="flex items-center space-x-4 text-s font-bold">{% if emailaddress.primary %}<span class="text-primary block text-s">{% translate "Primary" %}</span>{% endif %} {% if emailaddress.verified %}<span class="text-success block text-s">{% translate "Verified" %}</span>{% else %}<span class="text-danger block text-s">{% translate "Unverified" %}</span>{% endif %}</div>
+                  <div class="block text-sm text-info flex items-center space-x-4"><input id="email_radio_{{forloop.counter}}" type="radio" name="email" class="block" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/> <span class="block">{{ emailaddress.email }}</span> </div>
+                </div>
+
+              </label>
+              {% endfor %}
+            </fieldset>
+
+            <div class="form-group pt-4 flex items-center w-full grid grid-cols-1 md:grid-cols-3 gap-5 text-white">
+                <button class="block secondaryAction px-4 py-3 rounded-xl hover:bg-primary/60 duration-300 transition:ease-in-out bg-primary" type="submit" name="action_primary" >{% translate 'Make Primary' %}</button>
+                <button class="block secondaryAction px-4 py-3 rounded-xl hover:bg-black/60 duration-300 transition:ease-in-out bg-black" type="submit" name="action_send" >{% translate 'Re-send Verification' %}</button>
+                <button class="block primaryAction px-4 py-3 rounded-xl hover:bg-danger/60 duration-300 transition:ease-in-out bg-danger" type="submit" name="action_remove" >{% translate 'Remove' %}</button>
+            </div>
+          </form>
+
+        {% else %}
+          <p class="text-sm text-gray-400"><strong>{% translate 'Warning:'%}</strong> {% translate "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}</p>
+        {% endif %}
+      </div>
+      <div x-cloak x-show="addEmail" class="space-y-4">
+        <div class="space-y-1 pt-8">
+          <h1 class="text-gray-700 font-bold text-xl md:text-2xl">{% translate "Add E-mail Address" %}</h1>
+        </div>
+
+
+        <form method="post" action="{% url 'account_email' %}" class="add_email space-y-5">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn-rounded w-full text-center bg-black text-white py-3" name="action_add" type="submit">{% translate "Add E-mail" %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+
+{% block inline_javascript %}
+{{ block.super }}
+<script type="text/javascript">
+window.addEventListener('DOMContentLoaded',function() {
+  const message = "{% translate 'Do you really want to remove the selected e-mail address?' %}";
+  const actions = document.getElementsByName('action_remove');
+  if (actions.length) {
+    actions[0].addEventListener("click",function(e) {
+      if (!confirm(message)) {
+        e.preventDefault();
+      }
+    });
+  }
+  Array.from(document.getElementsByClassName('form-group')).forEach(x => x.classList.remove('row'));
+});
+</script>
+{% endblock %}

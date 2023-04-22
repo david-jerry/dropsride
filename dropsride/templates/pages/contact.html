@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static i18n widget_tweaks %}
+
+{% block description %} Our support is availble 24/7 {% endblock %}
+{% block keywords %} drops business, business trips, {{ block.super }} {% endblock %}
+{% block og_title %} {{ block.super }} Contact Us {% endblock %}
+{% block title %} {{ block.super }} Contact Us {% endblock %}
+{% block og_sitename %} {{ block.super }} {% endblock %}
+{% block og_description %} Our support is availble 24/7 {% endblock %}
+{% block og_favicon %} {{ block.super }} {% endblock %}
+{% block author %} {{ block.super }} {% endblock %}
+
+{% block nav %}{{ block.super }}{% endblock nav %}
+
+{% block content %}
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <div style="background-image:url({% static 'vendors/images/footer-bg.svg' %}); background-position:bottom; background-repeat:no-repeat; background-size:cover" class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-gray-200 min-h-96 md:min-h-[512px]">
+    <div class="space-y-4 md:p-14 md:w-2/5">
+      <h1 class="text-2xl md:text-4xl font-semibold">We are all about Convenience</h1>
+      <p class="text-base">
+        Our support line is always available to assist you where ever necessary
+      </p>
+    </div>
+    <img src="{% static 'vendors/images/support/convenient-rider.jpg' %}" alt="convenient rider" class="rounded-xl border-black border-4 md:h-full grayscale object-cover aspect-1">
+  </div>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 bg-white">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-24">
+    <div class="border-black border-8 overflow-hidden group duration-300 rounded-xl h-96 md:h-auto">
+      <!-- <img src="{% static 'vendors/images/support/support.jpg' %}" alt="support person" class="object-cover group-hover:scale-125 scale-110 w-full duration-300"> -->
+      <div class="w-full h-full" id="map"></div>
+    </div>
+    <div class="space-y-4 md:space-y-14 flex flex-col justify-center">
+      <div>
+        <h4 class="text-3xl md:text-5xl font-semibold uppercase">contact us</h4>
+        <p>Our experts are available round the clock to answer any questions you have.</p>
+      </div>
+      <div>
+        <h4 class="text-3xl md:text-5xl font-semibold uppercase">call us</h4>
+        <a class="block duration-300 hover:underline text-gray-400 hover:text-black" href="tel://+234-8100-8848-48">+234 8100 8848 48</a>
+        <a class="block duration-300 hover:underline text-gray-400 hover:text-black" href="tel://+234-7069-9161-49">+234 7069 9161 49</a>
+        <a class="block duration-300 hover:underline text-gray-400 hover:text-black" href="tel://+234-9164-9416-34">+234 9164 9416 34</a>
+      </div>
+      <div>
+        <h4 class="text-3xl md:text-5xl font-semibold uppercase">connect with us</h4>
+        <p>you can access us on all our social channels.</p>
+        <div class="flex items-center space-x-4 pt-8">
+          <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+            <img src="{% static 'vendors/images/icons/instagram-black.svg' %}" alt="instagram" class="h-6 md:h-8">
+          </a>
+          <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+            <img src="{% static 'vendors/images/icons/twitter-black.svg' %}" alt="twitter" class="h-6 md:h-8">
+          </a>
+          <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+            <img src="{% static 'vendors/images/icons/facebook-black.svg' %}" alt="facebook" class="h-6 md:h-10">
+          </a>
+          <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+            <img src="{% static 'vendors/images/icons/linkedin-black.svg' %}" alt="linkedin" class="h-6 md:h-8">
+          </a>
+          <a href="" target="_blank" rel="noopener noreferrer" class="hover:scale-105 duration-300">
+            <img src="{% static 'vendors/images/icons/youtube-black.svg' %}" alt="youtube" class="h-6 md:h-8">
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-4 bg-gray-200">
+  <img src="{% static 'vendors/images/support/contact-us.svg' %}" alt="contact us svg" class="w-full">
+
+  <div id="contact" class="flex flex-col justify-center">
+    <form x-data="ContactForm" x-ref="contactForm" method="post" action="{% url 'support' %}" data-csrf="{{csrf_token}}" class="space-y-6 py-16" @submit.prevent="submitForm">
+      {% csrf_token %}
+
+      {% for hidden in form.hidden_fields %}
+      {{hidden}}
+      {% endfor %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="w-full mb-4">
+          {% render_field form.name placeholder="your name" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" %}
+          <span id="error-wrapper-name" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+        <div class="w-full mb-4">
+          {% render_field form.email placeholder="your email" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" %}
+          <span id="error-wrapper-email" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="w-full mb-4">
+          {% render_field form.phone placeholder="your phone number" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" %}
+          <span id="error-wrapper-phone" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+          <!-- {% for error in form.phone.errors %} -->
+          <!-- {% endfor %} -->
+          <!-- <input type="text" id="id_phone" name="phone" placeholder="your phone number" required class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full">
+          <span id="id_phone_error" class="bg-red-200 text-red-600 hidden"></span> -->
+        </div>
+        <div class="w-full mb-4">
+          {% render_field form.company placeholder="your company name *" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" %}
+          <span id="error-wrapper-company" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+          <!-- <input type="text" id="id_company" name="company" placeholder="your company name *" required class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full">
+          <span id="id_company_error" class="bg-red-200 text-red-600 hidden"></span> -->
+        </div>
+      </div>
+      <div class="h-44 w-full pb-6">
+        {% render_field form.message placeholder="your message here" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 h-full" %}
+        <span id="error-wrapper-message" class="hidden bg-red-200 text-red-600 w-full p-2 text-xs mb-4"></span>
+        <!-- <textarea name="message" id="id_message" name="message" class="placeholder:uppercase ring-t-0 ring-l-0 ring-r-0 focus:ring-l-0 focus:ring-r-0 focus:outline-l-0 focus:outline-r-0 focus:placeholder:text-black text-black focus:ring-t-0 focus:outline-t-0 focus:outline-0 border-0 border-b-2 border-b-black focus:border-0 placeholder:text-gray-400 focus:ring-b-2 focus:ring-b-warning ring-b-2 ring-b-black bg-white w-full h-full" placeholder="your message here"></textarea>
+        <span id="id_message_error" class="bg-red-200 text-red-600 hidden"></span> -->
+      </div>
+
+      <button x-transition.duration.300ms class="flex items-center mt-4 w-full md:w-fit rounded-xl bg-warning hover:bg-black hover:text-white py-3 px-4 hover:scale-105 duration-300 hover:shadow-xl " type="submit" id="submit">
+        <svg x-show="processingContact" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span x-text="getBtnText"></span>
+      </button>
+    </form>
+  </div>
+
+</section>
+
+<script>
+  // Initialize and add the map
+  /* eslint-disable */
+  function initMap() {
+    // The location of Uluru
+    const uluru = { lat: -25.344, lng: 131.031 };
+    // The map, centered at Uluru
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 4,
+      center: uluru,
+    });
+    // The marker, positioned at Uluru
+    new google.maps.Marker({
+      position: uluru,
+      map: map,
+    });
+  }
+
+  window.initMap = initMap;
+</script>
+<script async src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key={{google_api_key}}&callback=initMap&v=weekly"></script>
+
+
+{% endblock content %}

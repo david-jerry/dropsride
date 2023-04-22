@@ -1,0 +1,261 @@
+{% extends "dashboard.html" %}
+{% load static %}
+
+{% block title %}{{ block.super }} {{ object.username|title }} Account Information{% endblock %}
+
+{% block breadcrumbs %}Profile{% endblock %}
+{% block alt_right %}{{ block.super }}{% endblock alt_right %}
+
+{% block content %}
+
+{% if object == request.user or request.user.is_staff %}
+<section class="z-0 relative w-full md:flex md:items-start gap-5 min-h-full space-y-5 md:space-y-0">
+  <!-- User profile photo and username -->
+  <div class="w-full md:w-1/5 md:h-full space-y-6 flex-none">
+    {% include "users/snippets/profile_card.html" with object=object %}
+    {% include "users/snippets/need_help.html" %}
+  </div>
+
+  <!-- if account has been verified it should show here as well as how much percentage left to complete their verifiaction process -->
+  <div class="w-full md:flex-grow space-y-6 text-gray-700">
+    {% include "users/snippets/complete_process.html" with object=object %}
+
+
+    <!-- account details and edit form here -->
+    <div x-data="UserDetail" id="details" class="space-y-8 bg-white shadow-lg rounded-xl w-full">
+      <div class="px-4 md:px-8 border-b-2 flex items-center space-x-1 flex-none overflow-x-auto scrollbar-thin scrollbar-thumb-warning scrollbar-track-gray-300">
+        <button @click="pstep = 1" :class="{'border-b-4 border-b-warning':pstep == 1, '':!pstep == 1}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Personal Details</button>
+        <button @click="pstep = 2" :class="{'border-b-4 border-b-warning':pstep == 2, '':!pstep == 2}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Next of Kin</button>
+        <button @click="pstep = 3" :class="{'border-b-4 border-b-warning':pstep == 3, '':!pstep == 3}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Bank / Card Details</button>
+        <button @click="pstep = 4" x-show.transition="switch_to_driver" x-cloak :class="{'border-b-4 border-b-warning':pstep == 4, '':!pstep == 4}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Documents</button>
+        <button @click="pstep = 5" :class="{'border-b-4 border-b-warning':pstep == 5, '':!pstep == 5}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Settings</button>
+      </div>
+
+      <!-- users detail -->
+      <div x-show.transition="pstep == 1" x-cloak  class="relative pb-8">
+        {% include "users/snippets/detail.html" %}
+        {% include "users/snippets/forms/detail.html" with object=object %}
+
+        {% if request.user == object %}
+        <button @click="edit = !edit" title="Edit Bio" class="flex items-center text-white bg-black space-x-3 justify-center w-1/2 ml-4 md:ml-8 hover:shadow-lg duration-300 transition:ease-in-out mb-4 px-5 py-3 rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+          </svg>
+          <span class="sr-only">Edit Bio</span>
+          <span class="block text-bold">Edit</span>
+        </button>
+        {% endif %}
+
+      </div>
+
+
+      <!-- next of kin informations -->
+      <div x-show.transition="pstep == 2" x-cloak class="relative pb-8">
+        <div class="space-y-2  md:max-w-2xl py-4 px-4 md:px-8">
+          <h4 class="block text-xl font-bold">Next of Kin</h4>
+          <p class="text-sm font-normal text-gray-400">The person you add as a next of kin serves as both your gurantor and emergency contact person. So in cases of emergency, they are the very first person we will contact. Please provide an individual you can trust.</p>
+        </div>
+
+        {% include "users/snippets/kin.html" %}
+        {% include "users/snippets/forms/kin.html" with object=object %}
+
+        {% if request.user == object %}
+        <button @click="editKin = !editKin" title="Edit Bio" class="flex items-center text-white bg-black space-x-3 justify-center w-1/2 ml-4 md:ml-8 hover:shadow-lg duration-300 transition:ease-in-out mb-4 px-5 py-3 rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+          </svg>
+          <span class="sr-only">Edit Bio</span>
+          <span class="block text-bold">Edit</span>
+        </button>
+        {% endif %}
+
+      </div>
+
+      <!-- card and bank account details -->
+      <div x-show.transition="pstep == 3" x-cloak class="py-4 px-4 md:px-8 space-y-5">
+        <div class="space-y-2 md:max-w-2xl">
+          <h4 class="block text-xl font-bold">Debit and Credit Cards</h4>
+          <p class="text-sm font-normal text-gray-400">With a verified debit card added to your account you stand a chance to benefit from our periodic promos. The bank details added will be used to payout from our systems to you whenever you request for your earnings. Please take note that we charge 3% on every transfer to your account.</p>
+        </div>
+        {% include "users/snippets/card_details.html" %}
+      </div>
+
+      <!-- Drivers Documents -->
+      <div x-show.transition="pstep == 4" x-cloak class="py-4 px-4 md:px-8 space-y-5">
+        <div class="space-y-2 md:max-w-2xl">
+          <h4 class="block text-xl font-bold">Verifiable Documents</h4>
+          <p class="text-sm font-normal text-gray-400">Upload your valid documents to be processed so as to be approved to become a driver on Dropsride. Please be informed, whenever there is a need for us to reverify your licenses, we shall communicate to your directly through your verified email address provided when you registered on this platform.</p>
+        </div>
+
+        <!-- divider -->
+        <div class="divider text-sm font-bold text-gray-400 pt-14 pb-3">NIN, BVN, Driver's License</div>
+
+        <form action="" class="space-y-5 pb-14" enctype="multipart/form-data" x-ref="docForm" @submit.prevent="documentForm" data-token="{{request.token}}">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <div class="hidden md:block">
+              <label for="id_bvn"  class="text-gray-300 text-sm block">BVN</label>
+              <input name="bvn" id="id_bvn" type="text" class="font-bold block border-b-2 rounded-xl border-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.documents.bvn|default:''}}" >
+            </div>
+            <div>
+              <label for="id_license"  class="text-gray-300 text-sm block">Driver's License</label>
+              <input name="license" id="id_license" type="text" class="font-bold block border-b-2 rounded-xl border-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.documents.license|default:''}}" >
+            </div>
+            <div>
+              <label for="id_license_exp"  class="text-gray-300 text-sm block">Driver's License Expiry</label>
+              <input name="license_exp" id="id_license_exp" type="date" class="font-bold block border-b-2 rounded-xl border-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.documents.license_exp|default:''}}" >
+            </div>
+          </div>
+
+          <!-- divider -->
+          <div class="divider text-sm font-bold text-gray-400 pt-14 pb-3">Documents Verification</div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-5 pt-8">
+            <div class="overflow-hidden p-3 border-2 border-grey-300">
+              <label for="id_proof_of_ownership" class="text-gray-300 block text-sm pb-3">
+                <span class="block">Proof Of Ownership</span>
+
+                <!-- Show the image -->
+                <template x-if="proof_of_ownership_img">
+                  <img :src="proof_of_ownership_img"
+                      class="object-cover rounded border border-gray-200 w-full aspect-2"
+                  >
+                </template>
+
+                <!-- Show the gray box when image is not available -->
+                <template x-if="!proof_of_ownership_img">
+                  <div
+                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
+                  ></div>
+                </template>
+              </label>
+
+              <!-- Image file selector -->
+              <input class="mt-2 w-full" name="proof_of_ownership" id="id_proof_of_ownership" type="file" value="{% if object.documents.proof_of_ownership %}{{object.documents.proof_of_ownership.url}}{% endif %}" accept="image/*" @change="ownershipChosen">
+            </div>
+
+            <div class="overflow-hidden p-3 border-2 border-grey-300">
+              <label for="id_vehicle_license" class="text-gray-300 block text-sm pb-3">
+                <span class="block">Vehicle License</span>
+
+                <!-- Show the image -->
+                <template x-if="vehicle_license_img">
+                  <img :src="vehicle_license_img"
+                      class="object-cover rounded border border-gray-200 w-full aspect-2"
+                  >
+                </template>
+
+                <!-- Show the gray box when image is not available -->
+                <template x-if="!vehicle_license_img">
+                  <div
+                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
+                  ></div>
+                </template>
+              </label>
+
+              <!-- Image file selector -->
+              <input class="mt-2" name="vehicle_license" id="id_vehicle_license" type="file" value="{% if object.documents.vehicle_license %}{{object.documents.vehicle_license.url}}{% endif %}" accept="image/*" @change="vlChosen">
+            </div>
+
+            <div class="overflow-hidden p-3 border-2 border-grey-300">
+              <label for="id_autocheck_certificate" class="text-gray-300 block text-sm pb-3">
+                <span class="block">Autocheck Certificate</span>
+
+                <!-- Show the image -->
+                <template x-if="autocheck_certificate_img">
+                  <img :src="autocheck_certificate_img"
+                      class="object-cover rounded border border-gray-200 w-full aspect-2"
+                  >
+                </template>
+
+                <!-- Show the gray box when image is not available -->
+                <template x-if="!autocheck_certificate_img">
+                  <div
+                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
+                  ></div>
+                </template>
+              </label>
+
+              <!-- Image file selector -->
+              <input class="mt-2" name="autocheck_certificate" id="id_autocheck_certificate" type="file" value="{% if object.documents.autocheck_certificate %}{{object.documents.autocheck_certificate.url}}{% endif %}" accept="image/*" @change="autoCheckChosen">
+            </div>
+
+            <div class="overflow-hidden p-3 border-2 border-grey-300">
+              <label for="id_insurance" class="text-gray-300 block text-sm pb-3">
+                <span class="block">Insurance Certificate</span>
+
+                <!-- Show the image -->
+                <template x-if="insurance_img">
+                  <img :src="insurance_img"
+                      class="object-cover rounded border border-gray-200 w-full aspect-2"
+                  >
+                </template>
+
+                <!-- Show the gray box when image is not available -->
+                <template x-if="!insurance_img">
+                  <div
+                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
+                  ></div>
+                </template>
+              </label>
+
+              <!-- Image file selector -->
+              <input class="mt-2" name="insurance" id="id_insurance" type="file" value="{% if object.documents.insurance %}{{object.documents.insurance.url}}{% endif %}" accept="image/*" @change="insuranceChosen">
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Settings -->
+      <div x-show.transition="pstep == 5" x-cloak class="pt-4 pb-14 px-4 md:px-8 space-y-5">
+        <form action="/api/settings/{{request.user.settings.pk}}/" @submit.prevent="submitSettings" x-ref="settings" data-token="{{request.user.token}}" class="space-y-5">
+          <label for="id_email_notification" class="space-x-2 flex items-center">
+            <input x-on:change.debounce="submitSettings" @click="formData.email_notification=!formData.email_notification" class="block text-sm w-6 h-6 aspect-1 rounded-lg border-2 border-gray-400" type="checkbox" name="email_notification" id="id_email_notification" {% if request.user.settings.email_notification %}checked{% endif %}>
+            <p class="block text-sm">Would you want to get email notifications from us on every event?</p>
+          </label>
+          <label for="id_push_notification" class="space-x-2 flex items-center">
+            <input x-on:change.debounce="submitSettings" @click="formData.push_notification=!formData.push_notification" class="block text-sm w-6 h-6 aspect-1 rounded-lg border-2 border-gray-400" type="checkbox" name="push_notification" id="id_push_notification" {% if request.user.settings.push_notification %}checked{% endif %}>
+            <p class="block text-sm">Would you want to get push notifications from us on every event?</p>
+          </label>
+          <label for="id_sms_notification" class="space-x-2 flex items-center">
+            <input x-on:change.debounce="submitSettings" @click="formData.sms_notification=!formData.sms_notification" class="block text-sm w-6 h-6 aspect-1 rounded-lg border-2 border-gray-400" type="checkbox" name="sms_notification" id="id_sms_notification" {% if request.user.settings.sms_notification %}checked{% endif %}>
+            <p class="block text-sm">Would you want to get sms notifications from us on every event?</p>
+          </label>
+        </form>
+
+        <!-- divider -->
+        <div class="divider text-sm font-bold text-gray-300 pt-14 pb-3">Currency Setting</div>
+
+        {% include "users/snippets/forms/currency.html" with object=object %}
+      </div>
+
+    </div>
+  </div>
+
+</section>
+{% endif %}
+
+{% endblock content %}
+
+
+{% block javascript %}
+<script async
+src="https://maps.googleapis.com/maps/api/js?key={{settings.GOOGLE_API}}&libraries=places&callback=googleReady">
+</script>
+
+<script>
+function googleReady() {
+document.dispatchEvent(new Event('google:init'));
+}
+</script>
+
+
+{{ block.super }}
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+  const GOOGLE_API_KEY = '{{settings.GOOGLE_API|safe}}';
+  const base_country = 'ng';
+</script>
+<script src="{% static 'vendors/js/Google.js' %}"></script> -->
+{% endblock javascript %}

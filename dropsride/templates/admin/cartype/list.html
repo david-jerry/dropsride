@@ -1,0 +1,145 @@
+{% extends "dashboard.html" %}
+{% load static humanize i18n currency widget_tweaks %}
+
+{% block title %}{{ block.super }} Vehicle Types{% endblock %}
+
+{% block breadcrumbs %}Vehicle Types{% endblock %}
+{% block alt_right %}
+<button @click="openCreateCar = !openCreateCar" class="ml-auto flex items-center space-x-3 text-sm rounded-xl py-2 px-4 bg-gray-700 text-white">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+  </svg>
+  <span class="block text-sm">
+    Create Car Type
+  </span>
+</button>
+{% endblock alt_right %}
+
+{% block content %}
+<section x-data="Cartype" class="z-0 relative w-full md:grid md:grid-cols-3 gap-5 h-full space-y-5 md:space-y-0 pt-8 md:pt-0">
+  <div x-init="carSlider" class="w-full rounded-xl shadow-xl relative py-8 md:h-[80vh] bg-gray-100 flex flex-row mx-auto items-center justify-center">
+
+    <div class="absolute inset-y-0 left-0 z-10 flex items-center">
+      <button @click="swiper.slidePrev()" class="bg-white -ml-2 lg:-ml-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none" id="prev">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+        </svg>
+      </button>
+    </div>
+
+    <div x-ref="container" class="p-2 swiper-container w-1/2 h-1/2 mx-auto flex flex-col items-center justify-center overflow-hidden">
+      <div class="swiper-wrapper w-full h-full" id="slider">
+        {% include "admin/cartype/snippets/list.html" %}
+      </div>
+    </div>
+
+    <div class="absolute inset-y-0 right-0 z-10 flex items-center">
+      <button @click="swiper.slideNext()" class="bg-white -mr-2 lg:-mr-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none" id="next">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 000 12h3" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- transaction detail for destop view -->
+  <div id="uDetail" class="col-span-2 border-t-warning border-t-4 w-full space-y-4 md:space-y-6 p-3 text-gray-700 bg-gray-100 rounded-xl">
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-400 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                  Car Type Name
+              </th>
+              <th scope="col" class="px-6 py-3 text-center">
+                No Passengers Seats
+              </th>
+              <th scope="col" class="px-6 py-3 text-center">
+                  Car Maintenance Fee
+              </th>
+              <th scope="col" class="px-6 py-3 text-center">
+                  No of Drivers
+              </th>
+              <th scope="col" class="px-6 py-3 text-center">
+                  Status
+              </th>
+          </tr>
+      </thead>
+      <tbody id="table">
+        {% include "admin/cartype/snippets/table.html" %}
+      </tbody>
+  </table>
+</div>
+
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block modal %}
+<section x-data="Cartype" id="userModal" x-show.transition.in="openCreateCar" x-cloak class="w-screen max-h-screen bg-black/40 backdrop-blur-sm fixed z-50 flex flex-col items-center justify-center top-0 left-0 right-0 bottom-0 py-14">
+  <form @mousedown.outside="openCreateCar = false" enctype="multipart/form-data" x-ref="carForm" class="md:float-right w-full md:max-w-2xl bg-white btn-rounded shadow-md block overflow-hidden" method="post" action="{% url 'home' %}api/cartypes/" data-token="{{request.user.token}}" @submit.prevent="addCarType">
+    <div class="w-full p-6 border border-b-gray-200 space-y-2">
+      <h1 class="font-semibold text-xl md:text-2xl">{% translate "Add New Car Type" %}</h1>
+    </div>
+
+
+    {{ form.media }}
+
+    <div class="w-full p-6 rounded-b-xl space-y-5">
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+
+      <div>
+        <label for="id_image" class="text-s font-bold text-gray-500">Car Sample Image</label>
+        {% render_field form.image required="true"  class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" placeholder=form.image.label %}
+      </div>
+
+      <div>
+        <label for="id_title" class="text-s font-bold text-gray-500">Car Type Name</label>
+        <div class="border-2 border-gray-200 text-gray-500 rounded-xl">
+          {% render_field form.title required="true"  class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" placeholder=form.title.label %}
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="w-full h-full flex flex-col justify-end">
+          <label for="id_amoujnt" class="text-s font-bold text-gray-500">Drivers Car Maintenance Fee</label>
+          <div class="border-2 border-gray-200 text-gray-500 rounded-xl flex items-center space-x-3 pl-2 hover:shadow-xl duration-300">
+            <span class="flex">$</span> {% render_field form.amount required="true"  class="block cursor-pointer placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border-0 duration-500 focus:border-0 focus:ring-0 outline-0 focus:outline-0" placeholder=form.amount.label %}
+          </div>
+        </div>
+
+
+        <div class="w-full h-full flex flex-col justify-end">
+          <label for="id_seats" class="text-s font-bold text-gray-500">Car Seats</label>
+          <div class="border-2 border-gray-200 text-gray-500 rounded-xl">
+            {% render_field form.seats required="true"  class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0" placeholder=form.seats.label %}
+          </div>
+        </div>
+
+      </div>
+
+      <button class="justify-between btn-rounded px-6 py-3 bg-black text-white shadow-sm hover:shadow-xl flex items-center space-x-4 duration-500 w-full" type="submit">
+        <strong class="block text-sm font-bold uppercase" x-text="postCreateText"></strong>
+        <div role="status" x-show.transition="creating " x-cloak>
+          <svg aria-hidden="true" class="w-4 h-4 text-white animate-spin fill-warning"
+            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor" />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill" />
+          </svg>
+          <span class="sr-only">Creating...</span>
+        </div>
+      </button>
+    </div>
+  </form>
+</section>
+
+<section x-data="Cartype" id="updateCar" x-show.transition.in="openUpdateCreateCar" x-cloak class="w-screen h-screen max-h-screen bg-black/40 backdrop-blur-sm fixed z-[500] flex flex-col items-center justify-center top-0 left-0 right-0 bottom-0 py-14">
+</section>
+{% endblock modal %}

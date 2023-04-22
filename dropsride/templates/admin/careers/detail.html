@@ -1,0 +1,73 @@
+{% load humanize %}
+
+<div @mousedown.outside="proDetails=false" class="space-y-5 p-3 max-h-[78vh] flex flex-col" id="update">
+  <div class="flex items-center space-x-4 absolute top-4 right-4 cursor-pointer pb-3">
+    <svg @click="openCareerUpdate('{{object.slug}}')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+      <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+      <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+    </svg>
+
+    <svg @click="proDetails = false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </div>
+
+  <!-- blog details -->
+  <div class="max-h-full w-full overflow-y-auto scrollbar-hide pb-8 md:pb-0">
+    <strong class="block font-bold text-xl md:text-2xl">{{object.title|title}}</strong>
+    <span class="w-fit text-xxs md:text-s font-bold block px-3 rounded-lg bg-warning/50 text-gray-700">
+      {{object.team.title}}
+    </span>
+    <div class="divider"></div>
+    <div class="flex items-center justify-between pb-3">
+      <div class="flex items-center space-x-3">
+        <span class="text-s font-bold text-gray-700 flex items-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+
+          <span class="block">{{object.published_date|naturalday}}</span>
+        </span>
+        <span class="text-s font-bold text-gray-700 flex items-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3">
+            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+          </svg>
+          <span class="block">{{object.get_applicants.count}}</span>
+        </span>
+      </div>
+    </div>
+    <div class="space-x-3 flex items-center py-2 overflow-x-auto scrollbar-hide">
+      {% for l in object.location.all %}
+      <button class="text-white bg-gray-700 py-2 px-3 rounded-xl">
+        {{l.state.state|title}}
+      </button>
+      {% endfor %}
+    </div>
+    <div class="divider"></div>
+
+    <article class="rounded-xl prose max-w-none text-gray-600 text-sm">
+      {{object.content|safe}}
+    </article>
+
+    <div class="divider"></div>
+    <strong class="text-s text-gray-500 pb-6">Applicants</strong>
+    <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-3 h-96 overflow-y-auto scrollbar-thin">
+      {% for a in object.get_applicants %}
+      <button @click="openApplicant('{{a.id}}')" class="h-fit border-gray-200 border-2 hover:border-gray-700 rounded-xl p-3 flex items-start text-left justify-between space-x-2">
+        <div class="space-y-1">
+          <strong class="block text-sm">{{a.get_fullname}}</strong>
+          <span class="block text-primary text-xs font-normal">{{a.email}}</span>
+          <span class="block text-gray-400 text-xs font-normal">{{a.phone_number}}</span>
+        </div>
+        <strong class="text-xs font-black">{{a.age}}</strong>
+      </button>
+      {% empty %}
+      <div class="col-span-1 md:col-span-3 border-2 border-gray-200 text-gray-400 text-sm py-2 text-center">
+        There are no applicants yet.
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</div>

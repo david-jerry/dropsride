@@ -1,0 +1,15 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% translate "Verify Your E-mail Address" %}{% endblock %}
+
+{% block inner %}
+<div class="px-8 w-full md:absolute md:right-0 md:h-full md:top-0 flex items-center justify-center md:w-1/2">
+  <div class="md:float-right w-full md:max-w-2xl bg-success/20 text-success btn-rounded shadow-md block overflow-hidden">
+    <h1 class="font-semibold text-xl md:text-2xl">{% translate "Verify Your E-mail Address" %}</h1>
+
+    <p class="text-sm text-success/50">{% blocktranslate %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
+  </div>
+</div>
+{% endblock %}

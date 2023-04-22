@@ -1,0 +1,48 @@
+{% load humanize %}
+
+<div class="space-y-5 py-8 container mx-auto flex flex-col">
+  <!-- blog details -->
+  <div class="max-h-full w-full overflow-y-auto scrollbar-hide pb-8 md:pb-0">
+    <div class="flex items-center justify-between space-x-5">
+      <div>
+        <strong class="block font-bold text-xl md:text-2xl pb-3">{{object.title|title}}</strong>
+        <span class="w-fit text-xxs md:text-s font-bold block px-3 rounded-lg bg-warning/50 text-gray-700">
+          {{object.team.title}}
+        </span>
+      </div>
+      <button hx-get="{% url 'careers:applicant_create' object.slug %}" hx-target="#pagesDetail" hx-swap="innerHTML" class="bg-warning rounded-lg text-gray-700 text-sm font-bold duration-300 py-3 px-3 hover:shadow-md">
+        Apply Now
+      </button>
+    </div>
+    <div class="divider"></div>
+    <div class="flex items-center justify-between pb-3">
+      <div class="flex items-center space-x-3">
+        <span class="text-s font-bold text-gray-700 flex items-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+
+          <span class="block">{{object.published_date|naturalday}}</span>
+        </span>
+        <span class="text-s font-bold text-gray-700 flex items-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3">
+            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+          </svg>
+          <span class="block">{{object.get_applicants.count}}</span>
+        </span>
+      </div>
+    </div>
+    <div class="space-x-3 flex items-center py-2 overflow-x-auto scrollbar-hide">
+      {% for l in object.location.all %}
+      <button class="text-white bg-gray-700 py-2 px-3 rounded-xl">
+        {{l.state.state|title}}
+      </button>
+      {% endfor %}
+    </div>
+    <div class="divider"></div>
+
+    <article class="rounded-xl prose max-w-none text-gray-600 text-sm">
+      {{object.content|safe}}
+    </article>
+  </div>
+</div>

@@ -1,0 +1,240 @@
+{% load crispy_forms_tags widget_tweaks %}
+
+
+{% block content %}
+{% if object == request.user or request.user.is_staff %}
+<div x-data="UpdateForm" id="update" class="space-y-8 bg-white shadow-lg rounded-xl w-full">
+  <div class="px-4 md:px-8 border-b-2 flex items-center space-x-1 flex-none overflow-x-auto scrollbar-hide">
+    <button @click="pstep = 1" :class="{'border-b-4 border-b-warning':pstep == 1, '':!pstep == 1}" class="duration-300 transition:ease-in-out text-s md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Personal Details</button>
+    <button @click="pstep = 2" :class="{'border-b-4 border-b-warning':pstep == 2, '':!pstep == 2}" class="duration-300 transition:ease-in-out text-s md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Next of Kin</button>
+    <button @click="pstep = 3" :class="{'border-b-4 border-b-warning':pstep == 3, '':!pstep == 3}" class="duration-300 transition:ease-in-out text-s md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Bank / Card Details</button>
+    {% if object.is_driver %}
+    <button @click="pstep = 4" :class="{'border-b-4 border-b-warning':pstep == 4, '':!pstep == 4}" class="duration-300 transition:ease-in-out text-s md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Documents</button>
+    {% endif %}
+  </div>
+
+  <!-- users detail -->
+  <form action="/api/users/{{request.user.username}}/" data-token="{{request.user.token}}" data-redirect="{% url 'users:redirect' %}" method="POST" x-ref="uform" x-show.transition="pstep == 1" x-clock class="py-4 px-4 md:px-8 space-y-5">
+    <!-- Authorization token n username -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+      <div class="hidden md:block">
+        <strong class="text-gray-300 text-s block">Username</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">@{{object.username|title|default:"-"}}</strong>
+      </div>
+      {% if object == request.user %}
+      <!-- token information -->
+      <div @click.transition="reveal=!reveal"class="cursor-pointer">
+        <strong class="text-gray-300 text-s block">Authorization Token</strong>
+        <button title="auth token" :class="{'block':reveal,'hidden':!reveal}" class="duration-500 transition:ease-in-out text-s md:text-sm block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.token|default:"-"}}</button>
+        <button title="auth token" :class="{'hidden':reveal,'block':!reveal}" class="duration-500 transition:ease-in-out text-s md:text-sm block border-b-2 border-b-gray-200 py-2 text-sm w-full">******************************</button>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- full names -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
+      <div>
+        <label for="id_first_name" class="text-gray-300 text-s block">First Name</label>
+        <input name="first_name" id="id_first_name" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.first_name|title|default:'-'}}" >
+      </div>
+      <div class="hidden md:block">
+        <label for="id_middle_name"  class="text-gray-300 text-s block">Middle Name</label>
+        <input name="middle_name" id="id_middle_name" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.middle_name|title|default:'-'}}" >
+      </div>
+      <div>
+        <label for="id_last_name"  class="text-gray-300 text-s block">Last Name</label>
+        <input name="last_name" id="id_last_name" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.last_name|title|default:'-'}}" >
+      </div>
+    </div>
+
+    <!-- date of birth -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
+      <div>
+        <label for="id_date_of_birth"  class="text-gray-300 text-s block">Date of Birth</label>
+        <input name="date_of_birth" id="id_date_of_birth" type="date" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.profile.date_of_birth|title|default:'-'}}" >
+      </div>
+      <div class="hidden md:block">
+        <strong class="text-gray-300 text-s block">Age</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.profile.age|default:"-"}}</strong>
+      </div>
+    </div>
+
+    <!-- user specific booleans -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+      <div>
+        <label for="id_gender" class="text-gray-300 text-s block">Gender</label>
+        <select name="gender" id="id_gender" class="select block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning">
+          <option value="" {% if request.user.gender == '' %}selected{% endif %}>Gender</option>
+          <option value="M" {% if request.user.gender == 'M' %}selected{% endif %}>Male</option>
+          <option value="F" {% if request.user.gender == 'F' %}selected{% endif %}>Female</option>
+          <option value="LGBQ" {% if request.user.gender == 'LGBQ' %}selected{% endif %}>LGBQ</option>
+        </select>
+      </div>
+      <div>
+        <strong class="text-gray-300 text-s block">Referral Number</strong>
+        <a href="{{object.ref_link|default:'-'}}" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full font-bold duration-500 transition:ease-in-out hover:text-warning text-primary">{{object.ref_number|default:"-"}}</a>
+      </div>
+      <div>
+        <strong class="text-gray-300 text-s block">Referrer</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.recommended_by.short_name|default:"None"|title}}</strong>
+      </div>
+    </div>
+
+
+
+    <!-- divider -->
+    <div class="divider text-sm font-bold text-gray-300 pt-14 pb-3">Address & Contact Information</div>
+
+    <!-- user contact -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-10">
+      <div>
+        <strong class="text-gray-300 text-s block">Email</strong>
+        <a href="mailto://{{object.email|default:'-'}}" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full font-bold duration-500 transition:ease-in-out hover:text-warning text-primary">{{object.email|default:"-"}}</a>
+      </div>
+      <div>
+        <label for="id_phone" class="text-gray-300 text-s block">Mobile Number</label>
+        <input name="phone" id="id_phone" type="tel" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.profile.phone|default:""}}" >
+      </div>
+      <div>
+        <label for="id_nin" class="text-gray-300 text-s block">NIN</label>
+        <input name="nin" id="id_nin" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.documents.nin|default:""}}" >
+      </div>
+      <div>
+        <label for="id_bvn" class="text-gray-300 text-s block">BVN</label>
+        <input name="bvn" id="id_bvn" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.documents.bvn|default:""}}" >
+      </div>
+    </div>
+
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+      <div>
+        <label for="id_post_code" class="text-gray-300 text-s block">Postal Code / ZIP Code</label>
+        <input name="post_code" id="id_post_code" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.profile.post_code|default:""}}" >
+      </div>
+
+      <div>
+        <label for="id_town" class="text-gray-300 text-s block">Town</label>
+        <input name="town" id="id_town" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.profile.town|default:""}}" >
+      </div>
+
+      <div>
+        <label for="id_county" class="text-gray-300 text-s block">County</label>
+        <input name="county" id="id_county" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.profile.county|default:""}}" >
+      </div>
+    </div>
+
+    <div class="w-full">
+      <label for="id_address" class="text-gray-300 text-s block">Address</label>
+      <input name="address" id="id_address" type="text" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-b-warning" value="{{object.profile.address|default:""}}" >
+    </div>
+
+    <button :disabled="loading" @click="updateUserForm" id="submitForm" class="w-full group btn-rounded px-6 py-3 shadow-sm hover:shadow-xl flex items-center space-x-3 bg-warning duration-500 hover:space-x-5" type="submit" >
+
+      <strong class="block text-sm font-bold uppercase" x-text="updateUserText"></strong>
+
+      <svg x-show.transition="!loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 group-hover:animate-pulse duration-500 block">
+        <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+      </svg>
+
+      <div role="status" x-show.transition="loading">
+        <svg aria-hidden="true" class="w-4 h-4 text-white animate-spin dark:text-gray-600 fill-warning"
+          viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+            fill="currentColor" />
+          <path
+            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+            fill="currentFill" />
+        </svg>
+        <span class="sr-only">Loading...</span>
+      </div>
+    </button>
+  </form>
+
+  <!-- next of kin informations -->
+  <div x-show.transition="pstep == 2" x-clock class="py-4 px-4 md:px-8 space-y-5">
+    <!-- full names -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
+      <div>
+        <strong class="text-gray-300 text-s block">First Name</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.first_name|title|default:"-"}}</strong>
+      </div>
+      <div class="hidden md:block">
+        <strong class="text-gray-300 text-s block">Middle Name</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.middle_name|title|default:"-"}}</strong>
+      </div>
+      <div>
+        <strong class="text-gray-300 text-s block">Last Name</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.last_name|title|default:"-"}}</strong>
+      </div>
+    </div>
+
+    <!-- date of birth -->
+    <div class="grid grid-cols-2 gap-4 md:gap-10">
+      <div>
+        <strong class="text-gray-300 text-s block">Date of Birth</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.date_of_birth|date:"D M, Y"|default:"-"}}</strong>
+      </div>
+      <div class="hidden md:block">
+        <strong class="text-gray-300 text-s block">Age</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.age|default:"-"}}</strong>
+      </div>
+    </div>
+
+    <!-- next of kin contact -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+      <div>
+        <strong class="text-gray-300 text-s block">Email</strong>
+        <a href="mailto://{{object.nok.email|default:'-'}}" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full font-bold duration-500 transition:ease-in-out hover:text-warning text-primary">{{object.nok.email|default:"-"}}</a>
+      </div>
+      <div>
+        <strong class="text-gray-300 text-s block">Mobile Number</strong>
+        <a href="tel://{{object.nok.phone|default:'-'}}" class="block border-b-2 border-b-gray-200 py-2 text-sm w-full font-bold duration-500 transition:ease-in-out hover:text-warning text-primary">{{object.nok.phone|default:"-"}}</a>
+      </div>
+      <div>
+        <strong class="text-gray-300 text-s block">NIN/BVN</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{% if object.nok.nin %}{{object.nok.nin|default:"None"}}{% else %}{{object.nok.bvn|default:"None"}}{% endif %}</strong>
+      </div>
+    </div>
+
+
+
+    <!-- divider -->
+    <div class="divider text-sm font-bold text-gray-300 pt-14 pb-3">Address</div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+      <div>
+        <strong class="text-gray-300 text-s block">Post Code / ZIP Code</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.post_code|default:"-"}}</strong>
+      </div>
+
+      <div>
+        <strong class="text-gray-300 text-s block">Town</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.town|default:"-"}}</strong>
+      </div>
+
+      <div>
+        <strong class="text-gray-300 text-s block">County</strong>
+        <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.county|default:"-"}}</strong>
+      </div>
+    </div>
+
+    <div class="w-full">
+      <strong class="text-gray-300 text-s block">Address</strong>
+      <strong class="block border-b-2 border-b-gray-200 py-2 text-sm w-full">{{object.nok.address|default:"-"}}</strong>
+    </div>
+  </div>
+
+  <!-- card and bank account details -->
+  <div x-show.transition="pstep == 3" x-clock class="py-4 px-4 md:px-8 space-y-5">
+
+  </div>
+
+  <!-- Drivers Documents -->
+  <div x-show.transition="pstep == 4" x-clock class="py-4 px-4 md:px-8 space-y-5">
+
+  </div>
+
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+<button @click="filter = 0"
+  class="flex-none focus:bg-warning duration-300 focus:text-gray-700 hover:bg-warning hover:text-gray-700 px-3 py-2 rounded-xl text-sm bg-gray-700 text-white">All</button>
+{% for d in departments %}
+<button @click="filter = '{{d.title}}'"
+  class="flex-none focus:bg-warning duration-300 focus:text-gray-700 hover:bg-warning hover:text-gray-700 px-3 py-2 rounded-xl text-sm bg-gray-700 text-white">{{d.title|title}}</button>
+{% endfor %}

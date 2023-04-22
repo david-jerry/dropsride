@@ -1,0 +1,135 @@
+{% load static i18n %}{% load render_bundle from webpack_loader %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Dropsride — {% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %} Drops Ride is a technology company that provides E-Ride hailing taxi services via the Drops App. Our vision is to create safe, convenient and affordable rides.{% endblock description %}">
+    <meta name="keywords" content="{% block keywords %}ride hailing, cab, taxify, dropsride{% endblock keywords %}">
+    <meta name="author" content="Jeremiah E. David (https://jeremiahedavid.space)">
+
+    <!-- Facebook OG Shared Link Information -->
+    <meta property="og:title" content="{% block og_title %}DropsRide{% endblock og_title %}">
+    <meta property="og:site_name" content="{% block og_sitename %}DropsRide{% endblock og_sitename %}">
+    <meta property="og:description" content="{% block og_description %} Drops Ride is a technology company that provides E-Ride hailing taxi services via the Drops App. Our vision is to create safe, convenient and affordable rides.{% endblock og_description %}">
+    <meta property="og:image" content="{% block og_favicon %}{% static 'vendors/images/favicons/favicon.png' %}{% endblock og_favicon %}">
+    <meta property="og:url" content="{{ request.path }}">
+    <meta property="og:image:alt" content="Dropsride LTD">
+    <meta property="og:type" content="information technology, services" />
+
+    <meta name="htmx-config" content='{"historyCacheSize": 15}'>
+    <meta name="format-detection" content="telephone=yes">
+    <meta name="csrf-token" content="{{csrf_token}}">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="Classification" content="Service">
+    <meta name="category" content="Ride Hailing, Transportation, Logistics, Information Technology">
+    <meta name="coverage" content="Worldwide">
+    <meta name="distribution" content="Global">
+
+    <!-- Twitter TWITTER Shared Link Information -->
+    <meta property="twitter:card" content="summary_large_image" />
+
+    <meta name="htmx-config" content='{"historyCacheSize": 15}'>
+
+    <link rel="shortcut icon" href="{% static 'assets/favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{% static 'assets/favicon-48x48.png' %}">
+    <link rel="manifest" href="{% static 'assets/manifest.json' %}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#fff">
+    <meta name="application-name" content="Dropsride">
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'assets/apple-touch-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'assets/apple-touch-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'assets/apple-touch-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/apple-touch-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'assets/apple-touch-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'assets/apple-touch-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'assets/apple-touch-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'assets/apple-touch-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="167x167" href="{% static 'assets/apple-touch-icon-167x167.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon-180x180.png' %}">
+    <link rel="apple-touch-icon" sizes="1024x1024" href="{% static 'assets/apple-touch-icon-1024x1024.png' %}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dropsride">
+    <meta name="msapplication-TileColor" content="#ddd">
+    <meta name="msapplication-TileImage" content="{% static 'assets/mstile-144x144.png' %}">
+    <meta name="msapplication-config" content="{% static 'assets/browserconfig.xml' %}">
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&&family=DynaPuff:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800;900&family=Poiret+One&family=Raleway:ital,wght@0,100;0,200;0,300;0,500;0,600;0,700;0,800;1,100;1,200&family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0&display=swap" rel="stylesheet">
+
+    {% block css %}
+    <!-- Your stuff: Third-party CSS libraries go here -->
+
+    <!-- This file stores project-specific CSS -->
+    {% render_bundle 'project' 'css' %}
+    {% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    {# Placed at the top of the document so pages load faster with defer #}
+    {% block javascript %}
+
+    {% comment %}
+    <!-- Vendor dependencies bundled as one file
+      {% render_bundle 'vendors' 'js' attrs='defer' %} -->
+    {% endcomment %}
+
+      <!-- place project specific Javascript in this file -->
+      {% render_bundle 'project' 'js' attrs='defer' %}
+
+    {% endblock javascript %}
+
+    {{form.media}}
+
+  </head>
+
+  <body hx-ext="debug, event-header" class="relative" style="min-height: 100vh; background-image: url(https://www.toptal.com/designers/subtlepatterns/uploads/funky-lines.png); background-repeat: repeat; background-attachment: fixed; background-position: center; background-size: fit;">
+
+  <a href="{% url 'home' %}" class="fixed top-0 left-0 z-50 px-3 md:px-9 flex items-center justify-center py-5 space-x-2 bg-warning">
+    <img src="{% static 'vendors/images/logo-dark.png' %}" class="h-6 md:h-8" alt="dropsride Logo">
+    <!-- <span class="md:block font-semibold text-base md:text-xl text-gray-800 uppercase hidden">Dropsride</span> -->
+    <span class="sr-only block">Click Logo</span>
+  </a>
+
+  {% if request.path == "/accounts/signup/" %}
+  <div class="hidden md:w-1/2 h-screen md:block absolute z-0 left-0 top-0" style="background-image: url({% static 'vendors/images/accounts/left-driver.jpeg' %}); background-repeat: no-repeat; background-attachment: fixed; background-position: left; background-size: cover;">
+    <p class="absolute left-4 text-s text-black bottom-4"><a class="text-warning font-semibold" href="https://www.freepik.com/free-photo/handsome-elegant-man-car-salon_7120281.htm#query=driver&position=2&from_view=keyword">Image by prostooleh</a> on Freepik</p>
+  {% elif request.path == "/accounts/login/" %}
+  <div class="hidden md:w-1/2 h-screen md:block absolute z-0 left-0 top-0" style="background-image: url({% static 'vendors/images/accounts/login.jpg' %}); background-repeat: no-repeat; background-attachment: fixed; background-position: right 40% top 0; background-size: 100% auto;">
+    <p class="absolute left-4 text-s text-black bottom-4"><a class="text-warning font-semibold" href="https://www.pexels.com/photo/busy-black-businessman-checking-notification-on-smartphone-while-crossing-street-5647585/">Photo by Ono  Kosuki</a></p>
+  {% elif request.path == "/accounts/google/login/" or request.path == "/accounts/facebook/login/" %}
+  <div class="hidden md:w-1/2 h-screen md:block absolute z-0 left-0 top-0" style="background-image: url({% static 'vendors/images/accounts/googlefacebook.jpeg' %}); background-repeat: no-repeat; background-attachment: fixed; background-position: right 40% top 0; background-size: 100% auto;">
+    <p class="absolute left-4 text-s text-white bottom-4">Image by <a class="text-warning font-semibold" href="https://www.freepik.com/free-photo/smiley-woman-talking-phone-backseat-car-while-having-coffee_10297226.htm#query=taxi%20service&position=31&from_view=keyword">Freepik</a></p>
+  {% else %}
+  <div class="hidden md:w-1/2 h-screen md:block absolute z-0 left-0 top-0" style="background-image: url({% static 'vendors/images/accounts/others.jpg' %}); background-repeat: no-repeat; background-attachment: fixed; background-position: left; background-size: cover;">
+    <p class="absolute left-4 text-s text-black bottom-4"><a class="text-warning font-semibold" href="https://www.freepik.com/free-photo/gps-system-smart-car_13461902.htm#query=taxi%20service&position=8&from_view=keyword">Image by rawpixel.com</a> on Freepik</p>
+  {% endif %}
+  </div>
+
+  <main class="w-screen min-h-[calc(100vh_-_62px)] flex items-center justify-center relative p-4 md:px-44">
+    {% block inner %}
+    {% endblock inner %}
+  </main>
+
+  <footer class="relative text-gray-500 w-full md:w-1/2 md:float-right overflow-hidden flex items-center justify-between py-4 px-4 md:px-8">
+    {% now "Y" as current_year %}
+    <p class="text-s md:text-s font-semibold">© {{current_year}} | Drops Technology Limited</p>
+
+    <a href="https://www.darkcodr.codes" class="block text-s md:text-sm text-primary/60 font-semibold">🤟 Jeremiah David.</a>
+  </footer>
+
+  <script>
+      window.WEB_PUSH_CFG = {
+          APPLICATION_SERVER_KEY: "{{APPLICATION_SERVER_KEY}}",
+          SEND_NOTIFICATION: "{% url 'send_notification' %}",
+          CREATE_WP_DEVICE: "{% url 'save_webpush_info' %}",
+      };
+  </script>
+
+</body>
+
+</html>

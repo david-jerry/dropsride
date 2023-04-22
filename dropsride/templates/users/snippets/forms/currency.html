@@ -1,0 +1,10 @@
+<form id="currencyChanger" action="/api/users/currency/" method="post" @submit.prevent="updateCurrency" x-ref="currency" data-token="{{request.user.token}}" class="space-y-5">
+  <label for="id_currency" class="space-y-2 pt-4 block items-start">
+    <select x-on:change.debounce="updateCurrency" name="currency" id="id_currency" class="text-sm font-bold border-2 border-gray-400 text-gray-600 rounded-xl">
+      <option value="">Switch Currency</option>
+      {% for cur in currency %}
+      <option class="text-sm font-bold" value="{{cur.id}}" {% if object.wallet.currency == cur %}selected{% endif %}>Switch to {{cur.code|upper}}</option>
+      {% endfor %}
+    </select>
+  </label>
+</form>

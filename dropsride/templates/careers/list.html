@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ block.super }} Available Positions Opened within Dropsride
+{% endblock title %}
+
+{% block content %}
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14">
+  <div
+    class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-success/30 h-94"
+    style="background-image:url({% static 'vendors/images/business/business-bg.svg' %}); background-position:bottom; background-size:cover">
+    <div class="space-y-4 md:p-14 md:w-2/5">
+      <h1 class="text-2xl md:text-4xl font-semibold">Willing to make a difference?</h1>
+      <p class="text-base">
+        We are looking for creative minds enthusiastic enough to revolutionalize the way we travel
+      </p>
+      <div class="flex items-center space-x-3">
+        <button @click="document.getElementById('careers').scrollIntoView({top: '50px', behavior: 'smooth'})"
+          class="py-3 px-8 bg-black text-white rounded-xl hover:scale-105 hover:shadow-xl duration-300">
+          View all {{counts}}
+        </button>
+      </div>
+    </div>
+
+    <img
+      src="https://images.pexels.com/photos/2467506/pexels-photo-2467506.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      alt="driver" class="block h-64 md:h-96 object-cover rounded-xl">
+  </div>
+</section>
+
+<section class="w-screen px-4 md:px-44 xl:px-64 py-14 space-y-4 bg-white">
+  <div class="space-y-4 w-full">
+    <h2 class="text-xl md:text-2xl font-bold text-center">Why Become A Part of Dropsride?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 py-14">
+      <div class="md:flex items-center space-y-3 md:space-y-0 md:space-x-3">
+        <div class="py-6 md:py-0 flex items-center justify-center w-full md:w-1/2 md:aspect-1 flex-none">
+          <img src="{% static 'vendors/images/careers/impact.svg' %}" alt="impacting humanity" class="h-44 mx-auto">
+        </div>
+        <div class="w-full space-y-3">
+          <h3 class="text-base md:text-xl font-bold text-center md:text-left">Positively Impacting Humanity</h3>
+          <p class="text-sm  text-justify md:text-left">With growing customers worldwide and an ever growing list
+            of product/services you get an active role in shaping the future of our world.</p>
+        </div>
+      </div>
+      <div class="md:flex items-center space-y-3 md:space-y-0 md:space-x-3">
+        <div class="py-6 md:py-0 flex items-center justify-center w-full md:w-1/2 md:aspect-1 flex-none">
+          <img src="{% static 'vendors/images/careers/growth.svg' %}" alt="Career Growth and Development"
+            class="h-44 mx-auto">
+        </div>
+        <div class="w-full space-y-3">
+          <h3 class="text-base md:text-xl font-bold text-center md:text-left">Career Growth and Development</h3>
+          <p class="text-sm  text-justify md:text-left">With an enviroment filled with talented individuals and
+            resources, our people never stop learning or growing. We ensure we provide you with them ample opportunities
+            to thrive in and continue growing.</p>
+        </div>
+      </div>
+      <div class="md:flex items-center space-y-3 md:space-y-0 md:space-x-3">
+        <div class="py-6 md:py-0 flex items-center justify-center w-full md:w-1/2 md:aspect-1 flex-none">
+          <img src="{% static 'vendors/images/careers/money.svg' %}" alt="Compensation and Involvement"
+            class="h-44 mx-auto">
+        </div>
+        <div class="w-full space-y-3">
+          <h3 class="text-base md:text-xl font-bold text-center md:text-left">Compensation and Involvement</h3>
+          <p class="text-sm  text-justify md:text-left">No work with out pay; We understand this very well and as such,
+            is mandated to operate a zero owing salary system, offering competitive based salaries combined with
+            generous insentives, thus ensuring your vested interest in the company's success.</p>
+        </div>
+      </div>
+      <div class="md:flex items-center space-y-3 md:space-y-0 md:space-x-3">
+        <div class="py-6 md:py-0 flex items-center justify-center w-full md:w-1/2 md:aspect-1 flex-none">
+          <img src="{% static 'vendors/images/careers/team.svg' %}" alt="Team development" class="h-64 mx-auto">
+        </div>
+        <div class="w-full space-y-3">
+          <h3 class="text-base md:text-xl font-bold text-center md:text-left">Team Work</h3>
+          <p class="text-sm  text-justify md:text-left">We dream big and move fast as one, solving challenging problems
+            together. We also never forget to have fun, Never.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="careers" class="w-screen px-4 md:px-44 xl:px-64 py-14 space-y-4 bg-gray-200">
+  <h2 class="text-2xl font-bold">{{counts}} open positions</h2>
+  <div class="overflow-x-auto scrollbar-small w-full grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+      {% include "careers/snippets/career_list.html" %}
+  </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ block.super }} Stay up to date with the latest updates and information from dropsride
+{% endblock title %}
+
+{% block content %}
+<section class="w-screen min-h-screen px-4 md:px-44 xl:px-64 py-14 bg-gray-200/80 backdrop-blur-sm">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+    {% include "news/snippets/list.html" %}
+  </div>
+</section>
+{% endblock content %}

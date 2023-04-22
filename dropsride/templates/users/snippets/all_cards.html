@@ -1,0 +1,49 @@
+{% load static %}
+
+{% for card in object.get_all_cards|slice:":2" %}
+<div class="shadow-xl rounded-xl p-6 h-56 bg-warning space-y-3 justify-between flex flex-col relative overflow-hidden group">
+
+  <!-- update card button -->
+  <button @click="activateCard({{card.id}}, '{{request.user.token}}')" class="absolute z-50 flex-none w-10 h-10 items-center justify-center rounded-full bg-black text-white shadow-md group-hover:block hidden duration-300 top-2 right-14">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mx-auto">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+    </svg>
+  </button>
+  <!-- end update card button -->
+
+
+  <!-- remove card button -->
+  <button @click="deleteCard({{card.id}}, '{{request.user.token}}')" class="absolute w-10 flex-none h-10 z-50 top-2 right-4 rounded-full group-hover:block hidden duration-300 shadow-md bg-danger text-white items-center justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mx-auto">
+      <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+    </svg>
+  </button>
+  <!-- end remove card button -->
+
+  <div class="flex items-center justify-between relative z-10">
+    <div>
+      <span class="text-xs font-black block">Name</span>
+      <strong class="font-medium text-base">{{card.name_on_card|title}}</strong>
+    </div>
+    <img src="{% if card.card_provider == 'Mastercard' %}{% static 'vendors/images/card/master.svg' %}{% elif card.card_provider == 'Visa' %}{% static 'vendors/images/card/visa.svg' %}{% elif card.card_provider == 'Verve' %}{% static 'vendors/images/card/verve.svg' %}{% endif %}" alt="" class="h-5">
+  </div>
+  <div class=" relative z-10">
+    <span class="text-xs font-black block">Card Number</span>
+    <strong class="font-medium text-base">{{card.card_no}}</strong>
+  </div>
+  <div class="flex items-center justify-between relative z-10">
+    <div>
+      <span class="text-xs font-black block">Expiry</span>
+      <strong class="font-medium text-base">{{card.card_exp_month}}/{{card.card_exp_year}}</strong>
+    </div>
+    <div>
+      <span class="text-xs font-black block">CVV</span>
+      <strong class="font-medium text-base">{{card.cvv|truncatechars:3}}</strong>
+    </div>
+  </div>
+
+  <div class="rounded-full absolute bg-black/10 -right-8 -top-8 h-1/2 aspect-1 z-0"></div>
+  <div class="rounded-full absolute bg-black/10 right-10 -top-8 h-1/2 aspect-1 z-0"></div>
+  <div class="rounded-full absolute bg-black/10 -right-4 bottom-14 h-24 aspect-1 z-0"></div>
+</div>
+{% endfor %}

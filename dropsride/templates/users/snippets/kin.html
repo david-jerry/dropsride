@@ -1,0 +1,72 @@
+<div id="kin" x-show.transition="!editKin" x-cloak class="py-4 px-4 md:px-8 space-y-5">
+  <!-- full names -->
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
+    <div>
+      <strong class="text-gray-300 text-sm block">First Name</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.first_name|title|default:"-"}}</strong>
+    </div>
+    <div class="hidden md:block">
+      <strong class="text-gray-300 text-sm block">Middle Name</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.middle_name|title|default:"-"}}</strong>
+    </div>
+    <div>
+      <strong class="text-gray-300 text-sm block">Last Name</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.last_name|title|default:"-"}}</strong>
+    </div>
+  </div>
+
+  <!-- date of birth -->
+  <div class="grid grid-cols-2 gap-4 md:gap-10">
+    <div>
+      <strong class="text-gray-300 text-sm block">Date of Birth</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.date_of_birth|date:"D M, Y"|default:"-"}}</strong>
+    </div>
+    <div>
+      <strong class="text-gray-300 text-sm block">Age</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.age|default:"-"}}</strong>
+    </div>
+  </div>
+
+  <!-- next of kin contact -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+    <div>
+      <strong class="text-gray-300 text-sm block">Email</strong>
+      <a href="mailto://{{object.nok.email|default:"-"}}" class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0  font-bold duration-500 transition:ease-in-out hover:text-warning text-primary">{{object.nok.email|default:"-"}}</a>
+    </div>
+    <div>
+      <strong class="text-gray-300 text-sm block">Mobile Number</strong>
+      <a href="tel://{{object.nok.phone|default:"-"}}" class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0  font-bold duration-500 transition:ease-in-out hover:text-warning text-primary">{{object.nok.phone|default:"-"}}</a>
+    </div>
+    <div>
+      <strong class="text-gray-300 text-sm block">NIN/BVN</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{% if object.nok.nin %}{{object.nok.nin|default:"None"}}{% else %}{{object.nok.bvn|default:"None"}}{% endif %}</strong>
+    </div>
+  </div>
+
+
+
+  <!-- divider -->
+  <div class="divider text-sm font-bold text-gray-300 pt-14 pb-3">Address</div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-10">
+    <div>
+      <strong class="text-gray-300 text-sm block">Post Code / ZIP Code</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.post_code|default:"-"}}</strong>
+    </div>
+
+    <div>
+      <strong class="text-gray-300 text-sm block">Town</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.town|default:"-"}}</strong>
+    </div>
+
+    <div>
+      <strong class="text-gray-300 text-sm block">County</strong>
+      <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.county|default:"-"}}</strong>
+    </div>
+  </div>
+
+  <div class="w-full">
+    <strong class="text-gray-300 text-sm block">Address</strong>
+    <strong class="p-2 block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border-gray-700 focus:border focus:ring-gray-700 focus:ring-1 outline-0 focus:outline-0 ">{{object.nok.address|default:"-"}}</strong>
+  </div>
+</div>

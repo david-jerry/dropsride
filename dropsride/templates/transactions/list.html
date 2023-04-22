@@ -1,0 +1,46 @@
+{% extends "dashboard.html" %}
+{% load static humanize %}
+
+{% block title %}{{ block.super }} {{ object.username|title }} Financial Records{% endblock %}
+
+{% block breadcrumbs %}Transactions{% endblock %}
+{% block alt_right %}{{ block.super }}{% endblock alt_right %}
+
+{% block content %}
+
+{% if object == request.user or request.user.is_staff %}
+<section x-data="Transactions" class="z-0 relative w-full md:flex md:items-start gap-5 h-full space-y-5 md:space-y-0">
+  <div class="w-full md:w-4/6 md:min-h-full space-y-6 flex-none  bg-gray-100 rounded-xl shadow-xl p-3">
+    {% include "transactions/snippets/cards.html" with object=object %}
+    <div class="space-y-4 pt-8 overflow-y-auto min-h-max pb-8 relative" x-data="{filter:0, showfilter:false}" >
+      <div class="flex items-center justify-between relative">
+        <h3 class="text-base font-gray-600 font-bold px-3">Latest Transactions</h3>
+        <div class="p-2 rounded-xl cursor-pointer group" @click.outside="showfilter=false" @click="showfilter = ! showfilter">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 block group-hover:hidden">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 hidden group-hover:block">
+            <path fill-rule="evenodd" d="M3.792 2.938A49.069 49.069 0 0112 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 011.541 1.836v1.044a3 3 0 01-.879 2.121l-6.182 6.182a1.5 1.5 0 00-.439 1.061v2.927a3 3 0 01-1.658 2.684l-1.757.878A.75.75 0 019.75 21v-5.818a1.5 1.5 0 00-.44-1.06L3.13 7.938a3 3 0 01-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div x-show.transition.in="showfilter" x-cloak class="space-y-2 border-[0.75px] border-gray-200 absolute top-full right-0 bg-gray-600 text-white rounded-md p-2 text-right">
+          <button @click="filter = 0" class="block text-right w-full text-sm hover:text-warning duration-300 ease-in-out">All</button>
+          <button @click="filter = 1" class="block text-right w-full text-sm hover:text-warning duration-300 ease-in-out">Deposits</button>
+          <button @click="filter = 2" class="block text-right w-full text-sm hover:text-warning duration-300 ease-in-out">Withdrawals</button>
+          <button @click="filter = 3" class="block text-right w-full text-sm hover:text-warning duration-300 ease-in-out">Trips</button>
+          <button @click="filter = 4" class="block text-right w-full text-sm hover:text-warning duration-300 ease-in-out">Tickets</button>
+          <button @click="filter = 5" class="block text-right w-full text-sm hover:text-warning duration-300 ease-in-out">Profits</button>
+        </div>
+      </div>
+      {% include "transactions/snippets/list.html" with objects=objects %}
+    </div>
+  </div>
+
+
+  <!-- transaction detail for destop view -->
+  <div x-cloak x-show.transition="tDetails" id="tDetail" class=" border-t-warning border-t-4 h-2/3 md:h-full w-full md:flex-grow overflow-y-auto space-y-4 md:space-y-6 scrollbar-hide  text-gray-700 bg-gray-100 rounded-t-xl md:rounded-xl fixed md:relative z-30 right-0 bottom-0">
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

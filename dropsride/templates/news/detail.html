@@ -1,0 +1,148 @@
+{% load static humanize %}
+
+<div class="space-y-5 py-8 container mx-auto flex flex-col">
+  <div
+    class="space-y-6 md:space-y-0 md:flex md:items-center md:justify-between w-full rounded-xl overflow-hidden p-6 bg-black text-white h-94"
+    style="background-image:url({% static 'vendors/images/business/business-bg.svg' %}); background-position:bottom; background-size:cover">
+    <div class="space-y-4 md:p-14 md:w-2/5">
+      <h1 class="text-2xl md:text-4xl font-semibold">{{object.title|title}}</h1>
+      <p class="text-base prose">
+        {{object.summary|capfirst|safe}}
+      </p>
+      <div class="flex items-center space-x-3">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+        </svg>
+        <span class="text-sm font-bold">
+          {{object.published_date|naturalday }}
+        </span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
+          <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
+          <path d="M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z" />
+        </svg>
+
+        <span class="text-sm font-bold">
+          {% if not object.author %}
+          Dropsride
+          {% else %}
+          {{object.author|title }}
+          {% endif %}
+        </span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M4.125 3C3.089 3 2.25 3.84 2.25 4.875V18a3 3 0 003 3h15a3 3 0 01-3-3V4.875C17.25 3.839 16.41 3 15.375 3H4.125zM12 9.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H12zm-.75-2.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H12a.75.75 0 01-.75-.75zM6 12.75a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5H6zm-.75 3.75a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75zM6 6.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3A.75.75 0 009 6.75H6z" clip-rule="evenodd" />
+          <path d="M18.75 6.75h1.875c.621 0 1.125.504 1.125 1.125V18a1.5 1.5 0 01-3 0V6.75z" />
+        </svg>
+        <span class="text-sm font-bold">{{object.get_readtime}}</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path fill-rule="evenodd" d="M5.25 2.25a3 3 0 00-3 3v4.318a3 3 0 00.879 2.121l9.58 9.581c.92.92 2.39 1.186 3.548.428a18.849 18.849 0 005.441-5.44c.758-1.16.492-2.629-.428-3.548l-9.58-9.581a3 3 0 00-2.122-.879H5.25zM6.375 7.5a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" clip-rule="evenodd" />
+        </svg>
+        <div class="flex-flex-wrap">
+          {% for tag in object.tags.all %}
+          <span class="text-[11px] font-bold uppercase bg-gray-200 rounded-full px-5 py-1">{{tag}}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+    <img
+      src="{{object.image.url}}"
+      alt="{{object.title}}" class="block h-64 md:h-96 object-cover rounded-xl aspect-1">
+  </div>
+  <article class="bg-black/5 text-sm text-gray-700 px-4 pt-8 rounded-xl max-w-none w-full pb-14 prose md:prose-base prose-gray prose-table:table prose-table:w-full">
+    {{object.content|safe}}
+  </article>
+  <div class="divider"></div>
+  <div class="flex items-center justify-between">
+    {% if object.get_prev is not None %}
+    <button {% if object.get_prev is not None %}@click="openBlogDetailNow('{{object.get_prev.slug}}')"{% endif %} title="{{object.get_prev.title}}" class="float-left flex items-center h-14 rounded-xl bg-black text-white text-base font-black overflow-hidden space-x-2 hover:scale-105 hover:shadow-xl duration-300">
+      {% if object.get_prev is not None %}
+      <img src="{{object.get_prev.image.thumbnail.url}}" alt="{{object.get_prev.title}}" class="bg-white h-full aspect-1 object-cover">
+      <span class="block pl-2 pr-4 text-left">
+        <span class="block">PREV</span>
+        <h4 class="text-sm font-bold">{{object.get_prev.title}}</h4>
+      </span>
+      {% endif %}
+    </button>
+    {% endif %}
+
+    {% if object.get_next is not None %}
+    <button {% if object.get_next is not None %}@click="openBlogDetailNow('{{object.get_next.slug}}')" {% endif %} title="{{object.get_next.title}}" class="float-right flex items-center h-14 rounded-xl bg-black text-white text-base font-black overflow-hidden space-x-2 hover:scale-105 hover:shadow-xl duration-300">
+      {% if object.get_next is not None %}
+      <span class="block pl-4 pr-2 text-right">
+        <span class="block">NEXT</span>
+        <h4 class="text-sm font-bold">{{object.get_next.title}}</h4>
+      </span>
+      <img src="{{object.get_next.image.thumbnail.url}}" alt="{{object.get_next.title}}" class="bg-white h-full aspect-1 object-cover">
+      {% endif %}
+    </button>
+    {% endif %}
+  </div>
+  <div class="divider"></div>
+  {% if related_articles %}
+  <h4 class="text-xl font-bold">Related Articles</h4>
+  <div class="grid grid-cols-1 md:grid-cols-4 xxl:grid-cols-6 gap-5">
+    {% for object in related_articles %}
+    <div class="rounded-xl hover:shadow-2xl group duration overflow-hidden shadow-md">
+      <img src="{{object.image.url}}" alt="{{object.title|title}}" class="group-hover:scale-105 w-full aspect-3 object-cover duration-300">
+      <div class="w-full py-6 px-4 space-y-4">
+        <h3 class="text-xl md:text-2xl font-bold">{{object.title|title}}</h3>
+        <div class="flex-flex-wrap">
+          {% for tag in object.tags.all %}
+          <span class="text-[11px] font-bold uppercase bg-gray-200 rounded-full px-5 py-1">{{tag}}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="divide-x-2 bg-black flex items-center space-x-6 text-sm text-white justify-center py-4 border-t-0.5 border-t-gray-300">
+        <div class="flex items-center space-x-3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+          </svg>
+          <span>
+            {{object.published_date|naturalday }}
+          </span>
+        </div>
+        <div class="flex items-center space-x-3 pl-8">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M11.7 2.805a.75.75 0 01.6 0A60.65 60.65 0 0122.83 8.72a.75.75 0 01-.231 1.337 49.949 49.949 0 00-9.902 3.912l-.003.002-.34.18a.75.75 0 01-.707 0A50.009 50.009 0 007.5 12.174v-.224c0-.131.067-.248.172-.311a54.614 54.614 0 014.653-2.52.75.75 0 00-.65-1.352 56.129 56.129 0 00-4.78 2.589 1.858 1.858 0 00-.859 1.228 49.803 49.803 0 00-4.634-1.527.75.75 0 01-.231-1.337A60.653 60.653 0 0111.7 2.805z" />
+            <path d="M13.06 15.473a48.45 48.45 0 017.666-3.282c.134 1.414.22 2.843.255 4.285a.75.75 0 01-.46.71 47.878 47.878 0 00-8.105 4.342.75.75 0 01-.832 0 47.877 47.877 0 00-8.104-4.342.75.75 0 01-.461-.71c.035-1.442.121-2.87.255-4.286A48.4 48.4 0 016 13.18v1.27a1.5 1.5 0 00-.14 2.508c-.09.38-.222.753-.397 1.11.452.213.901.434 1.346.661a6.729 6.729 0 00.551-1.608 1.5 1.5 0 00.14-2.67v-.645a48.549 48.549 0 013.44 1.668 2.25 2.25 0 002.12 0z" />
+            <path d="M4.462 19.462c.42-.419.753-.89 1-1.394.453.213.902.434 1.347.661a6.743 6.743 0 01-1.286 1.794.75.75 0 11-1.06-1.06z" />
+          </svg>
+
+          <span>
+            {% if not object.author %}
+            Dropsride
+            {% else %}
+            {{object.author|title }}
+            {% endif %}
+          </span>
+        </div>
+      </div>
+      <button @click="openBlogDetailNow('{{object.get_next.slug}}')" class="w-full py-3 hover:scale-105 duration-300 bg-warning text-black font-medium uppercase text-base">VIEW</button>
+    </div>
+    {% if forloop.last %}
+    <div class="flex-grow flex-none space-y-2 px-2">
+      <h3 class="text-xl font-bold pb-3 border-b-0.5 border-b-black/10 w-full">Popular Posts</h3>
+      {% for object in popular_posts|slice:4 %}
+      <div @click="openBlogDetailNow('{{object.get_next.slug}}')" class="w-full hover:scale-105 hover:shadow-md duration-300 cursor-pointer flex items-start h-min w-full flex-none  bg-black text-white border-b-0.5 border-black/10 text-black text-sm rounded-xl">
+        <img src="{{object.image.thumbnail.url}}" alt="{{object.title}}" class="h-16 aspect-1 object-cover bg-white">
+        <div class="flex flex-col space-y-1 p-2">
+          <h4 class="text-base font-bold text-white">{{object.title|title}}</h4>
+          <div class="prose prose-sm line-clamp-1 text-white text-xs">{{object.summary|capfirst|safe|truncatewords:7}}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</div>
