@@ -150,8 +150,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 ANYMAIL = {}
 
 EMAIL_HOST = "live.smtp.mailtrap.io"
-EMAIL_HOST_USER = env("EMAIL_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+EMAIL_HOST_USER = env("EMAIL_USER", default="email@user.tld")
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD", default="password")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
