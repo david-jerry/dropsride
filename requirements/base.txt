@@ -53,7 +53,7 @@ loguru==0.5.3
 
 # integrate htmx with django requests
 django-htmx==1.9.0
-django-filter==22.1
+django-filter==23.1
 django-tables2==2.4.1
 
 # push notification settings
