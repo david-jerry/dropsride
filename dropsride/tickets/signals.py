@@ -10,18 +10,15 @@ from dropsride.utils.utilities import is_model_instance_changed
 
 @receiver(pre_save, sender=TicketPlans)
 def clear_cache(sender, instance, **kwargs):
-    if is_model_instance_changed(instance):
-        transaction_cache_keys = [key for key in cache.keys() if "tickets" in key]
-        for k in transaction_cache_keys:
-            cache.delete(k)
+    if TicketPlans.objects.filter(localization=instance.localization).exists():
+        if is_model_instance_changed(instance):
+            cache.delete_pattern("tickets:*")
 
 
 @receiver(pre_save, sender=TicketSubscription)
 def clear_cache(sender, instance, **kwargs):
     if is_model_instance_changed(instance):
-        transaction_cache_keys = [key for key in cache.keys() if "tickets" in key]
-        for k in transaction_cache_keys:
-            cache.delete(k)
+        cache.delete_pattern("tickets:*")
 
 
 # @receiver(post_save, sender=TicketSubscription)
