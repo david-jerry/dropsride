@@ -4,7 +4,7 @@ const Webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // This variable should mirror the one from config/settings/production.py
-const staticUrl = "/static/";
+const staticUrl = "https://dropsride-bucket.s3.amazonaws.com/static/";
 
 module.exports = merge(commonConfig, {
   mode: "production",
