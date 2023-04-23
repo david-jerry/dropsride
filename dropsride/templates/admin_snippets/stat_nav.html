@@ -20,7 +20,7 @@
     <div class="md:hidden"></div>
 
     <div class="flex items-center space-x-6">
-      <div @click.outside="search = false">
+      <!-- <div @click.outside="search = false">
         <div :class="{'hidden':!search, 'block':search}" class="hidden relative w-full rounded-xl bg-black/50 text-white border-white border-2 overflow-hidden pr-6">
           <input placeholder="Search trips, addresses, drivers" title="search" type="search" class="bg-transparent w-full border-0 focus:border-0 ring-0 focus:ring-0 outline-0 focus:outline-0 placeholder:text-sm font-semibold overflow-hidden">
           <div class="space-y-2 absolute right-2 top-2 cursor-pointer">
@@ -36,7 +36,7 @@
           </svg>
           <span class="sr-only block">Click to Search</span>
         </div>
-      </div>
+      </div> -->
 
 
       <svg :class="{'hidden':search, 'block':!search}" x-transition:enter.duration.300ms x-transition:leave.duration.100ms xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="flex-none w-6 md:w-6 h-6 md:h-6 hover:text-warning duration-300 transition:ease-in-out cursor-pointer">
