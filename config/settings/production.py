@@ -230,3 +230,5 @@ RECAPTCHA_PROXY = {
     "https": "https://dropsride.com",
 }
 # RECAPTCHA_DOMAIN = env('GOOGLE_RECAPTCHA_DOMAIN', default="dropsride.com")
+PAYSTACK_SECRET_KEY = env("PAYSTACK_TEST_SK")
+PAYSTACK_PUBLIC_KEY = env("PAYSTACK_TEST_PK")
