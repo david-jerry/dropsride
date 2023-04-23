@@ -62,9 +62,6 @@ class NewsPagesListView(ListView):
         )  # list(News.objects.all().values_list('tags__name', flat=True))
         context["recent_posts"] = News.published.get_recent_posts()
         context["featured_post"] = News.published.get_featured_posts()
-        context["related_post"] = News.published.get_related_posts(
-            news=self.get_object()
-        )
         return context
 
 
