@@ -1,5 +1,14 @@
 <aside x-transition:enter.duration.500ms x-transition:leave.duration.400ms id="sidebar" :class="{'w-0 md:w-fit overflow-hidden px-0 py-0 md:px-4 md:py-4':!menu, 'w-fit px-2 py-4 md:px-4 md:py-4':menu, 'h-screen':showNav, 'h-[calc(100vh_-_135px)] md:h-[calc(100vh_-_139px)]':!showNav}" class="h-screen bottom-0 w-0 md:w-fit px-0 py-0 md:px-4 md:py-4 z-50 fixed left-0 overflow-y-auto scrollbar-thin scrollbar-track-warning scrollbar-thumb-gray-700 bg-gray-200 shadow-lg text-sm flex flex-col items-start justify-between duration-500 transition:ease-in-out">
   <div class="space-y-2">
+    <a href="{% url 'users:detail' request.user.username %}" class="px-2 md:px-3 py-2 hover:bg-black flex items-center space-x-5 hover:text-warning duration-300 transition:ease-in-out cursor-pointer rounded-xl w-full">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="flex -none w-6 h-6">
+        <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
+      </svg>
+
+      <span x-transition:enter.duration.500ms x-transition:leave.duration.400ms :class="{'block':menu, 'hidden':!menu}" class="sr-only">Profile</span>
+      <span x-cloak x-transition:enter.duration.500ms x-transition:leave.duration.400ms :class="{'block':menu, 'hidden':!menu}" class="duration-500 transition:ease-in-out block text-sm">Profile</span>
+    </a>
+
     <a href="{% url 'rides:list' %}" class="px-2 md:px-3 py-2 hover:bg-black flex items-center space-x-5 hover:text-warning duration-300 transition:ease-in-out cursor-pointer rounded-xl w-full">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
         <path fill-rule="evenodd" d="M17.303 5.197A7.5 7.5 0 006.697 15.803a.75.75 0 01-1.061 1.061A9 9 0 1121 10.5a.75.75 0 01-1.5 0c0-1.92-.732-3.839-2.197-5.303zm-2.121 2.121a4.5 4.5 0 00-6.364 6.364.75.75 0 11-1.06 1.06A6 6 0 1118 10.5a.75.75 0 01-1.5 0c0-1.153-.44-2.303-1.318-3.182zm-3.634 1.314a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68z" clip-rule="evenodd" />

@@ -94,17 +94,17 @@
   </button>
   {% endif %}
 
-  <form action="/api/financials/cards/" x-cloak x-show.transition="editCard" class="post space-y-5 w-full" data-token="{{request.user.token}}" x-ref="cardForm" @submit.prevent="cardSubmitForm">
-    <input type="hidden" name="email" id="card_email" value="{{request.user.email}}">
+  <form action="/api/cards/" x-cloak x-show.transition="editCard" class="post space-y-5 w-full" data-token="{{request.user.token}}" x-ref="cardForm" @submit.prevent="cardSubmitForm">
+    <input type="hidden" name="card_provider" id="id_card_provider">
     <input type="text" maxlength="19" name="card_no" id="id_card_no" x-init="creditCardMask" x-model="cardForm.digit" placeholder="Card Number" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
     <input type="text" name="name_on_card" id="id_name_on_card" x-model="cardForm.name" placeholder="Card Name" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
     <input type="text" maxlength="3" name="cvv" id="id_cvv" x-model="cardForm.cvv" placeholder="Card CVV" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
     <div class="flex items-center space-x-3">
-      <input type="text" maxlength="2" name="card_exp_month" id="id_card_exp_month" x-model="cardForm.month" placeholder="31" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning h-6">
-      <input type="text" maxlength="2" name="card_exp_year" id="id_card_exp_year" x-model="cardForm.year" placeholder="12" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning h-6">
+      <input type="text" maxlength="2" name="card_exp_month" id="id_card_exp_month" x-model="cardForm.month" placeholder="31" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning w-full h-6">
+      <input type="text" maxlength="2" name="card_exp_year" id="id_card_exp_year" x-model="cardForm.year" placeholder="12" class="block border-b-2 border-t-0 border-x-0 rounded-xl border-b-gray-200 py-2 text-sm px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning w-full h-6">
     </div>
-    <div class="flex items-center justify-between space-x-3">
-      <button :disabled="loading" class="w-1/2 group btn-rounded px-6 py-3 shadow-sm hover:shadow-xl flex items-center space-x-3 bg-warning duration-500 hover:space-x-5" type="submit" >
+    <div class="flex items-center justify-between space-x-3 w-fit">
+      <button :disabled="loading" class="w-fit group btn-rounded px-6 py-3 shadow-sm hover:shadow-xl flex items-center space-x-3 bg-warning duration-500 hover:space-x-5" type="submit" >
 
         <strong class="block text-sm font-bold uppercase" x-text="addCardText"></strong>
 
@@ -125,10 +125,11 @@
           <span class="sr-only">Loading...</span>
         </div>
       </button>
-      <button type="button" class="bg-black text-white btn-rounded px-6 py-3 shadow-sm w-1/2" @click="editCard=false">
+      <button type="button" class="bg-black text-white btn-rounded px-6 py-3 shadow-sm w-fit" @click="editCard=false">
         Cancle
       </button>
     </div>
+
   </form>
   {% endfor %}
 </div>
