@@ -1,0 +1,655 @@
+{
+  "status": "done",
+  "assets": {
+    "95eb9b8baa45135f4581.png": {
+      "name": "95eb9b8baa45135f4581.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/95eb9b8baa45135f4581.png",
+      "publicPath": "/static/95eb9b8baa45135f4581.png"
+    },
+    "9a21064b53550debaa7c.png": {
+      "name": "9a21064b53550debaa7c.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/9a21064b53550debaa7c.png",
+      "publicPath": "/static/9a21064b53550debaa7c.png"
+    },
+    "assets/android-chrome-144x144.png": {
+      "name": "assets/android-chrome-144x144.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-144x144.png",
+      "publicPath": "/static/assets/android-chrome-144x144.png"
+    },
+    "assets/android-chrome-192x192.png": {
+      "name": "assets/android-chrome-192x192.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-192x192.png",
+      "publicPath": "/static/assets/android-chrome-192x192.png"
+    },
+    "assets/android-chrome-256x256.png": {
+      "name": "assets/android-chrome-256x256.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-256x256.png",
+      "publicPath": "/static/assets/android-chrome-256x256.png"
+    },
+    "assets/android-chrome-36x36.png": {
+      "name": "assets/android-chrome-36x36.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-36x36.png",
+      "publicPath": "/static/assets/android-chrome-36x36.png"
+    },
+    "assets/android-chrome-384x384.png": {
+      "name": "assets/android-chrome-384x384.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-384x384.png",
+      "publicPath": "/static/assets/android-chrome-384x384.png"
+    },
+    "assets/android-chrome-48x48.png": {
+      "name": "assets/android-chrome-48x48.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-48x48.png",
+      "publicPath": "/static/assets/android-chrome-48x48.png"
+    },
+    "assets/android-chrome-512x512.png": {
+      "name": "assets/android-chrome-512x512.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-512x512.png",
+      "publicPath": "/static/assets/android-chrome-512x512.png"
+    },
+    "assets/android-chrome-72x72.png": {
+      "name": "assets/android-chrome-72x72.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-72x72.png",
+      "publicPath": "/static/assets/android-chrome-72x72.png"
+    },
+    "assets/android-chrome-96x96.png": {
+      "name": "assets/android-chrome-96x96.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/android-chrome-96x96.png",
+      "publicPath": "/static/assets/android-chrome-96x96.png"
+    },
+    "assets/apple-touch-icon-1024x1024.png": {
+      "name": "assets/apple-touch-icon-1024x1024.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-1024x1024.png",
+      "publicPath": "/static/assets/apple-touch-icon-1024x1024.png"
+    },
+    "assets/apple-touch-icon-114x114.png": {
+      "name": "assets/apple-touch-icon-114x114.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-114x114.png",
+      "publicPath": "/static/assets/apple-touch-icon-114x114.png"
+    },
+    "assets/apple-touch-icon-120x120.png": {
+      "name": "assets/apple-touch-icon-120x120.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-120x120.png",
+      "publicPath": "/static/assets/apple-touch-icon-120x120.png"
+    },
+    "assets/apple-touch-icon-144x144.png": {
+      "name": "assets/apple-touch-icon-144x144.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-144x144.png",
+      "publicPath": "/static/assets/apple-touch-icon-144x144.png"
+    },
+    "assets/apple-touch-icon-152x152.png": {
+      "name": "assets/apple-touch-icon-152x152.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-152x152.png",
+      "publicPath": "/static/assets/apple-touch-icon-152x152.png"
+    },
+    "assets/apple-touch-icon-167x167.png": {
+      "name": "assets/apple-touch-icon-167x167.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-167x167.png",
+      "publicPath": "/static/assets/apple-touch-icon-167x167.png"
+    },
+    "assets/apple-touch-icon-180x180.png": {
+      "name": "assets/apple-touch-icon-180x180.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-180x180.png",
+      "publicPath": "/static/assets/apple-touch-icon-180x180.png"
+    },
+    "assets/apple-touch-icon-57x57.png": {
+      "name": "assets/apple-touch-icon-57x57.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-57x57.png",
+      "publicPath": "/static/assets/apple-touch-icon-57x57.png"
+    },
+    "assets/apple-touch-icon-60x60.png": {
+      "name": "assets/apple-touch-icon-60x60.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-60x60.png",
+      "publicPath": "/static/assets/apple-touch-icon-60x60.png"
+    },
+    "assets/apple-touch-icon-72x72.png": {
+      "name": "assets/apple-touch-icon-72x72.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-72x72.png",
+      "publicPath": "/static/assets/apple-touch-icon-72x72.png"
+    },
+    "assets/apple-touch-icon-76x76.png": {
+      "name": "assets/apple-touch-icon-76x76.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-76x76.png",
+      "publicPath": "/static/assets/apple-touch-icon-76x76.png"
+    },
+    "assets/apple-touch-icon-precomposed.png": {
+      "name": "assets/apple-touch-icon-precomposed.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon-precomposed.png",
+      "publicPath": "/static/assets/apple-touch-icon-precomposed.png"
+    },
+    "assets/apple-touch-icon.png": {
+      "name": "assets/apple-touch-icon.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/apple-touch-icon.png",
+      "publicPath": "/static/assets/apple-touch-icon.png"
+    },
+    "assets/browserconfig.xml": {
+      "name": "assets/browserconfig.xml",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/browserconfig.xml",
+      "publicPath": "/static/assets/browserconfig.xml"
+    },
+    "assets/favicon-16x16.png": {
+      "name": "assets/favicon-16x16.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/favicon-16x16.png",
+      "publicPath": "/static/assets/favicon-16x16.png"
+    },
+    "assets/favicon-32x32.png": {
+      "name": "assets/favicon-32x32.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/favicon-32x32.png",
+      "publicPath": "/static/assets/favicon-32x32.png"
+    },
+    "assets/favicon-48x48.png": {
+      "name": "assets/favicon-48x48.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/favicon-48x48.png",
+      "publicPath": "/static/assets/favicon-48x48.png"
+    },
+    "assets/favicon.ico": {
+      "name": "assets/favicon.ico",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/favicon.ico",
+      "publicPath": "/static/assets/favicon.ico"
+    },
+    "assets/firefox_app_128x128.png": {
+      "name": "assets/firefox_app_128x128.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/firefox_app_128x128.png",
+      "publicPath": "/static/assets/firefox_app_128x128.png"
+    },
+    "assets/firefox_app_512x512.png": {
+      "name": "assets/firefox_app_512x512.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/firefox_app_512x512.png",
+      "publicPath": "/static/assets/firefox_app_512x512.png"
+    },
+    "assets/firefox_app_60x60.png": {
+      "name": "assets/firefox_app_60x60.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/firefox_app_60x60.png",
+      "publicPath": "/static/assets/firefox_app_60x60.png"
+    },
+    "assets/manifest.json": {
+      "name": "assets/manifest.json",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/manifest.json",
+      "publicPath": "/static/assets/manifest.json"
+    },
+    "assets/manifest.webapp": {
+      "name": "assets/manifest.webapp",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/manifest.webapp",
+      "publicPath": "/static/assets/manifest.webapp"
+    },
+    "assets/mstile-144x144.png": {
+      "name": "assets/mstile-144x144.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/mstile-144x144.png",
+      "publicPath": "/static/assets/mstile-144x144.png"
+    },
+    "assets/mstile-150x150.png": {
+      "name": "assets/mstile-150x150.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/mstile-150x150.png",
+      "publicPath": "/static/assets/mstile-150x150.png"
+    },
+    "assets/mstile-310x150.png": {
+      "name": "assets/mstile-310x150.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/mstile-310x150.png",
+      "publicPath": "/static/assets/mstile-310x150.png"
+    },
+    "assets/mstile-310x310.png": {
+      "name": "assets/mstile-310x310.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/mstile-310x310.png",
+      "publicPath": "/static/assets/mstile-310x310.png"
+    },
+    "assets/mstile-70x70.png": {
+      "name": "assets/mstile-70x70.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/mstile-70x70.png",
+      "publicPath": "/static/assets/mstile-70x70.png"
+    },
+    "css/114.1d481bfbb3bf8c9ae53c.css": {
+      "name": "css/114.1d481bfbb3bf8c9ae53c.css",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/114.1d481bfbb3bf8c9ae53c.css",
+      "publicPath": "/static/css/114.1d481bfbb3bf8c9ae53c.css"
+    },
+    "css/project.8c5b220bf6f482881a90.css": {
+      "name": "css/project.8c5b220bf6f482881a90.css",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/project.8c5b220bf6f482881a90.css",
+      "publicPath": "/static/css/project.8c5b220bf6f482881a90.css"
+    },
+    "index.html": {
+      "name": "index.html",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/index.html",
+      "publicPath": "/static/index.html"
+    },
+    "js/114.8b578d61.js": {
+      "name": "js/114.8b578d61.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/114.8b578d61.js",
+      "publicPath": "/static/js/114.8b578d61.js"
+    },
+    "js/114.8b578d61.js.LICENSE.txt": {
+      "name": "js/114.8b578d61.js.LICENSE.txt",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/114.8b578d61.js.LICENSE.txt",
+      "publicPath": "/static/js/114.8b578d61.js.LICENSE.txt"
+    },
+    "js/114.8b578d61.js.map": {
+      "name": "js/114.8b578d61.js.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/114.8b578d61.js.map",
+      "publicPath": "/static/js/114.8b578d61.js.map"
+    },
+    "js/project.625ea3f3.js": {
+      "name": "js/project.625ea3f3.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/project.625ea3f3.js",
+      "publicPath": "/static/js/project.625ea3f3.js"
+    },
+    "js/project.625ea3f3.js.map": {
+      "name": "js/project.625ea3f3.js.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/project.625ea3f3.js.map",
+      "publicPath": "/static/js/project.625ea3f3.js.map"
+    },
+    "js/runtime.7231cd9e.js": {
+      "name": "js/runtime.7231cd9e.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/runtime.7231cd9e.js",
+      "publicPath": "/static/js/runtime.7231cd9e.js"
+    },
+    "js/runtime.7231cd9e.js.map": {
+      "name": "js/runtime.7231cd9e.js.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/runtime.7231cd9e.js.map",
+      "publicPath": "/static/js/runtime.7231cd9e.js.map"
+    },
+    "manifest.json": {
+      "name": "manifest.json",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/manifest.json",
+      "publicPath": "/static/manifest.json"
+    },
+    "node_modules/intl-tel-input/build/img/flags.png": {
+      "name": "node_modules/intl-tel-input/build/img/flags.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/node_modules/intl-tel-input/build/img/flags.png",
+      "publicPath": "/static/node_modules/intl-tel-input/build/img/flags.png"
+    },
+    "node_modules/intl-tel-input/build/img/flags@2x.png": {
+      "name": "node_modules/intl-tel-input/build/img/flags@2x.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/node_modules/intl-tel-input/build/img/flags@2x.png",
+      "publicPath": "/static/node_modules/intl-tel-input/build/img/flags@2x.png"
+    },
+    "sw.js": {
+      "name": "sw.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/sw.js",
+      "publicPath": "/static/sw.js"
+    },
+    "sw.js.map": {
+      "name": "sw.js.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/sw.js.map",
+      "publicPath": "/static/sw.js.map"
+    },
+    "vendors/images/about/about-hero.svg": {
+      "name": "vendors/images/about/about-hero.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/about/about-hero.svg",
+      "publicPath": "/static/vendors/images/about/about-hero.svg"
+    },
+    "vendors/images/about/accessibility.svg": {
+      "name": "vendors/images/about/accessibility.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/about/accessibility.svg",
+      "publicPath": "/static/vendors/images/about/accessibility.svg"
+    },
+    "vendors/images/about/growth.svg": {
+      "name": "vendors/images/about/growth.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/about/growth.svg",
+      "publicPath": "/static/vendors/images/about/growth.svg"
+    },
+    "vendors/images/about/nigeria-map.png": {
+      "name": "vendors/images/about/nigeria-map.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/about/nigeria-map.png",
+      "publicPath": "/static/vendors/images/about/nigeria-map.png"
+    },
+    "vendors/images/about/shop.svg": {
+      "name": "vendors/images/about/shop.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/about/shop.svg",
+      "publicPath": "/static/vendors/images/about/shop.svg"
+    },
+    "vendors/images/accounts/googlefacebook.jpeg": {
+      "name": "vendors/images/accounts/googlefacebook.jpeg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/accounts/googlefacebook.jpeg",
+      "publicPath": "/static/vendors/images/accounts/googlefacebook.jpeg"
+    },
+    "vendors/images/accounts/left-driver.jpeg": {
+      "name": "vendors/images/accounts/left-driver.jpeg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/accounts/left-driver.jpeg",
+      "publicPath": "/static/vendors/images/accounts/left-driver.jpeg"
+    },
+    "vendors/images/accounts/login.jpg": {
+      "name": "vendors/images/accounts/login.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/accounts/login.jpg",
+      "publicPath": "/static/vendors/images/accounts/login.jpg"
+    },
+    "vendors/images/accounts/others.jpg": {
+      "name": "vendors/images/accounts/others.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/accounts/others.jpg",
+      "publicPath": "/static/vendors/images/accounts/others.jpg"
+    },
+    "vendors/images/apple-store.svg": {
+      "name": "vendors/images/apple-store.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/apple-store.svg",
+      "publicPath": "/static/vendors/images/apple-store.svg"
+    },
+    "vendors/images/blank-profile.webp": {
+      "name": "vendors/images/blank-profile.webp",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/blank-profile.webp",
+      "publicPath": "/static/vendors/images/blank-profile.webp"
+    },
+    "vendors/images/business/business-bg.svg": {
+      "name": "vendors/images/business/business-bg.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/business/business-bg.svg",
+      "publicPath": "/static/vendors/images/business/business-bg.svg"
+    },
+    "vendors/images/business/female-driver.jpg": {
+      "name": "vendors/images/business/female-driver.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/business/female-driver.jpg",
+      "publicPath": "/static/vendors/images/business/female-driver.jpg"
+    },
+    "vendors/images/business/how-to-use1.jpg": {
+      "name": "vendors/images/business/how-to-use1.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/business/how-to-use1.jpg",
+      "publicPath": "/static/vendors/images/business/how-to-use1.jpg"
+    },
+    "vendors/images/business/how-to-use2.jpg": {
+      "name": "vendors/images/business/how-to-use2.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/business/how-to-use2.jpg",
+      "publicPath": "/static/vendors/images/business/how-to-use2.jpg"
+    },
+    "vendors/images/business/how-to-use3.jpg": {
+      "name": "vendors/images/business/how-to-use3.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/business/how-to-use3.jpg",
+      "publicPath": "/static/vendors/images/business/how-to-use3.jpg"
+    },
+    "vendors/images/business/image1.jpg": {
+      "name": "vendors/images/business/image1.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/business/image1.jpg",
+      "publicPath": "/static/vendors/images/business/image1.jpg"
+    },
+    "vendors/images/business/image2.jpg": {
+      "name": "vendors/images/business/image2.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/business/image2.jpg",
+      "publicPath": "/static/vendors/images/business/image2.jpg"
+    },
+    "vendors/images/card/american-express.svg": {
+      "name": "vendors/images/card/american-express.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/card/american-express.svg",
+      "publicPath": "/static/vendors/images/card/american-express.svg"
+    },
+    "vendors/images/card/aura.png": {
+      "name": "vendors/images/card/aura.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/card/aura.png",
+      "publicPath": "/static/vendors/images/card/aura.png"
+    },
+    "vendors/images/card/diners.svg": {
+      "name": "vendors/images/card/diners.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/card/diners.svg",
+      "publicPath": "/static/vendors/images/card/diners.svg"
+    },
+    "vendors/images/card/discover.svg": {
+      "name": "vendors/images/card/discover.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/card/discover.svg",
+      "publicPath": "/static/vendors/images/card/discover.svg"
+    },
+    "vendors/images/card/master.svg": {
+      "name": "vendors/images/card/master.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/card/master.svg",
+      "publicPath": "/static/vendors/images/card/master.svg"
+    },
+    "vendors/images/card/verve.svg": {
+      "name": "vendors/images/card/verve.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/card/verve.svg",
+      "publicPath": "/static/vendors/images/card/verve.svg"
+    },
+    "vendors/images/card/visa.svg": {
+      "name": "vendors/images/card/visa.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/card/visa.svg",
+      "publicPath": "/static/vendors/images/card/visa.svg"
+    },
+    "vendors/images/careers/growth.svg": {
+      "name": "vendors/images/careers/growth.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/careers/growth.svg",
+      "publicPath": "/static/vendors/images/careers/growth.svg"
+    },
+    "vendors/images/careers/impact.svg": {
+      "name": "vendors/images/careers/impact.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/careers/impact.svg",
+      "publicPath": "/static/vendors/images/careers/impact.svg"
+    },
+    "vendors/images/careers/money.svg": {
+      "name": "vendors/images/careers/money.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/careers/money.svg",
+      "publicPath": "/static/vendors/images/careers/money.svg"
+    },
+    "vendors/images/careers/team.svg": {
+      "name": "vendors/images/careers/team.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/careers/team.svg",
+      "publicPath": "/static/vendors/images/careers/team.svg"
+    },
+    "vendors/images/cities/cities-bg.png": {
+      "name": "vendors/images/cities/cities-bg.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/cities/cities-bg.png",
+      "publicPath": "/static/vendors/images/cities/cities-bg.png"
+    },
+    "vendors/images/dropsridepin.png": {
+      "name": "vendors/images/dropsridepin.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/dropsridepin.png",
+      "publicPath": "/static/vendors/images/dropsridepin.png"
+    },
+    "vendors/images/favicon/favicon.png": {
+      "name": "vendors/images/favicon/favicon.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/favicon/favicon.png",
+      "publicPath": "/static/vendors/images/favicon/favicon.png"
+    },
+    "vendors/images/favicons/favicon.ico": {
+      "name": "vendors/images/favicons/favicon.ico",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/favicons/favicon.ico",
+      "publicPath": "/static/vendors/images/favicons/favicon.ico"
+    },
+    "vendors/images/footer-bg.svg": {
+      "name": "vendors/images/footer-bg.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/footer-bg.svg",
+      "publicPath": "/static/vendors/images/footer-bg.svg"
+    },
+    "vendors/images/home/car.svg": {
+      "name": "vendors/images/home/car.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/car.svg",
+      "publicPath": "/static/vendors/images/home/car.svg"
+    },
+    "vendors/images/home/hero-2.png": {
+      "name": "vendors/images/home/hero-2.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/hero-2.png",
+      "publicPath": "/static/vendors/images/home/hero-2.png"
+    },
+    "vendors/images/home/hero-image.jpg": {
+      "name": "vendors/images/home/hero-image.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/hero-image.jpg",
+      "publicPath": "/static/vendors/images/home/hero-image.jpg"
+    },
+    "vendors/images/home/mockup.jpg": {
+      "name": "vendors/images/home/mockup.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/mockup.jpg",
+      "publicPath": "/static/vendors/images/home/mockup.jpg"
+    },
+    "vendors/images/home/ride-info.png": {
+      "name": "vendors/images/home/ride-info.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/ride-info.png",
+      "publicPath": "/static/vendors/images/home/ride-info.png"
+    },
+    "vendors/images/home/shield.svg": {
+      "name": "vendors/images/home/shield.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/shield.svg",
+      "publicPath": "/static/vendors/images/home/shield.svg"
+    },
+    "vendors/images/home/smiley.svg": {
+      "name": "vendors/images/home/smiley.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/smiley.svg",
+      "publicPath": "/static/vendors/images/home/smiley.svg"
+    },
+    "vendors/images/home/support.svg": {
+      "name": "vendors/images/home/support.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/support.svg",
+      "publicPath": "/static/vendors/images/home/support.svg"
+    },
+    "vendors/images/home/works1.gif": {
+      "name": "vendors/images/home/works1.gif",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/works1.gif",
+      "publicPath": "/static/vendors/images/home/works1.gif"
+    },
+    "vendors/images/home/works2.gif": {
+      "name": "vendors/images/home/works2.gif",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/works2.gif",
+      "publicPath": "/static/vendors/images/home/works2.gif"
+    },
+    "vendors/images/home/works3.gif": {
+      "name": "vendors/images/home/works3.gif",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/works3.gif",
+      "publicPath": "/static/vendors/images/home/works3.gif"
+    },
+    "vendors/images/home/works4.gif": {
+      "name": "vendors/images/home/works4.gif",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/works4.gif",
+      "publicPath": "/static/vendors/images/home/works4.gif"
+    },
+    "vendors/images/home/yellow-streets.png": {
+      "name": "vendors/images/home/yellow-streets.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/home/yellow-streets.png",
+      "publicPath": "/static/vendors/images/home/yellow-streets.png"
+    },
+    "vendors/images/icons/destination.png": {
+      "name": "vendors/images/icons/destination.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/destination.png",
+      "publicPath": "/static/vendors/images/icons/destination.png"
+    },
+    "vendors/images/icons/driver.png": {
+      "name": "vendors/images/icons/driver.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/driver.png",
+      "publicPath": "/static/vendors/images/icons/driver.png"
+    },
+    "vendors/images/icons/facebook-black.svg": {
+      "name": "vendors/images/icons/facebook-black.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/facebook-black.svg",
+      "publicPath": "/static/vendors/images/icons/facebook-black.svg"
+    },
+    "vendors/images/icons/facebook.svg": {
+      "name": "vendors/images/icons/facebook.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/facebook.svg",
+      "publicPath": "/static/vendors/images/icons/facebook.svg"
+    },
+    "vendors/images/icons/instagram-black.svg": {
+      "name": "vendors/images/icons/instagram-black.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/instagram-black.svg",
+      "publicPath": "/static/vendors/images/icons/instagram-black.svg"
+    },
+    "vendors/images/icons/instagram.svg": {
+      "name": "vendors/images/icons/instagram.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/instagram.svg",
+      "publicPath": "/static/vendors/images/icons/instagram.svg"
+    },
+    "vendors/images/icons/linkedin-black.svg": {
+      "name": "vendors/images/icons/linkedin-black.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/linkedin-black.svg",
+      "publicPath": "/static/vendors/images/icons/linkedin-black.svg"
+    },
+    "vendors/images/icons/linkedin.svg": {
+      "name": "vendors/images/icons/linkedin.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/linkedin.svg",
+      "publicPath": "/static/vendors/images/icons/linkedin.svg"
+    },
+    "vendors/images/icons/passenger.png": {
+      "name": "vendors/images/icons/passenger.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/passenger.png",
+      "publicPath": "/static/vendors/images/icons/passenger.png"
+    },
+    "vendors/images/icons/twitter-black.svg": {
+      "name": "vendors/images/icons/twitter-black.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/twitter-black.svg",
+      "publicPath": "/static/vendors/images/icons/twitter-black.svg"
+    },
+    "vendors/images/icons/twitter.svg": {
+      "name": "vendors/images/icons/twitter.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/twitter.svg",
+      "publicPath": "/static/vendors/images/icons/twitter.svg"
+    },
+    "vendors/images/icons/youtube-black.svg": {
+      "name": "vendors/images/icons/youtube-black.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/youtube-black.svg",
+      "publicPath": "/static/vendors/images/icons/youtube-black.svg"
+    },
+    "vendors/images/icons/youtube.svg": {
+      "name": "vendors/images/icons/youtube.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/icons/youtube.svg",
+      "publicPath": "/static/vendors/images/icons/youtube.svg"
+    },
+    "vendors/images/logo-dark.png": {
+      "name": "vendors/images/logo-dark.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/logo-dark.png",
+      "publicPath": "/static/vendors/images/logo-dark.png"
+    },
+    "vendors/images/logo-light.png": {
+      "name": "vendors/images/logo-light.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/logo-light.png",
+      "publicPath": "/static/vendors/images/logo-light.png"
+    },
+    "vendors/images/logo-yellow.png": {
+      "name": "vendors/images/logo-yellow.png",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/logo-yellow.png",
+      "publicPath": "/static/vendors/images/logo-yellow.png"
+    },
+    "vendors/images/logo.svg": {
+      "name": "vendors/images/logo.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/logo.svg",
+      "publicPath": "/static/vendors/images/logo.svg"
+    },
+    "vendors/images/lottie/career.json": {
+      "name": "vendors/images/lottie/career.json",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/lottie/career.json",
+      "publicPath": "/static/vendors/images/lottie/career.json"
+    },
+    "vendors/images/lottie/under-construction.json": {
+      "name": "vendors/images/lottie/under-construction.json",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/lottie/under-construction.json",
+      "publicPath": "/static/vendors/images/lottie/under-construction.json"
+    },
+    "vendors/images/play-store.svg": {
+      "name": "vendors/images/play-store.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/play-store.svg",
+      "publicPath": "/static/vendors/images/play-store.svg"
+    },
+    "vendors/images/resources/redis-logo.svg": {
+      "name": "vendors/images/resources/redis-logo.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/resources/redis-logo.svg",
+      "publicPath": "/static/vendors/images/resources/redis-logo.svg"
+    },
+    "vendors/images/resources/sentry-logo.svg": {
+      "name": "vendors/images/resources/sentry-logo.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/resources/sentry-logo.svg",
+      "publicPath": "/static/vendors/images/resources/sentry-logo.svg"
+    },
+    "vendors/images/support/contact-us.svg": {
+      "name": "vendors/images/support/contact-us.svg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/support/contact-us.svg",
+      "publicPath": "/static/vendors/images/support/contact-us.svg"
+    },
+    "vendors/images/support/convenient-rider.jpg": {
+      "name": "vendors/images/support/convenient-rider.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/support/convenient-rider.jpg",
+      "publicPath": "/static/vendors/images/support/convenient-rider.jpg"
+    },
+    "vendors/images/support/support.jpg": {
+      "name": "vendors/images/support/support.jpg",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/images/support/support.jpg",
+      "publicPath": "/static/vendors/images/support/support.jpg"
+    },
+    "vendors/js/enviroments.js": {
+      "name": "vendors/js/enviroments.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/js/enviroments.js",
+      "publicPath": "/static/vendors/js/enviroments.js"
+    },
+    "vendors/js/notify.js": {
+      "name": "vendors/js/notify.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/vendors/js/notify.js",
+      "publicPath": "/static/vendors/js/notify.js"
+    }
+  },
+  "chunks": {
+    "project": [
+      "js/runtime.7231cd9e.js",
+      "js/114.8b578d61.js",
+      "css/114.1d481bfbb3bf8c9ae53c.css",
+      "js/project.625ea3f3.js",
+      "css/project.8c5b220bf6f482881a90.css"
+    ]
+  },
+  "publicPath": "/static/"
+}

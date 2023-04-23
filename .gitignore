@@ -289,3 +289,5 @@ cert.pem
 cert.crt
 cert.key
 key.pem
+
+!webpack-stats.json
