@@ -41,7 +41,7 @@ module.exports = {
         light: '#E2E2E2',
         body: '#f7f9fc',
         debug: "#636363",
-        warning: '#FBEE22', //'#F7C300',
+        warning: '#F7C300',
         primary: "#1070CA",
         info: "#56A4EC",
         danger: '#FF0000',
