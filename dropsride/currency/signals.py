@@ -23,8 +23,6 @@ def invalidate_cache_if_new_bank_is_added(sender, instance, created, **kwargs):
 def create_default_localization_and_invalidate_cache_on_new_stated_added(
     sender, instance, created, **kwargs
 ):
-    if not Localization.objects.filter(state=instance).exists():
-        Localization.objects.create(state=instance)
+
     if created:
-        Localization.objects.create(state=instance)
         cache.clear()

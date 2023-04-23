@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand
 from django.utils.translation import gettext_lazy as _
 
 from dropsride.currency.models import States
+from dropsride.settings.models import Localization
 # from requests_html import HTMLSession
 from dropsride.utils.logger import LOGGER
 
@@ -32,7 +33,8 @@ class Command(BaseCommand):
         if res["statusCode"] == 200:
             for response in res["data"]:
                 try:
-                    States.objects.create(state=response["state"], country_iso="NG")
+                    instance = States.objects.get_or_create(state=response["state"], country_iso="NG")
+                    Localization.objects.create(state=instance)
                     LOGGER.info(f"Successfully added {response['state']}")
                 except Exception as e:
                     LOGGER.error(e)
