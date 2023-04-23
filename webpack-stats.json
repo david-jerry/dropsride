@@ -196,45 +196,55 @@
       "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/assets/mstile-70x70.png",
       "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/assets/mstile-70x70.png"
     },
-    "css/114.1d481bfbb3bf8c9ae53c.css": {
-      "name": "css/114.1d481bfbb3bf8c9ae53c.css",
-      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/114.1d481bfbb3bf8c9ae53c.css",
-      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/css/114.1d481bfbb3bf8c9ae53c.css"
+    "css/186.fd0b319098282d1ad7fb.css": {
+      "name": "css/186.fd0b319098282d1ad7fb.css",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/186.fd0b319098282d1ad7fb.css",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/css/186.fd0b319098282d1ad7fb.css"
     },
-    "css/project.8c5b220bf6f482881a90.css": {
-      "name": "css/project.8c5b220bf6f482881a90.css",
-      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/project.8c5b220bf6f482881a90.css",
-      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/css/project.8c5b220bf6f482881a90.css"
+    "css/186.fd0b319098282d1ad7fb.css.map": {
+      "name": "css/186.fd0b319098282d1ad7fb.css.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/186.fd0b319098282d1ad7fb.css.map",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/css/186.fd0b319098282d1ad7fb.css.map"
+    },
+    "css/project.677ee9c5492b583cad30.css": {
+      "name": "css/project.677ee9c5492b583cad30.css",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/project.677ee9c5492b583cad30.css",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/css/project.677ee9c5492b583cad30.css"
+    },
+    "css/project.677ee9c5492b583cad30.css.map": {
+      "name": "css/project.677ee9c5492b583cad30.css.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/css/project.677ee9c5492b583cad30.css.map",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/css/project.677ee9c5492b583cad30.css.map"
     },
     "index.html": {
       "name": "index.html",
       "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/index.html",
       "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/index.html"
     },
-    "js/114.8b578d61.js": {
-      "name": "js/114.8b578d61.js",
-      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/114.8b578d61.js",
-      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/114.8b578d61.js"
+    "js/186.7454792c.js": {
+      "name": "js/186.7454792c.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/186.7454792c.js",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/186.7454792c.js"
     },
-    "js/114.8b578d61.js.LICENSE.txt": {
-      "name": "js/114.8b578d61.js.LICENSE.txt",
-      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/114.8b578d61.js.LICENSE.txt",
-      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/114.8b578d61.js.LICENSE.txt"
+    "js/186.7454792c.js.LICENSE.txt": {
+      "name": "js/186.7454792c.js.LICENSE.txt",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/186.7454792c.js.LICENSE.txt",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/186.7454792c.js.LICENSE.txt"
     },
-    "js/114.8b578d61.js.map": {
-      "name": "js/114.8b578d61.js.map",
-      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/114.8b578d61.js.map",
-      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/114.8b578d61.js.map"
+    "js/186.7454792c.js.map": {
+      "name": "js/186.7454792c.js.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/186.7454792c.js.map",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/186.7454792c.js.map"
     },
-    "js/project.625ea3f3.js": {
-      "name": "js/project.625ea3f3.js",
-      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/project.625ea3f3.js",
-      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.625ea3f3.js"
+    "js/project.e8b7ea53.js": {
+      "name": "js/project.e8b7ea53.js",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/project.e8b7ea53.js",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.e8b7ea53.js"
     },
-    "js/project.625ea3f3.js.map": {
-      "name": "js/project.625ea3f3.js.map",
-      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/project.625ea3f3.js.map",
-      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.625ea3f3.js.map"
+    "js/project.e8b7ea53.js.map": {
+      "name": "js/project.e8b7ea53.js.map",
+      "path": "/home/darkcodr/www/darkcodr/dropsride/dropsride/static/bundles/js/project.e8b7ea53.js.map",
+      "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.e8b7ea53.js.map"
     },
     "js/runtime.7231cd9e.js": {
       "name": "js/runtime.7231cd9e.js",
@@ -645,10 +655,10 @@
   "chunks": {
     "project": [
       "js/runtime.7231cd9e.js",
-      "js/114.8b578d61.js",
-      "css/114.1d481bfbb3bf8c9ae53c.css",
-      "js/project.625ea3f3.js",
-      "css/project.8c5b220bf6f482881a90.css"
+      "js/186.7454792c.js",
+      "css/186.fd0b319098282d1ad7fb.css",
+      "js/project.e8b7ea53.js",
+      "css/project.677ee9c5492b583cad30.css"
     ]
   },
   "publicPath": "https://dropsride-bucket.s3.amazonaws.com/static/"

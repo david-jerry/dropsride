@@ -1,7 +1,8 @@
 const { merge } = require("webpack-merge");
 const commonConfig = require("./common.config");
 const Webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 
 // This variable should mirror the one from config/settings/production.py
 const staticUrl = "https://dropsride-bucket.s3.amazonaws.com/static/";
@@ -19,9 +20,9 @@ module.exports = merge(commonConfig, {
     new Webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),
-    new MiniCssExtractPlugin({
-      filename: "css/[name].[contenthash].css",
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "css/[name].[contenthash].css",
+    // }),
   ],
   module: {
     rules: [
@@ -30,15 +31,15 @@ module.exports = merge(commonConfig, {
         exclude: /node_modules/,
         use: "babel-loader",
       },
-      {
-        test: /\.s?css/i,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader",
-        ],
-      },
+      // {
+      //   test: /\.s?css/i,
+      //   use: [
+      //     MiniCssExtractPlugin.loader,
+      //     "css-loader",
+      //     "postcss-loader",
+      //     "sass-loader",
+      //   ],
+      // },
     ],
   },
 });
