@@ -34,7 +34,8 @@ class Command(BaseCommand):
             for response in res["data"]:
                 try:
                     instance = States.objects.get_or_create(state=response["state"], country_iso="NG")
-                    Localization.objects.create(state=instance.id)
+                    LOGGER.info(instance[0].id)
+                    Localization.objects.create(state=instance[0])
                     LOGGER.info(f"Successfully added {response['state']}")
                 except Exception as e:
                     LOGGER.error(e)

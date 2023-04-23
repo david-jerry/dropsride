@@ -16,8 +16,9 @@ from .models import CarType, Localization
 
 @receiver(pre_save, sender=Localization)
 def invalidate_other_caches_on_localization_change(sender, instance, **kwargs):
-    if is_uuid_model_instance_changed(instance):
-        cache.clear()
+    if Localization.objects.filter(state=instance.state).exists():
+        if is_uuid_model_instance_changed(instance):
+            cache.clear()
 
 
 @receiver(post_save, sender=Localization)
