@@ -240,18 +240,18 @@ def send_next_of_kin_email_to_verify(sender, instance, created, **kwargs):
 
 @receiver(user_signed_up)
 def create_referral_member(request, user, **kwargs):
-    payload = {
-        "head": "NEW REFERRAL",
-        "body": f"{user.username} has successfully been added to your referral list.",
-        "icon": static("vendors/images/favicon/favicon.png"),
-        # add url if there is a link to visit from the push notification
-        "url": f"http://localhost:8000/{recommender.get_absolute_url()}"
-        if not settings.PRODUCTION
-        else f"https://dropsride.com/{recommender.get_absolute_url()}",
-    }
     if request.session.get("recommender"):
         user_id = request.session.get("recommender")
         recommender = get_object_or_404(User, kwargs={"id": user_id})
+        payload = {
+            "head": "NEW REFERRAL",
+            "body": f"{user.username} has successfully been added to your referral list.",
+            "icon": static("vendors/images/favicon/favicon.png"),
+            # add url if there is a link to visit from the push notification
+            "url": f"http://localhost:8000/{recommender.get_absolute_url()}"
+            if not settings.PRODUCTION
+            else f"https://dropsride.com/{recommender.get_absolute_url()}",
+        }
         user.recommended_by = recommender
         user.save(update_fields=["recommended_by"])
         recommender.ref_bonus.add_bonus()
@@ -281,6 +281,15 @@ def create_referral_member(request, user, **kwargs):
     elif user.recommended_by:
         recommender = user.recommended_by
         recommender.ref_bonus.add_bonus()
+        payload = {
+            "head": "NEW REFERRAL",
+            "body": f"{user.username} has successfully been added to your referral list.",
+            "icon": static("vendors/images/favicon/favicon.png"),
+            # add url if there is a link to visit from the push notification
+            "url": f"http://localhost:8000/{recommender.get_absolute_url()}"
+            if not settings.PRODUCTION
+            else f"https://dropsride.com/{recommender.get_absolute_url()}",
+        }
         if recommender.settings.push_notification:
             send_user_notification(user=recommender, payload=payload, ttl=1000)
 
