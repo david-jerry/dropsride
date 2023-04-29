@@ -2,11 +2,11 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.views.generic.edit import FormMixin
 
-from dropsride.settings.forms import CartypeForm, LocalizationForm
-from dropsride.settings.models import CarType, Localization
+from dropsride.settings.forms import CartypeForm, LocalizationForm, PromoForm
+from dropsride.settings.models import CarType, Localization, Promo
 from dropsride.users.mixins import LoginRequiredMixin, StaffRequiredMixin
 from dropsride.utils.logger import LOGGER
 
@@ -120,3 +120,62 @@ class CarTypeUpdateView(StaffRequiredMixin, UpdateView):
 
 
 car_types_update = CarTypeUpdateView.as_view()
+
+
+class PromoList(LoginRequiredMixin, FormMixin, ListView):
+    model = Promo
+    paginate_by = 10
+    allow_empty = True
+    context_object_name = "objects"
+    page_kwarg = "page"
+    template_name = "admin/promo/list.html"
+    form_class = CartypeForm
+
+    def get_template_names(self):
+        if not self.request.htmx:
+            LOGGER.info("serving from request without htmx")
+            return "admin/promo/list.html"
+        elif self.request.htmx:
+            LOGGER.info("serving from request with htmx")
+            return "admin/promo/snippets/list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = PromoForm()
+        return context
+
+
+promo_list = PromoList.as_view()
+
+
+class PromoDetailView(StaffRequiredMixin, DetailView):
+    template_name = "admin/promo/detail.html"
+    model = Promo
+    slug_field = "code"
+    slug_url_kwarg = "code"
+
+
+promos_detail = PromoDetailView.as_view()
+
+
+class PromoUpdateView(StaffRequiredMixin, UpdateView):
+    template_name = "admin/promo/snippets/update.html"
+    model = Promo
+    form_class = PromoForm
+    slug_field = "code"
+    slug_url_kwarg = "code"
+
+    def get_object(self):
+        return get_object_or_404(Promo, code=self.args["code"])
+
+
+promos_update = PromoUpdateView.as_view()
+
+
+class PromoCreateView(StaffRequiredMixin, CreateView):
+    template_name = "admin/promo/snippets/create.html"
+    model = Promo
+    form_class = PromoForm
+
+
+promos_create = PromoCreateView.as_view()

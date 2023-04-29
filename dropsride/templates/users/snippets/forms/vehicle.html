@@ -1,0 +1,67 @@
+<form id="vehicle" x-data="UserDetail" action="/api/vehicles/{{request.user.vehicle.id}}/" method="post" class="space-y-5 pb-14" enctype="multipart/form-data" x-ref="vehicleForm" @submit.prevent="vehicleForm" data-token="{{request.user.token}}">
+  <div class="divider text-sm font-bold text-gray-400 pt-14 pb-3">Vehicle Details</div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div>
+      <label for="id_vehicle_manufacturer"  class="text-gray-300 text-sm block">Vehicle Manufacturer</label>
+      <input x-cloak x-show.transition.in="!edit" disabled name="vehicle_manufacturer" id="id_vehicle_manufacturer" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.vehicle.vehicle_manufacturer|default:''}}" >
+      <input x-cloak x-show.transition.in="edit" name="vehicle_manufacturer" id="id_vehicle_manufacturer" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.vehicle.vehicle_manufacturer|default:''}}" >
+    </div>
+    <div>
+      <label for="id_vehicle_plate_no"  class="text-gray-300 text-sm block">Vehicle Plate Number</label>
+      <input x-cloak x-show.transition.in="!edit" disabled name="vehicle_plate_no" id="id_vehicle_plate_no" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.vehicle.vehicle_plate_no}}" >
+      <input x-cloak x-show.transition.in="edit" name="vehicle_plate_no" id="id_vehicle_plate_no" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.vehicle.vehicle_plate_no}}" >
+    </div>
+    <div>
+      <label for="id_vehicle_color"  class="text-gray-300 text-sm block">Vehicle Color</label>
+      <input x-cloak x-show.transition.in="!edit" disabled name="vehicle_color" id="id_vehicle_color" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.vehicle.vehicle_color|default:''}}" >
+      <input x-cloak x-show.transition.in="edit" name="vehicle_color" id="id_vehicle_color" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.vehicle.vehicle_color|default:''}}" >
+    </div>
+    <div>
+      <label for="id_vehicle_type"  class="text-gray-300 text-sm block">Vehicle Type</label>
+      <input x-cloak x-show.transition.in="!edit" disabled name="vehicle_type" id="id_vehicle_type" type="text" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.vehicle.vehicle_type}}" >
+      <select x-cloak x-show.transition.in="edit" name="vehicle_type" id="id_vehicle_type" class="block cursor-pointer hover:shadow-xl placeholder:text-gray-400 placeholder:text-sm w-full rounded-xl text-gray-700 overflow-hidden ring-0 border border-gray-200 duration-500 focus:border focus:ring-gray-700 outline-0 focus:outline-0 px-3 focus:ring-b-warning focus:outline-b-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning">
+        {% for t in cartypes %}
+        <option value="{{t.id}}" {% if request.user.vehcile.vehicle_type.id == t.id %}selected{% endif %}>{{t.title|title}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+    <!-- button -->
+    {% if request.user == object %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {% if not request.user.vehicle.vehicle_verified %}
+      <button :disabled="loading" class="w-full group btn-rounded px-6 py-3 shadow-sm hover:shadow-xl flex items-center space-x-3 bg-gray-700 text-white duration-500 hover:space-x-5 justify-center" type="button" @click="edit =! edit">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+          <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+          <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+        </svg>
+        <span class="sr-only">Edit Bio</span>
+        <span x-cloak x-show.transition.in="!edit" class="block text-bold">Edit</span>
+        <span x-cloak x-show.transition.in="edit" class="block text-bold">Cancel</span>
+      </button>
+      {% endif %}
+      <button x-cloak x-show.transition.in="edit" :disabled="loading" id="submitForm" class="w-full group btn-rounded px-6 py-3 shadow-sm hover:shadow-xl flex items-center space-x-3 bg-warning duration-500 hover:space-x-5 justify-center" type="submit" >
+
+        <strong class="block text-sm font-bold uppercase" x-text="updateVehicleText"></strong>
+
+        <svg x-show.transition="!loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 group-hover:animate-pulse duration-500 block">
+          <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+        </svg>
+
+        <div role="status" x-show.transition="loading">
+          <svg aria-hidden="true" class="w-4 h-4 text-white animate-spin dark:text-gray-600 fill-warning"
+            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor" />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill" />
+          </svg>
+          <span class="sr-only">Loading...</span>
+        </div>
+      </button>
+    </div>
+    {% endif %}
+</form>

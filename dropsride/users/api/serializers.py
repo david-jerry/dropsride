@@ -4,10 +4,8 @@ from difflib import SequenceMatcher
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer, PasswordResetSerializer
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.forms import PasswordResetForm
 from django.core.cache import cache
 from django.utils.translation import gettext_lazy as _
-from ipware import get_client_ip
 from rest_framework import exceptions, serializers
 
 from config.mixins import (
@@ -18,8 +16,6 @@ from config.mixins import (
     phoneVerify,
 )
 from dropsride.core.tasks import send_html_email
-from dropsride.currency.models import Banks
-from dropsride.tickets.models import TicketPlans, TicketSubscription
 from dropsride.users.models import (
     BankAccount,
     NextOfKin,
@@ -202,6 +198,8 @@ class VerifiedDocumentsSerializer(serializers.ModelSerializer):
     # TODO: Create validation to validate the license of the user and ensure the validated data bears a strong similarity to the user
 
     def validate_license_exp(self, value):
+        LOGGER.info(value)
+        LOGGER.info(date.today())
         if value < date.today():
             raise serializers.ValidationError("License has already expired")
         return value

@@ -38,18 +38,18 @@
   "assets/mstile-70x70.png": "https://dropsride-bucket.s3.amazonaws.com/static/assets/mstile-70x70.png",
   "css/186.fd0b319098282d1ad7fb.css": "https://dropsride-bucket.s3.amazonaws.com/static/css/186.fd0b319098282d1ad7fb.css",
   "css/186.fd0b319098282d1ad7fb.css.map": "https://dropsride-bucket.s3.amazonaws.com/static/css/186.fd0b319098282d1ad7fb.css.map",
-  "css/project.677ee9c5492b583cad30.css.map": "https://dropsride-bucket.s3.amazonaws.com/static/css/project.677ee9c5492b583cad30.css.map",
+  "css/project.20d520008ec3e4d3ce5a.css.map": "https://dropsride-bucket.s3.amazonaws.com/static/css/project.20d520008ec3e4d3ce5a.css.map",
   "entrypoints": {
     "project": {
       "assets": {
         "js": [
           "https://dropsride-bucket.s3.amazonaws.com/static/js/runtime.7231cd9e.js",
           "https://dropsride-bucket.s3.amazonaws.com/static/js/186.7454792c.js",
-          "https://dropsride-bucket.s3.amazonaws.com/static/js/project.7a2567c7.js"
+          "https://dropsride-bucket.s3.amazonaws.com/static/js/project.d687dc55.js"
         ],
         "css": [
           "https://dropsride-bucket.s3.amazonaws.com/static/css/186.fd0b319098282d1ad7fb.css",
-          "https://dropsride-bucket.s3.amazonaws.com/static/css/project.677ee9c5492b583cad30.css"
+          "https://dropsride-bucket.s3.amazonaws.com/static/css/project.20d520008ec3e4d3ce5a.css"
         ]
       }
     }
@@ -60,12 +60,12 @@
   "js/186.7454792c.js": "https://dropsride-bucket.s3.amazonaws.com/static/js/186.7454792c.js",
   "js/186.7454792c.js.LICENSE.txt": "https://dropsride-bucket.s3.amazonaws.com/static/js/186.7454792c.js.LICENSE.txt",
   "js/186.7454792c.js.map": "https://dropsride-bucket.s3.amazonaws.com/static/js/186.7454792c.js.map",
-  "js/project.7a2567c7.js.map": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.7a2567c7.js.map",
+  "js/project.d687dc55.js.map": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.d687dc55.js.map",
   "js/runtime.7231cd9e.js.map": "https://dropsride-bucket.s3.amazonaws.com/static/js/runtime.7231cd9e.js.map",
   "node_modules/intl-tel-input/build/img/flags.png": "https://dropsride-bucket.s3.amazonaws.com/static/node_modules/intl-tel-input/build/img/flags.png",
   "node_modules/intl-tel-input/build/img/flags@2x.png": "https://dropsride-bucket.s3.amazonaws.com/static/node_modules/intl-tel-input/build/img/flags@2x.png",
-  "project.css": "https://dropsride-bucket.s3.amazonaws.com/static/css/project.677ee9c5492b583cad30.css",
-  "project.js": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.7a2567c7.js",
+  "project.css": "https://dropsride-bucket.s3.amazonaws.com/static/css/project.20d520008ec3e4d3ce5a.css",
+  "project.js": "https://dropsride-bucket.s3.amazonaws.com/static/js/project.d687dc55.js",
   "runtime.js": "https://dropsride-bucket.s3.amazonaws.com/static/js/runtime.7231cd9e.js",
   "sw.js": "https://dropsride-bucket.s3.amazonaws.com/static/sw.js",
   "sw.js.map": "https://dropsride-bucket.s3.amazonaws.com/static/sw.js.map",

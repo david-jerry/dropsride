@@ -11,7 +11,11 @@ from dropsride.blog.api.views import NewsViewset, TagViewset
 from dropsride.careers.api.views import ApplicantViewSet, CareerViewSet, TeamViewSet
 from dropsride.core.api.views import ContactView
 from dropsride.currency.api.views import BanksViewSet, CurrencyViewSet, StatesViewSet
-from dropsride.settings.api.views import CartypeViewset, LocalizationViewset
+from dropsride.settings.api.views import (
+    CartypeViewset,
+    LocalizationViewset,
+    PromoViewSet,
+)
 from dropsride.tickets.api.views import PlansViewset, SubscriptionViewset
 from dropsride.transactions.api.views import TransactionViewSet
 from dropsride.users.api.views import (
@@ -37,10 +41,11 @@ router.register("teams", TeamViewSet, basename="department")
 router.register("applicants", ApplicantViewSet, basename="applicant")
 router.register("careers", CareerViewSet, basename="career")
 
-router.register("subscription", SubscriptionViewset, basename="subscription")
+router.register("subscriptions", SubscriptionViewset, basename="subscription")
 router.register("transactions", TransactionViewSet, basename="transaction")
 router.register("localizations", LocalizationViewset, basename="localization")
 router.register("cartypes", CartypeViewset, basename="cartype")
+router.register("promos", PromoViewSet, basename="promo")
 
 router.register("settings", SettingsViewSet)
 router.register("nok", NextOfKinViewSet)

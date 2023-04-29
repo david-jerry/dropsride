@@ -135,11 +135,11 @@ class TicketSubscription(TimeStampedModel):
 
     @property
     def ticket_amount(self):
-        if self.plan is not None and self.driver.wallet.currency.code == "NGN":
+        if self.plan is not None and self.driver.wallet.currency.code != "USD":
             return (
                 self.plan.pay_amount * int(round(self.driver.wallet.currency.price))
             ) * 100
-        return 0
+        return self.plan.pay_amount * 100
 
     def get_queryset(self):
         return self.__class__.objects.filter(user=self.user)

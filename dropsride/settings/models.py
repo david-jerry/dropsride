@@ -136,3 +136,52 @@ class CarType(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse("settings:cartype_detail", kwargs={"slug": self.slug})
+
+
+# Promo codes to be created by the staffs alone
+class Promo(TimeStampedModel):
+    name = CharField(max_length=100)
+    code = CharField(max_length=8, blank=True)
+    description = HTMLField()
+    discount_percent = DecimalField(max_digits=5, decimal_places=2)
+    discount_rides = DecimalField(max_digits=5, decimal_places=2)
+    # to be used after the user has taken a certain amount of rides
+    rides_count = IntegerField()
+    # to be used for given amount of rides over a given duration
+    usage_count = IntegerField()
+    start_date = DateField()
+    end_date = DateField()
+
+    @property
+    def subscribers_count(self):
+        if self.promo_subscribers:
+            return self.promo_subscribers.all().count()
+        return 0
+
+    @property
+    def subscribers(self):
+        if self.promo_subscribers:
+            return self.promo_subscribers.all()
+        return []
+
+    @property
+    def is_active(self):
+        if date.today() >= self.end_date:
+            return True
+        return False
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class PromoUsage(TimeStampedModel):
+    promo = ForeignKey(Promo, on_delete=CASCADE, related_name="promo_subscribers")
+    subscriber = ForeignKey(User, on_delete=CASCADE, related_name="promo_subscribers")
+    used = BooleanField(default=False)
+    used_date = DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.promo} {self.subscriber.username}"
+
+    class Meta:
+        unique_together = ("promo", "subscriber")

@@ -57,6 +57,12 @@ def delete_cache_for_users(sender, instance, *args, **kwargs):
             cache.delete(f"all_users")
         cache.delete_pattern("documents:*")
 
+@receiver(post_save, sender=VerifiedDocuments)
+def expire_license(sender, created, instance, *args, **kwargs):
+    if instance.license_exp < date.today():
+        instance.expired_license()
+
+
 
 @receiver(post_save, sender=Wallet)
 def calculate_margin(sender, instance, created, **kwargs):

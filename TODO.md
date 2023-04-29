@@ -1,5 +1,7 @@
 # PROJECT TODO
 
+- [ ] # TODO: Add ride count to users model so as to cross check against the promo condition in settings
+
 - [ ] # TODO: Create validation to validate the license of the user and ensure the validated data bears a strong similarity to the user
 
 - [ ] TODO: Create validator to validate the bank account number and check the nameon the bank account with the user's name if valid updates the user's bank_verified status to True else it stays false

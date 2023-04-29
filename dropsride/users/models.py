@@ -39,8 +39,8 @@ class User(AbstractUser):
 
     MALE = "M"
     FEMALE = "F"
-    NONE = "LGBQ"
-    GENDER = ((MALE, "MALE"), (FEMALE, "FEMALE"), (NONE, "LGBQ"))
+    NONE = "NON BINARY"
+    GENDER = ((MALE, "MALE"), (FEMALE, "FEMALE"), (NONE, "NON BINARY"))
 
     #: First and last name do not cover name patterns around the globe
     middle_name = CharField(_("Middle Name"), blank=True, max_length=255)
@@ -51,7 +51,7 @@ class User(AbstractUser):
         _("Referral Code"), max_length=500, blank=True, null=True, db_index=True
     )
     gender = CharField(
-        _("Gender"), blank=True, max_length=10, choices=GENDER, default=NONE
+        _("Gender"), blank=True, max_length=15, choices=GENDER, default=NONE
     )
 
     recommended_by = ForeignKey(
@@ -121,13 +121,13 @@ class User(AbstractUser):
     def check_verification(self):
         if (
             self.profile.profile_verified
-            and self.nok.kin_verified
             and self.documents.document_verified
             and self.vehicle.vehicle_verified
         ):
             self.is_verified = True
-            return self.save(update_fields=["is_verified"])
-        pass
+            self.save(update_fields=["is_verified"])
+            return True
+        return False
 
     # referral information
     @property
@@ -163,6 +163,7 @@ class User(AbstractUser):
         return len(self.referrals())
 
     # ride relationships
+    ## add total rides to return integer
 
     # transaction relationships
 
@@ -175,6 +176,13 @@ class User(AbstractUser):
         Returns all saved bank accounts for the user, or an empty list if no banks are saved.
         """
         return self.bank_account.filter(bank_verified=True) or []
+
+    @property
+    def get_subscribed_promos(self):
+        """
+        Return all subscribed promos for a particular user
+        """
+        return self.promo_subscribers.all() or []
 
     @property
     def get_all_cards(self):
@@ -484,7 +492,7 @@ class VerifiedDocuments(TimeStampedModel):
     )
 
     # Government approved ID
-    license = CharField(_("Drivers License"), blank=True, max_length=50, db_index=True)
+    license = CharField(_("Drivers License"), blank=True, null=True, max_length=50, db_index=True)
     license_exp = DateField(blank=True, null=True)
 
     # Vehicle Papers
@@ -514,6 +522,16 @@ class VerifiedDocuments(TimeStampedModel):
     )
 
     document_verified = BooleanField(_("Documents has been verified"), default=False)
+
+    def expired_license(self):
+        if self.license_exp > date.today():
+            self.license_exp = None
+            self.license = None
+            self.document_verified = False
+            self.save(update_fields=['license_exp', 'license', 'document_verified'])
+            return True
+        return False
+
 
     @property
     def percentage(self):
@@ -630,6 +648,10 @@ class SavedCards(TimeStampedModel):
 
     active = BooleanField(default=False)
     card_verified = BooleanField(default=False)
+
+    @property
+    def last4(self):
+        return self.card_no[12:]
 
     @property
     def exp_date(self):

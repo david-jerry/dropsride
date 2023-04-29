@@ -25,9 +25,9 @@
     <div x-data="UserDetail" id="details" class="space-y-8 bg-white shadow-lg rounded-xl w-full">
       <div class="px-4 md:px-8 border-b-2 flex items-center space-x-1 flex-none overflow-x-auto scrollbar-thin scrollbar-thumb-warning scrollbar-track-gray-300">
         <button @click="pstep = 1" :class="{'border-b-4 border-b-warning':pstep == 1, '':!pstep == 1}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Personal Details</button>
-        <button @click="pstep = 2" :class="{'border-b-4 border-b-warning':pstep == 2, '':!pstep == 2}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Next of Kin</button>
-        <button @click="pstep = 3" :class="{'border-b-4 border-b-warning':pstep == 3, '':!pstep == 3}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Bank / Card Details</button>
-        <button @click="pstep = 4" x-show.transition="switch_to_driver" x-cloak :class="{'border-b-4 border-b-warning':pstep == 4, '':!pstep == 4}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Documents</button>
+        <button @click="pstep = 2" :class="{'border-b-4 border-b-warning':pstep == 2, '':!pstep == 2}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Bank / Card Details</button>
+        <button @click="pstep = 3" x-show.transition="switch_to_driver" x-cloak :class="{'border-b-4 border-b-warning':pstep == 3, '':!pstep == 3}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Documents</button>
+        <button @click="pstep = 4" x-show.transition="switch_to_driver" x-cloak :class="{'border-b-4 border-b-warning':pstep == 4, '':!pstep == 4}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Vehicle</button>
         <button @click="pstep = 5" :class="{'border-b-4 border-b-warning':pstep == 5, '':!pstep == 5}" class="duration-300 transition:ease-in-out text-sm md:text-sm hover:border-b-4 border-b-warning py-3 px-5 flex-none">Settings</button>
       </div>
 
@@ -50,31 +50,8 @@
       </div>
 
 
-      <!-- next of kin informations -->
-      <div x-show.transition="pstep == 2" x-cloak class="relative pb-8">
-        <div class="space-y-2  md:max-w-2xl py-4 px-4 md:px-8">
-          <h4 class="block text-xl font-bold">Next of Kin</h4>
-          <p class="text-sm font-normal text-gray-400">The person you add as a next of kin serves as both your gurantor and emergency contact person. So in cases of emergency, they are the very first person we will contact. Please provide an individual you can trust.</p>
-        </div>
-
-        {% include "users/snippets/kin.html" %}
-        {% include "users/snippets/forms/kin.html" with object=object %}
-
-        {% if request.user == object %}
-        <button @click="editKin = !editKin" title="Edit Bio" class="flex items-center text-white bg-black space-x-3 justify-center w-1/2 ml-4 md:ml-8 hover:shadow-lg duration-300 transition:ease-in-out mb-4 px-5 py-3 rounded-xl">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-          </svg>
-          <span class="sr-only">Edit Bio</span>
-          <span class="block text-bold">Edit</span>
-        </button>
-        {% endif %}
-
-      </div>
-
       <!-- card and bank account details -->
-      <div x-show.transition="pstep == 3" x-cloak class="py-4 px-4 md:px-8 space-y-5">
+      <div x-show.transition="pstep == 2" x-cloak class="py-4 px-4 md:px-8 space-y-5">
         <div class="space-y-2 md:max-w-2xl">
           <h4 class="block text-xl font-bold">Debit and Credit Cards</h4>
           <p class="text-sm font-normal text-gray-400">With a verified debit card added to your account you stand a chance to benefit from our periodic promos. The bank details added will be used to payout from our systems to you whenever you request for your earnings. Please take note that we charge 3% on every transfer to your account.</p>
@@ -83,128 +60,26 @@
       </div>
 
       <!-- Drivers Documents -->
-      <div x-show.transition="pstep == 4" x-cloak class="py-4 px-4 md:px-8 space-y-5">
+      <div x-data="Documents" x-show.transition="pstep == 3" x-cloak class="py-4 px-4 md:px-8 space-y-5">
         <div class="space-y-2 md:max-w-2xl">
           <h4 class="block text-xl font-bold">Verifiable Documents</h4>
           <p class="text-sm font-normal text-gray-400">Upload your valid documents to be processed so as to be approved to become a driver on Dropsride. Please be informed, whenever there is a need for us to reverify your licenses, we shall communicate to your directly through your verified email address provided when you registered on this platform.</p>
         </div>
 
         <!-- divider -->
-        <div class="divider text-sm font-bold text-gray-400 pt-14 pb-3">NIN, BVN, Driver's License</div>
+        {% include "users/snippets/forms/documents.html" %}
+      </div>
 
-        <form action="" class="space-y-5 pb-14" enctype="multipart/form-data" x-ref="docForm" @submit.prevent="documentForm" data-token="{{request.token}}">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-            <div class="hidden md:block">
-              <label for="id_bvn"  class="text-gray-300 text-sm block">BVN</label>
-              <input name="bvn" id="id_bvn" type="text" class="font-bold block border-b-2 rounded-xl border-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.documents.bvn|default:''}}" >
-            </div>
-            <div>
-              <label for="id_license"  class="text-gray-300 text-sm block">Driver's License</label>
-              <input name="license" id="id_license" type="text" class="font-bold block border-b-2 rounded-xl border-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.documents.license|default:''}}" >
-            </div>
-            <div>
-              <label for="id_license_exp"  class="text-gray-300 text-sm block">Driver's License Expiry</label>
-              <input name="license_exp" id="id_license_exp" type="date" class="font-bold block border-b-2 rounded-xl border-gray-200 py-2 text-sm w-full px-3 focus:ring-b-warning focus:outline-warning focus:ring-0 focus:outline-none focus:border-b-2 focus:border-warning" value="{{object.documents.license_exp|default:''}}" >
-            </div>
-          </div>
 
-          <!-- divider -->
-          <div class="divider text-sm font-bold text-gray-400 pt-14 pb-3">Documents Verification</div>
+      <!-- Vehicle informations -->
+      <div x-show.transition="pstep == 4" x-cloak class="py-4 px-4 md:px-8 space-y-5">
+        <div class="space-y-2  md:max-w-2xl">
+          <h4 class="block text-xl font-bold">Vehicle Details</h4>
+          <p class="text-sm font-normal text-gray-400">Please ensure to add your vehicle details here for verification.</p>
+        </div>
 
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-5 pt-8">
-            <div class="overflow-hidden p-3 border-2 border-grey-300">
-              <label for="id_proof_of_ownership" class="text-gray-300 block text-sm pb-3">
-                <span class="block">Proof Of Ownership</span>
+        {% include "users/snippets/forms/vehicle.html" with object=object %}
 
-                <!-- Show the image -->
-                <template x-if="proof_of_ownership_img">
-                  <img :src="proof_of_ownership_img"
-                      class="object-cover rounded border border-gray-200 w-full aspect-2"
-                  >
-                </template>
-
-                <!-- Show the gray box when image is not available -->
-                <template x-if="!proof_of_ownership_img">
-                  <div
-                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
-                  ></div>
-                </template>
-              </label>
-
-              <!-- Image file selector -->
-              <input class="mt-2 w-full" name="proof_of_ownership" id="id_proof_of_ownership" type="file" value="{% if object.documents.proof_of_ownership %}{{object.documents.proof_of_ownership.url}}{% endif %}" accept="image/*" @change="ownershipChosen">
-            </div>
-
-            <div class="overflow-hidden p-3 border-2 border-grey-300">
-              <label for="id_vehicle_license" class="text-gray-300 block text-sm pb-3">
-                <span class="block">Vehicle License</span>
-
-                <!-- Show the image -->
-                <template x-if="vehicle_license_img">
-                  <img :src="vehicle_license_img"
-                      class="object-cover rounded border border-gray-200 w-full aspect-2"
-                  >
-                </template>
-
-                <!-- Show the gray box when image is not available -->
-                <template x-if="!vehicle_license_img">
-                  <div
-                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
-                  ></div>
-                </template>
-              </label>
-
-              <!-- Image file selector -->
-              <input class="mt-2" name="vehicle_license" id="id_vehicle_license" type="file" value="{% if object.documents.vehicle_license %}{{object.documents.vehicle_license.url}}{% endif %}" accept="image/*" @change="vlChosen">
-            </div>
-
-            <div class="overflow-hidden p-3 border-2 border-grey-300">
-              <label for="id_autocheck_certificate" class="text-gray-300 block text-sm pb-3">
-                <span class="block">Autocheck Certificate</span>
-
-                <!-- Show the image -->
-                <template x-if="autocheck_certificate_img">
-                  <img :src="autocheck_certificate_img"
-                      class="object-cover rounded border border-gray-200 w-full aspect-2"
-                  >
-                </template>
-
-                <!-- Show the gray box when image is not available -->
-                <template x-if="!autocheck_certificate_img">
-                  <div
-                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
-                  ></div>
-                </template>
-              </label>
-
-              <!-- Image file selector -->
-              <input class="mt-2" name="autocheck_certificate" id="id_autocheck_certificate" type="file" value="{% if object.documents.autocheck_certificate %}{{object.documents.autocheck_certificate.url}}{% endif %}" accept="image/*" @change="autoCheckChosen">
-            </div>
-
-            <div class="overflow-hidden p-3 border-2 border-grey-300">
-              <label for="id_insurance" class="text-gray-300 block text-sm pb-3">
-                <span class="block">Insurance Certificate</span>
-
-                <!-- Show the image -->
-                <template x-if="insurance_img">
-                  <img :src="insurance_img"
-                      class="object-cover rounded border border-gray-200 w-full aspect-2"
-                  >
-                </template>
-
-                <!-- Show the gray box when image is not available -->
-                <template x-if="!insurance_img">
-                  <div
-                      class="border rounded border-gray-200 bg-gray-100 w-full aspect-2"
-                  ></div>
-                </template>
-              </label>
-
-              <!-- Image file selector -->
-              <input class="mt-2" name="insurance" id="id_insurance" type="file" value="{% if object.documents.insurance %}{{object.documents.insurance.url}}{% endif %}" accept="image/*" @change="insuranceChosen">
-            </div>
-          </div>
-        </form>
       </div>
 
       <!-- Settings -->

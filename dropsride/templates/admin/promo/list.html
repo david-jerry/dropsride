@@ -1,0 +1,49 @@
+{% extends "dashboard.html" %}
+{% load static humanize i18n widget_tweaks %}
+
+{% block title %}{{ block.super }} Promos{% endblock %}
+
+{% block breadcrumbs %}Promos{% endblock %}
+{% block alt_right %}
+<button @click="openCreateForm" class="ml-auto flex items-center space-x-3 text-sm rounded-xl py-2 px-4 bg-gray-700 text-white">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+  </svg>
+  <span class="block text-sm">
+    Create Promo
+  </span>
+</button>
+{% endblock alt_right %}
+
+{% block content %}
+<section x-data="Promo" class="z-0 relative w-full md:flex md:items-start gap-5 h-full space-y-5 md:space-y-0">
+  <div class="w-full md:w-3/6 md:max-h-[80vh] flex flex-col space-y-6 flex-none rounded-xl">
+    <div @click.outside="showFilter = false" x-data="{showFilter:false}" class="w-full p-3 rounded-xl bg-gray-100 relative mb-5 shadow-xl">
+      <div class="flex items-center justify-between">
+        <div for="id_search" class="w-full flex items-center space-x-3 bg-gray-200 p-1 md:p-2 rounded-xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 flex-none">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <input hx-get="{% url 'settings:promo_list' %}" hx-swap="innerHTML" hx-target="#userList" hx-trigger="keyup changed delay:50" type="search" name="search" placeholder="Search by state or uuid" class="bg-gray-200 text-gray-600 text-sm font-semibold placeholder:text-gray-400 w-full border-0 focus:border-0 ring-0 focus:ring-0 outline-none focus:outline-none">
+        </div>
+      </div>
+    </div>
+
+    <div id="userList" class="p-3  bg-gray-100 overflow-y-auto scrollbar-thin h-full max-h-full min-h-full rounded-xl shadow-xl grid grid-cols-1 md:grid-cols-2 gap-3">
+      {% include "admin/promo/snippets/list.html" with objects=objects %}
+    </div>
+  </div>
+
+
+  <!-- transaction detail for destop view -->
+  <div x-cloak x-show.transition.in="proDetails" id="uDetail" class="h-2/3 border-t-warning border-t-4 md:h-full w-full md:flex-grow space-y-4 md:space-y-6 p-3 text-gray-700 bg-gray-100 rounded-t-xl md:rounded-xl fixed md:relative z-30 right-0 bottom-0">
+  </div>
+</section>
+
+{% endblock %}
+
+
+{% block modal %}
+<section x-data="Promo" id="userModal" x-show.transition="openCreatePromo" x-cloak class="w-screen h-screen bg-black/40 backdrop-blur-sm fixed z-50 flex flex-col items-center justify-center top-0 left-0 right-0 bottom-0">
+</section>
+{% endblock modal %}

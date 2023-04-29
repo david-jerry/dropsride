@@ -5,6 +5,7 @@ import requests
 from django.conf import settings
 from django.core.cache import cache
 from rest_framework import status
+
 # from braces.views import CsrfExemptMixin
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
@@ -138,6 +139,7 @@ class SubscriptionViewset(
                 data={
                     "data": serializer.data,
                     "message": "Processing Ticket",
+                    "ttype": request.data["ttype"],
                     "created": True,
                 },
             )
@@ -149,7 +151,7 @@ class SubscriptionViewset(
             },
         )
 
-    @action(detail=True, methods=["POST"])
+    @action(detail=True, methods=["GET"])
     def pay(self, request, pk=None):
         """Make payments with paystack adding a custom callback_url to work with when the site requests to verify the payment
 
@@ -160,7 +162,7 @@ class SubscriptionViewset(
             _type_: _description_
         """
         ticket = self.get_object()
-        ttype = request.data["ttype"]
+        ttype = request.query_params.get("ttype")
 
         wallet_balance_in_kobo = int(round(ticket.driver.wallet.wallet_balance) * 100)
         reference = f"tref-{ticket.driver.username}-{ticket.id}"
@@ -174,13 +176,13 @@ class SubscriptionViewset(
             }
 
             if request.user.saved_card.filter(active=True).exists():
-                card = request.saved_card.filter(active=True).first()
+                card = request.user.saved_card.filter(active=True).first()
                 paystack_data = {
                     "email": request.user.email,
                     "amount": amount_in_kobo,
                     "reference": reference,
                     "channels": ["card", "ussd", "qr"],
-                    "callback_url": f"{request.build_absolute_uri('/api/tickets/{pk}/verify/')}",
+                    "callback_url": f"{request.build_absolute_uri(f'/subscriptions/verify/?t={ticket.user.token}&p={ticket.pk}&ttype={ttype}')}",
                     "authorization": {
                         "authorization_code": card.authorization_code,
                         "card_type": card.card_type,
@@ -196,7 +198,7 @@ class SubscriptionViewset(
                     "amount": amount_in_kobo,
                     "reference": reference,
                     "channels": ["card", "ussd", "qr"],
-                    "callback_url": f"{request.build_absolute_uri('/api/tickets/{pk}/verify/')}",
+                    "callback_url": f"{request.build_absolute_uri(f'/subscriptions/verify/?t={ticket.user.token}&p={ticket.pk}&ttype={ttype}')}",
                 }
             response = requests.post(
                 "https://api.paystack.co/transaction/initialize",
@@ -209,6 +211,10 @@ class SubscriptionViewset(
                 # convert response to json data
                 json_response = response.json()
 
+                # get the authorization url for window pop up and payment completion
+                authorization_url = json_response["data"]["authorization_url"]
+                res_reference = json_response["data"]["reference"]
+
                 if json_response["message"] == "Authorization URL created":
                     # add a transaction history for the card payment but set it to
                     Transaction.objects.create(
@@ -216,7 +222,7 @@ class SubscriptionViewset(
                         amount=ticket.plan.amount,
                         transaction_reason=Transaction.TICKET,
                         transaction_status=Transaction.PENDING,
-                        ref_code=json_response["reference"],
+                        ref_code=json_response["data"]["reference"],
                         content_object=ticket,
                     )
 
@@ -230,6 +236,7 @@ class SubscriptionViewset(
                         data={
                             "message": json_response["message"],
                             "data": json_response["data"],
+                            "ttype": ttype,
                         },
                     )
 
@@ -278,6 +285,7 @@ class SubscriptionViewset(
                 status=status.HTTP_200_OK,
                 data={
                     "data": serializer.data,
+                    "ttype": ttype,
                     "message": f"Successfully paid for {ticket.plan.state} ticketing. Enabling driving access now",
                 },
             )
@@ -299,13 +307,13 @@ class SubscriptionViewset(
         API endpoint to verify if an initialized payment was successful, if successful it approves the ticket and then marks the transaction as verified or paid
         """
         ticket = self.get_object()
-        transaction = Transaction.objects.filter(
-            content_object=ticket, owner=ticket.driver
-        ).latest("created")
         reference = request.query_params.get("reference")
+        transaction = Transaction.objects.filter(
+            ref_code=reference, owner=ticket.driver
+        ).latest("created")
         if not reference:
             return Response(
-                {"error": "Paystack reference not provided"},
+                {"message": "Paystack reference not provided"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -324,10 +332,12 @@ class SubscriptionViewset(
             if json_response["data"]["status"] == "success":
                 transaction.transaction_status = Transaction.PAID
                 transaction.save(update_fields=["transaction_status"])
+
                 expiry_date = today + timedelta(days=ticket.plan.duration)
                 ticket.expiry_date = expiry_date
                 ticket.status = TicketSubscription.ACTIVE
                 ticket.save(update_fields=["expiry_date", "status"])
+
                 return Response(
                     status=status.HTTP_200_OK,
                     data={

@@ -5,13 +5,16 @@ from django.dispatch import receiver
 
 from dropsride.tickets.models import TicketPlans
 from dropsride.utils.logger import LOGGER
-from dropsride.utils.unique_generators import unique_slug_generator
+from dropsride.utils.unique_generators import (
+    unique_promo_generator,
+    unique_slug_generator,
+)
 from dropsride.utils.utilities import (
     is_model_instance_changed,
     is_uuid_model_instance_changed,
 )
 
-from .models import CarType, Localization
+from .models import CarType, Localization, Promo
 
 
 @receiver(pre_save, sender=Localization)
@@ -45,3 +48,10 @@ def create_cartype_slug(instance, created, *args, **kwargs):
         LOGGER.info(
             f"[CAR TYPE SLUG] Created New CAR Slug for {instance.title.title()}"
         )
+
+
+@receiver(post_save, sender=Promo)
+def generate_promo_code(instance, created, *args, **kwargs):
+    if not instance.code:
+        instance.code = unique_promo_generator(instance)
+        instance.save(update_fields=["code"])

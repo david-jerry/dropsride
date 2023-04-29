@@ -65,5 +65,5 @@ def is_uuid_model_instance_changed(instance):
 
 def convert_to_dollar(amount):
     amount = Decimal(amount)
-    usd = get_object_or_404(Currency, ode="USD")
+    usd = get_object_or_404(Currency, code="USD")
     return Decimal(usd.price / amount)

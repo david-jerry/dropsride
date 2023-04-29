@@ -28,6 +28,17 @@ def random_code_generator(instance):
     return new_online_uid
 
 
+def unique_promo_generator(instance):
+    size = random.randint(8, 8)
+    new_code = random_integer_generator(size=size)
+
+    Klass = instance.__class__
+    qs_exists = Klass.objects.filter(code=new_code).exists()
+    if qs_exists:
+        return unique_promo_generator(instance)
+    return new_code
+
+
 def unique_slug_generator(instance, new_slug=None):
     """
     This is for a Django project and it assumes your instance

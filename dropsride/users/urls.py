@@ -15,6 +15,8 @@ from dropsride.users.views import (
     user_detail_view,
     user_redirect_view,
     user_update_view,
+    get_document,
+    get_vehicle,
 )
 
 app_name = "users"
@@ -28,6 +30,8 @@ urlpatterns = [
     path("~update/", view=user_update_view, name="update"),
     path("get-currency/", view=get_currency, name="get_currency"),
     path("get-kin/", view=get_kin, name="get_kin"),
+    path("get-vehicle/", view=get_vehicle, name="get_vehicle"),
+    path("get-docuemnt/", view=get_vehicle, name="get_vehicle"),
     path("get-detail/", view=get_detail, name="get_detail"),
     path("get-detail/<str:username>/", view=get_admin_detail, name="get_admin_detail"),
     path("get-cards/", view=get_all_cards, name="get_all_cards"),

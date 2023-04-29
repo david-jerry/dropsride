@@ -1,3 +1,4 @@
+from typing import Any, Dict
 import urllib.parse
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
@@ -14,6 +15,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 from django.views.generic.edit import FormMixin
+from dropsride.settings.models import CarType
 
 from dropsride.users.forms import UserSignupForm
 from dropsride.users.mixins import LoginRequiredMixin, StaffRequiredMixin
@@ -81,7 +83,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     #     elif self.request.htmx:
     #         LOGGER.info("serving from request with htmx")
     #         return "admin/users/detail.html"
-
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['cartypes'] = CarType.objects.all()
+        return context
 
 user_detail_view = UserDetailView.as_view()
 
@@ -193,6 +198,14 @@ def get_admin_detail(request, **kwargs):
 def get_detail(request):
     object = request.user
     return render(request, "users/snippets/detail.html", context={"object": object})
+
+def get_vehicle(request):
+    object = request.user
+    return render(request, "users/snippets/forms/vehicle.html", context={"object": object})
+
+def get_document(request):
+    object = request.user
+    return render(request, "users/snippets/forms/documents.html", context={"object": object})
 
 
 def get_cards(request, pk):

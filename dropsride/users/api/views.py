@@ -170,8 +170,11 @@ class RegisteredVehiclesViewSet(
 
 
 class VerifiedDocumentsViewSet(
-    ListModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet
-):
+    ListModelMixin,
+    UpdateModelMixin,
+    RetrieveModelMixin,
+    DestroyModelMixin,
+    GenericViewSet):
     """Endpoint to upload verifiable documents for the user. Like drivers license and the rest particulars for driving
 
     Args:
