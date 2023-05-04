@@ -6,7 +6,7 @@
 {% block title %}{{ block.super }}{% translate "Signup" %}{% endblock %}
 
 {% block inner %}
-<div class="px-8 w-full md:absolute md:right-0 md:h-full md:top-0 flex items-center justify-center md:w-1/2">
+<div class="px-3 md:px-8 w-full md:absolute md:right-0 md:h-full md:top-0 flex items-center justify-center md:w-1/2">
   <form x-ref="form" x-init="checkServerValidity" x-data="SignupForm"  class="md:float-right w-full md:max-w-2xl bg-white btn-rounded shadow-md block overflow-hidden" id="signup_form" method="post" action="{% url 'home' %}api/auth/registration/" data-csrf="{{csrf_token}}" data-redirect="{% url 'account_login' %}" @submit.prevent="submitForm">
     <div class="w-full p-6 border border-b-gray-200 space-y-2">
       <h1 class="font-semibold text-xl md:text-2xl">{% translate "Sign Up" %}</h1>
