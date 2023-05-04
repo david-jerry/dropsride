@@ -59,8 +59,9 @@ def delete_cache_for_users(sender, instance, *args, **kwargs):
 
 @receiver(post_save, sender=VerifiedDocuments)
 def expire_license(sender, created, instance, *args, **kwargs):
-    if instance.license_exp < date.today():
-        instance.expired_license()
+    if instance.license_exp:
+        if instance.license_exp < date.today():
+            instance.expired_license()
 
 
 
